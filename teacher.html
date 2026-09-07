@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>우리 조 장바구니 · 진행판</title>
+<style>
+:root{--ink:#1c1b19;--sub:#77716a;--line:#e2ddd4;--bg:#f6f4ef;--card:#fff;
+ --accent:#c2410c;--green:#2f7048;--green-soft:#eaf4ee;--blue:#20618f;--blue-soft:#eaf3fa;
+ --red:#a4342a;--gold:#8a6a1c;--gold-soft:#fbf4e2}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-size:14.5px;line-height:1.6;letter-spacing:-0.02em;
+ font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif}
+button{font-family:inherit;font-size:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.wrap{max-width:1100px;margin:0 auto;padding:16px 16px 60px}
+.bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card);
+ border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.bar h1{font-size:17px;margin:0;letter-spacing:-0.03em}
+.conn{font-size:12px;padding:3px 9px;border-radius:999px;background:#eee;color:#666;font-weight:700}
+.conn.ok{background:var(--green-soft);color:var(--green)} .conn.no{background:#fbe9e4;color:#b8442a}
+.right{margin-left:auto;display:flex;gap:7px;flex-wrap:wrap}
+.b{padding:9px 15px;border-radius:11px;background:#fff;border:1.5px solid var(--line);font-weight:700}
+.b:hover{border-color:#c9c2b6}
+.b.sm{padding:6px 11px;font-size:12.5px}
+.b.pri{background:var(--accent);color:#fff;border-color:var(--accent);font-size:16px;padding:12px 22px}
+.b.dark{background:#26241f;color:#fff;border-color:#26241f}
+.b.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.b:disabled{opacity:.35;cursor:default}
+.b.blink{animation:bk 1s infinite}
+@keyframes bk{0%,100%{background:#fff;color:var(--ink)}50%{background:var(--accent);color:#fff;border-color:var(--accent)}}
+.clock{font-size:26px;font-weight:800;letter-spacing:-0.04em;font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:1.3fr 1fr;gap:12px}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.card h2{font-size:15px;margin:0 0 12px;letter-spacing:-0.03em}
+.card h2 span{color:var(--sub);font-weight:500;font-size:12.5px;margin-left:6px}
+.row{margin-bottom:11px}
+.row .lb{display:flex;justify-content:space-between;font-size:13.5px;font-weight:700;margin-bottom:3px}
+.row .lb .n{color:var(--sub);font-weight:600}
+.row .lb .n.over{color:var(--red)}
+.tk{height:20px;background:#eae5db;border-radius:7px;overflow:hidden}
+.fl{height:100%;background:#c9a86a;transition:width .5s}
+.fl.over{background:#c25a45}
+.row .it{font-size:11.5px;color:var(--sub);margin-top:3px}
+table{border-collapse:collapse;width:100%;font-size:12.5px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{background:#f4f0e8;font-size:11.5px;color:#5c564d;position:sticky;top:0}
+.scroll{max-height:320px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+.evgrid{display:grid;gap:8px}
+.evb{display:flex;align-items:center;gap:10px;border:1.5px solid var(--line);border-radius:12px;
+ padding:11px 13px;background:#fff;text-align:left;width:100%}
+.evb .em{font-size:21px}
+.evb .t{font-weight:800;font-size:14px;letter-spacing:-0.02em}
+.evb .d{font-size:12px;color:var(--sub)}
+.evb .at{margin-left:auto;font-size:11.5px;font-weight:700;color:#fff;background:#b4ab9c;
+ padding:2px 8px;border-radius:999px;white-space:nowrap}
+.evb.done{opacity:.4}
+.evb.due{border-color:var(--accent);animation:bk2 1.1s infinite}
+@keyframes bk2{0%,100%{background:#fff}50%{background:#fdefe8}}
+.gate{max-width:340px;margin:120px auto;text-align:center}
+.gate input{width:100%;padding:13px;border:2px solid var(--line);border-radius:12px;text-align:center;font-size:17px}
+.hide{display:none}
+#show{position:fixed;inset:0;background:#191815;color:#f5f1e8;z-index:100;padding:36px 44px;overflow:auto}
+#show .nav{position:absolute;top:14px;right:20px;color:#7a736a;font-size:13px}
+#show h2{font-size:40px;margin:0 0 4px;letter-spacing:-0.04em}
+#show .sub{color:#a49c91;font-size:18px;margin-bottom:26px}
+#show .st p{font-size:23px;line-height:1.65;margin:0 0 10px}
+#show .st p.good{color:#a9dcc0} #show .st p.bad{color:#ffb4a0}
+#show .st .d{font-size:13px;letter-spacing:.1em;color:#7a736a;margin:20px 0 8px;font-weight:800}
+#show .bg{margin-top:22px;display:flex;gap:9px;flex-wrap:wrap}
+#show .bg span{border:1px solid #3d3931;border-radius:10px;padding:7px 13px;font-size:17px}
+#show .items{margin-top:22px;color:#a49c91;font-size:16px;line-height:1.9}
+#show .fail{color:#ff8c6b;font-weight:800;font-size:26px}
+</style>
+</head>
+<body>
+<div class="gate" id="gate">
+  <h1 style="font-size:20px">진행판</h1>
+  <p style="color:#77716a;font-size:13px">선생님만 들어오는 화면입니다</p>
+  <input id="pw" type="password" placeholder="암호" autocomplete="off">
+  <p id="pwe" style="color:#c2410c;font-size:13px;min-height:18px"></p>
+</div>
+
+<div class="wrap hide" id="main">
+  <div class="bar">
+    <h1>🧳 우리 조 장바구니 · 진행판</h1>
+    <span class="conn" id="conn">연결 중</span>
+    <span class="clock" id="clock">00:00</span>
+    <button class="b sm" id="tstart">수업 시작</button>
+    <div class="right">
+      <button class="b sm" id="csv">엑셀로 받기</button>
+      <button class="b sm" id="clr">기록 전체 지우기</button>
+    </div>
+  </div>
+
+  <div class="bar">
+    <span style="font-weight:800">예산 <b id="bud">80,000</b>원</span>
+    <span style="color:#77716a;font-size:12.5px" id="phase">편성 중</span>
+    <div class="right">
+      <button class="b pri" id="lock">마감하고 결과 보기</button>
+      <button class="b" id="votebtn">투표 열기</button>
+      <button class="b" id="back">편성으로 돌아가기</button>
+      <button class="b dark" id="showb">발표 화면</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>조별 남은 돈 <span id="cnt"></span></h2>
+      <div id="teams"></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <h2>이벤트 <span>권장 시각이 되면 깜빡입니다</span></h2>
+        <div class="evgrid" id="evs"></div>
+      </div>
+      <div class="card">
+        <h2>누가 담았나 <span>무임승차 확인</span></h2>
+        <div class="scroll"><table id="who"></table></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="show" class="hide"></div>
+
+<!-- ▼ 수업 내용 (값·문구는 여기서 고칩니다). 두 파일이 같은 내용이어야 합니다 ▼ -->
+<script>
+/* ===================================================================
+   우리 조 장바구니 — 내용 파일
+   값·문구를 고치려면 여기만 보시면 됩니다.
+   flags = 여행 결과 이야기를 만들 때 쓰는 표시 (학생에겐 안 보임)
+   =================================================================== */
+window.BUDGET = 80000;
+
+window.SLOTS = [
+{ key:'캐리어', emoji:'🧳', note:'조에 하나. 짐을 나눠 담습니다', opts:[
+  { name:'형·누나 것 빌리기', price:0,     days:0, arrive:'오늘',        desc:'낡았다. 지퍼가 잘 안 잠긴다', flags:['지퍼'] },
+  { name:'대여',              price:8000,  days:0, arrive:'오늘',        desc:'바퀴 하나가 뻑뻑하다',        flags:['바퀴'] },
+  { name:'저가 신품',         price:29000, days:5, arrive:'5일 뒤',      desc:'무난하다',                    flags:[] },
+  { name:'중형 신품',         price:45000, days:2, arrive:'2일 뒤',      desc:'크고 튼튼하다',               flags:[] }
+]},
+{ key:'카메라', emoji:'📷', note:'여행 사진을 남길 방법', opts:[
+  { name:'폰으로만',          price:0,     days:0, arrive:'—',           desc:'배터리가 나가면 끝이다',      flags:['폰만'] },
+  { name:'일회용 필름 2개',   price:18000, extra:8000, extraName:'현상비',
+    days:0, arrive:'오늘 · 편의점', desc:'54장. 찍고 나서야 뭐가 나왔는지 안다', flags:['필름'] },
+  { name:'즉석카메라 중고',   price:35000, days:0, arrive:'오늘 · 직거래', desc:'필름 10장 포함 · 보증 없음', flags:['즉석'] },
+  { name:'즉석카메라 신품',   price:89000, days:3, arrive:'3일 뒤',      desc:'필름 40장 포함',              flags:['즉석','사치'] }
+]},
+{ key:'보조배터리', emoji:'🔋', note:'조원끼리 돌려 씁니다', opts:[
+  { name:'안 삼',             price:0,     days:0, arrive:'—',           desc:'',                            flags:['방전'] },
+  { name:'5,000mAh 한 개',    price:12000, days:2, arrive:'2일 뒤',      desc:'한 명분. 나눠 쓰기엔 모자라다', flags:['방전'] },
+  { name:'10,000mAh 한 개',   price:25000, days:2, arrive:'2일 뒤',      desc:'조가 쓰기 충분하다',          flags:[] },
+  { name:'10,000mAh 두 개',   price:46000, days:3, arrive:'3일 뒤',      desc:'넉넉하지만 무겁다',           flags:['짐','사치'] }
+]},
+{ key:'간식', emoji:'🍫', note:'밤에 먹을 것', opts:[
+  { name:'최소',              price:5000,  days:0, arrive:'오늘',        desc:'세면도구 위주',               flags:['배고픔'] },
+  { name:'보통',              price:12000, days:0, arrive:'오늘',        desc:'우리 조가 먹을 만큼',         flags:[] },
+  { name:'넉넉히',            price:22000, days:0, arrive:'오늘',        desc:'조금 나눠줄 수 있다',         flags:['나눔'] },
+  { name:'다른 조까지 돌릴 만큼', price:38000, days:0, arrive:'오늘',    desc:'',                            flags:['파티','사치'] }
+]},
+{ key:'밤에 할 것', emoji:'🎲', note:'소등 후 두 시간', opts:[
+  { name:'없음',              price:0,     days:0, arrive:'—',           desc:'',                            flags:['심심'] },
+  { name:'카드 한 벌',        price:3000,  days:0, arrive:'오늘',        desc:'가볍다',                      flags:['놀이'] },
+  { name:'보드게임 중고',     price:15000, days:0, arrive:'오늘 · 직거래', desc:'부피가 크다',               flags:['놀이','짐'] },
+  { name:'보드게임 신품 2종', price:42000, days:3, arrive:'3일 뒤',      desc:'부피가 크다',                 flags:['놀이','짐','사치'] }
+]},
+{ key:'비상 세트', emoji:'🧴', note:'다치거나 아플 때', opts:[
+  { name:'없음',              price:0,     days:0, arrive:'—',           desc:'',                            flags:['무방비'] },
+  { name:'밴드만',            price:3000,  days:0, arrive:'오늘',        desc:'약은 없다',                   flags:['무방비'] },
+  { name:'밴드 + 멀미약 + 두통약', price:9000, days:0, arrive:'오늘',    desc:'',                            flags:['준비됨'] },
+  { name:'종합 구급함',       price:25000, days:2, arrive:'2일 뒤',      desc:'크고 무겁다',                 flags:['준비됨','짐'] }
+]}
+];
+
+/* 이벤트로 열리는 칸 */
+window.RAIN_SLOT = { key:'우비', emoji:'☂️', note:'비 예보가 떴습니다', opts:[
+  { name:'안 삼',            price:0,    days:0, arrive:'—',    desc:'', flags:['비맞음'] },
+  { name:'조 우비 세트',     price:9000, days:0, arrive:'오늘 · 편의점', desc:'조원 수만큼', flags:['우비'] }
+]};
+
+/* 이벤트 */
+window.EVENTS = [
+ { id:'rain',  em:'🌧️', name:'일기예보 — 둘째 날 비', at:12, must:true,
+   desc:'우비 칸이 열립니다', toast:'둘째 날 비 예보! ☂️ 우비 칸이 열렸습니다' },
+ { id:'delay', em:'📦', name:'배송 지연 — 3일 이상 전부 아웃', at:22, must:true,
+   desc:'3일 이상 걸리는 상품이 담겨 있으면 빠지고 환불됩니다', toast:'배송 지연! 3일 이상 걸리는 물건은 여행 후에 옵니다' },
+ { id:'cut',   em:'✂️', name:'예산 삭감 −10,000원', at:28, must:true,
+   desc:'예산이 70,000원이 됩니다', toast:'예산 삭감! 10,000원이 회수됐습니다' },
+ { id:'sale',  em:'⏱️', name:'깜짝 세일 — 즉석카메라 신품 55,000원 (2분)', at:0, must:false,
+   desc:'89,000 → 55,000원, 2분간', toast:'깜짝 세일! 즉석카메라 신품 55,000원 · 2분' },
+ { id:'gift',  em:'💰', name:'용돈 추가 +10,000원', at:0, must:false,
+   desc:'전 조 예산 +10,000원', toast:'담임 선생님이 10,000원을 보태주셨습니다' }
+];
+
+/* 결과 이야기 — 위에서부터 순서대로 조립됩니다 */
+window.STORY = [
+ { day:1, need:['지퍼'],     text:'버스에서 가방 지퍼가 터졌다. 옷을 손에 들고 다녔다.' },
+ { day:1, need:['바퀴'],     text:'바퀴 하나가 안 굴렀다. 끌 때마다 소리가 났다.' },
+ { day:1, need:['지각'],     text:'택배는 여행에서 돌아온 다음 날 도착했다. 상자를 여는데 기분이 이상했다.' },
+ { day:2, need:['우비'],     text:'비가 왔다. 너희 조만 멀쩡했다. 다른 조가 부러워했다.', good:true },
+ { day:2, need:['비맞음'],   text:'오후부터 비가 왔다. 젖은 채로 세 시간을 걸었다.' },
+ { day:2, need:['방전','폰만'], text:'네 시에 폰이 꺼졌다. 사진이 한 장도 없다.' },
+ { day:2, need:['방전'],     text:'폰은 꺼졌다. 그래도 카메라가 있었다.' },
+ { day:2, need:['필름'],     text:'쉰네 장을 다 썼다. 현상하고 나서야 뭐가 찍혔는지 알았다. 그게 제일 재밌었다.', good:true },
+ { day:2, need:['즉석'],     text:'찍는 자리에서 사진이 나왔다. 다른 조가 몰려와서 찍어달라고 했다.', good:true },
+ { day:3, need:['무방비'],   text:'한 명이 넘어져서 무릎이 까졌다. 아무것도 없었다.' },
+ { day:3, need:['준비됨'],   text:'누가 멀미를 했는데 너희 조에 약이 있었다. 그날 영웅이 됐다.', good:true },
+ { day:3, need:['심심'],     text:'밤 열 시에 할 게 없어서 그냥 잤다.' },
+ { day:3, need:['놀이'],     text:'새벽 한 시까지 했다. 결국 선생님한테 걸렸다.', good:true },
+ { day:3, need:['배고픔'],   text:'밤에 배가 고팠다. 옆 조에게 얻어먹었다.' },
+ { day:3, need:['파티'],     text:'다른 조가 너희 방으로 몰려왔다. 그날 밤이 제일 재밌었다.', good:true },
+ { day:3, need:['나눔'],     text:'간식이 조금 남아서 옆 조랑 나눠 먹었다.', good:true },
+ { day:4, need:['짐2'],      text:'가방이 터질 것 같았다. 셋이 번갈아 들었다.' },
+ { day:4, need:['여유'],     text:'남은 돈으로 휴게소에서 다 같이 먹었다.', good:true }
+];
+
+/* 배지 */
+window.BADGES = [
+ { id:'thrift', em:'💸', name:'짠돌이상', desc:'남은 돈 1위' },
+ { id:'rain',   em:'☂️', name:'예언자상', desc:'우비를 산 조' },
+ { id:'photo',  em:'📸', name:'사진상',   desc:'사진을 남긴 조' },
+ { id:'party',  em:'🍫', name:'인싸상',   desc:'다른 조까지 먹인 조' },
+ { id:'aid',    em:'🩹', name:'구급대상', desc:'약을 챙긴 조' },
+ { id:'night',  em:'🎲', name:'밤샘상',   desc:'놀 것을 챙긴 조' },
+ { id:'sleep',  em:'😴', name:'취침상',   desc:'밤에 할 게 없던 조' },
+ { id:'broke',  em:'💀', name:'파산상',   desc:'예산 초과' }
+];
+</script>
+<!-- ▲ -->
+<script type="module">
+const TEACHER_CODE = "1234";
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyApUKeVhJ0EnOm_wu1vcT-14yeax7iQR7I",
+  authDomain: "court-ae96f.firebaseapp.com",
+  projectId: "court-ae96f",
+  storageBucket: "court-ae96f.firebasestorage.app",
+  messagingSenderId: "397308728790",
+  appId: "1:397308728790:web:d6d10fac3865e547d24077"
+};
+const P='trip_', STATE=P+'state', CART=P+'cart_';
+const $=s=>document.querySelector(s), won=n=>n.toLocaleString('ko-KR');
+if(!window.SLOTS){ document.body.innerHTML='<p style="text-align:center;margin-top:120px;font-family:system-ui">'+
+ '⚠️ trip_data.js 를 못 찾았습니다. 세 파일을 같은 폴더에 올려주세요.</p>'; throw new Error('no data'); }
+
+let DB=null,api=null, ST={budget:window.BUDGET,events:{},saleUntil:0,phase:'shop'}, CARTS={};
+let t0=+(localStorage.getItem('trip_t0')||0), showIdx=0;
+
+const enter=()=>{ $('#gate').classList.add('hide'); $('#main').classList.remove('hide'); boot(); };
+if(sessionStorage.getItem('trip_t')==='1') enter();
+$('#pw').onkeydown=e=>{ if(e.key!=='Enter')return;
+  if($('#pw').value.trim()===TEACHER_CODE){sessionStorage.setItem('trip_t','1');enter();}
+  else $('#pwe').textContent='암호가 다릅니다'; };
+
+async function boot(){
+  try{
+    const {initializeApp}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
+    const m=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    DB=m.getFirestore(initializeApp(FIREBASE_CONFIG)); api=m;
+    $('#conn').textContent='연결됨'; $('#conn').className='conn ok';
+    m.onSnapshot(m.collection(DB,'live'), s=>{
+      CARTS={};
+      s.forEach(d=>{
+        if(d.id===STATE){ const v=d.data();
+          ST={budget:v.budget??window.BUDGET, events:v.events||{}, saleUntil:v.saleUntil||0, phase:v.phase||'shop'}; }
+        else if(d.id.startsWith(CART)) CARTS[d.id.slice(CART.length)]=d.data();
+      });
+      draw();
+    }, e=>{ $('#conn').textContent='연결 실패'; $('#conn').className='conn no'; });
+  }catch(e){ $('#conn').textContent='연결 실패'; $('#conn').className='conn no'; }
+}
+function save(o){ if(!api) return;
+  return api.setDoc(api.doc(DB,'live',STATE),o,{merge:true}).catch(e=>{
+    $('#conn').textContent = e.code==='permission-denied'?'권한 거부':'쓰기 실패'; $('#conn').className='conn no'; }); }
+
+/* 계산 (학생 앱과 같은 규칙) */
+const slotList=()=> ST.events.rain ? [...window.SLOTS, window.RAIN_SLOT] : [...window.SLOTS];
+const spentOf=c=>Object.values(c.items||{}).reduce((a,b)=>a+(b.price||0),0);
+function flagsOf(c){
+  const f=[];
+  slotList().forEach(s=>{ const it=(c.items||{})[s.key]; const o=it?s.opts[it.opt]:s.opts[0];
+    (o.flags||[]).forEach(x=>f.push(x));
+    if(it && s.opts[it.opt].days>=3 && !ST.events.delay) f.push('지각'); });
+  if(f.filter(x=>x==='짐').length>=2) f.push('짐2');
+  const sp=spentOf(c);
+  if(ST.budget-sp>=20000) f.push('여유');
+  if(sp>ST.budget) f.push('초과');
+  if(ST.events.rain && !f.includes('우비')) f.push('비맞음');
+  return f;
+}
+function storyOf(c){ const f=flagsOf(c);
+  if(f.includes('초과')) return {fail:true,lines:[]};
+  const used=new Set(), lines=[];
+  window.STORY.forEach(r=>{ if(!r.need.every(n=>f.includes(n)))return;
+    if(r.need.includes('방전')&&used.has('방전'))return; if(r.need[0]==='방전')used.add('방전');
+    lines.push(r); });
+  return {fail:false,lines};
+}
+function badgesOf(c){
+  const f=flagsOf(c), out=[], B=window.BADGES, get=i=>B.find(b=>b.id===i);
+  const rest=ST.budget-spentOf(c);
+  const maxRest=Math.max(...Object.values(CARTS).map(x=>ST.budget-spentOf(x)));
+  if(f.includes('초과')) out.push(get('broke'));
+  else if(rest===maxRest&&rest>0) out.push(get('thrift'));
+  if(f.includes('우비'))out.push(get('rain'));
+  if(f.includes('필름')||f.includes('즉석'))out.push(get('photo'));
+  if(f.includes('파티'))out.push(get('party'));
+  if(f.includes('준비됨'))out.push(get('aid'));
+  if(f.includes('놀이'))out.push(get('night'));
+  if(f.includes('심심'))out.push(get('sleep'));
+  return out.filter(Boolean);
+}
+
+/* 이벤트 */
+async function fire(id){
+  const e=window.EVENTS.find(x=>x.id===id);
+  if(ST.events[id] && id!=='sale'){ if(!confirm(`「${e.name}」 다시 던질까요?`)) return; }
+  if(id==='cut')  await save({budget:ST.budget-10000});
+  if(id==='gift') await save({budget:ST.budget+10000});
+  if(id==='sale') await save({saleUntil:Date.now()+120000});
+  if(id==='delay'){
+    for(const [t,c] of Object.entries(CARTS)){
+      const del={}; let hit=false;
+      slotList().forEach(s=>{ const it=(c.items||{})[s.key];
+        if(it && s.opts[it.opt].days>=3){ del[s.key]=api.deleteField(); hit=true; } });
+      if(hit) await api.setDoc(api.doc(DB,'live',CART+t),{items:del},{merge:true});
+    }
+  }
+  await save({events:{...ST.events,[id]:true}});
+}
+
+/* 조작 */
+$('#tstart').onclick=()=>{ t0=Date.now(); localStorage.setItem('trip_t0',t0); };
+$('#lock').onclick=()=>save({phase:'result'});
+$('#votebtn').onclick=()=>save({phase:'vote'});
+$('#back').onclick=()=>save({phase:'shop'});
+$('#showb').onclick=()=>{ showIdx=0; $('#show').classList.remove('hide'); drawShow(); };
+document.addEventListener('keydown',e=>{
+  if($('#show').classList.contains('hide')) return;
+  if(e.key==='Escape') $('#show').classList.add('hide');
+  if(e.key==='ArrowRight'){ showIdx++; drawShow(); }
+  if(e.key==='ArrowLeft'){ showIdx=Math.max(0,showIdx-1); drawShow(); }
+});
+$('#clr').onclick=async()=>{
+  if(!confirm('앞 반 기록까지 전부 지웁니다. 계속할까요?')) return;
+  for(const t of Object.keys(CARTS)) await api.deleteDoc(api.doc(DB,'live',CART+t));
+  await save({budget:window.BUDGET,events:{},saleUntil:0,phase:'shop'});
+  t0=0; localStorage.removeItem('trip_t0');
+};
+$('#csv').onclick=()=>{
+  const rows=[['조','칸','고른 것','값','담은 사람']];
+  Object.keys(CARTS).sort().forEach(t=>{ slotList().forEach(s=>{
+    const it=(CARTS[t].items||{})[s.key];
+    rows.push([t,s.key,it?it.name:'안 챙김',it?it.price:0,it?it.by:'']); });
+    rows.push([t,'합계','',spentOf(CARTS[t]),'']);
+    rows.push([t,'남은 돈','',ST.budget-spentOf(CARTS[t]),'']);
+    rows.push([t,'결과','',storyOf(CARTS[t]).lines.map(l=>l.text).join(' '),'']);
+  });
+  const csv='﻿'+rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='우리조장바구니.csv'; a.click();
+};
+
+/* 화면 */
+function draw(){
+  $('#bud').textContent=won(ST.budget);
+  $('#phase').textContent = ST.phase==='shop'?'편성 중':(ST.phase==='result'?'결과 공개 중':'투표 중');
+  const ts=Object.keys(CARTS).sort((a,b)=>parseInt(a)-parseInt(b));
+  $('#cnt').textContent=`${ts.length}개 조`;
+  $('#teams').innerHTML = ts.length? ts.map(t=>{
+    const c=CARTS[t], sp=spentOf(c), rest=ST.budget-sp, over=rest<0;
+    const empty=slotList().filter(s=>!(c.items||{})[s.key]).length;
+    return `<div class="row"><div class="lb"><span>${t}${empty?` · <span style="color:#c2410c">${empty}칸 빔</span>`:''}</span>
+      <span class="n ${over?'over':''}">${over?`${won(-rest)}원 초과`:`${won(rest)}원 남음`}</span></div>
+      <div class="tk"><div class="fl ${over?'over':''}" style="width:${Math.min(100,Math.round(sp/ST.budget*100))}%"></div></div>
+      <div class="it">${slotList().map(s=>{const it=(c.items||{})[s.key];
+        return `${s.emoji}${it?it.name:'—'}`;}).join(' · ')}</div></div>`;
+  }).join('') : '<p style="color:#77716a">아직 아무 조도 안 들어왔습니다</p>';
+
+  const el=Math.floor((Date.now()-(t0||Date.now()))/60000);
+  $('#evs').innerHTML=window.EVENTS.map(e=>{
+    const done=!!ST.events[e.id], due=t0&&e.at&&el>=e.at&&!done;
+    return `<button class="evb ${done?'done':''} ${due?'due':''}" data-e="${e.id}">
+      <span class="em">${e.em}</span>
+      <span><span class="t">${e.name}</span><br><span class="d">${e.desc}</span></span>
+      <span class="at">${e.at?e.at+'분':'선택'}</span></button>`;}).join('');
+  document.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>fire(b.dataset.e));
+
+  const cnt={};
+  Object.entries(CARTS).forEach(([t,c])=>Object.values(c.items||{}).forEach(it=>{
+    if(!it.by) return; cnt[it.by]=cnt[it.by]||{t,n:0}; cnt[it.by].n++; }));
+  const names=Object.keys(cnt).sort((a,b)=>cnt[a].t.localeCompare(cnt[b].t));
+  $('#who').innerHTML=`<tr><th>조</th><th>학생</th><th>담은 칸</th></tr>`+
+    (names.length? names.map(n=>`<tr><td>${cnt[n].t}</td><td>${n}</td>
+      <td style="${cnt[n].n<=0?'color:#c2410c':''}">${cnt[n].n}</td></tr>`).join('')
+      : '<tr><td colspan="3" style="color:#77716a">아직 없습니다</td></tr>');
+
+  if(!$('#show').classList.contains('hide')) drawShow();
+}
+function drawShow(){
+  const ts=Object.keys(CARTS).sort((a,b)=>parseInt(a)-parseInt(b));
+  if(!ts.length){ $('#show').innerHTML='<div class="nav">Esc 닫기</div><h2>아직 조가 없습니다</h2>'; return; }
+  if(showIdx>=ts.length) showIdx=ts.length-1;
+  const t=ts[showIdx], c=CARTS[t], st=storyOf(c), bg=badgesOf(c);
+  const sp=spentOf(c), rest=ST.budget-sp;
+  const days={1:'첫째 날',2:'둘째 날',3:'셋째 날 · 밤',4:''};
+  let html='', last=0;
+  if(st.fail) html='<p class="fail">출발 전날 엄마가 결제를 취소했다.<br>이 조는 아무것도 못 받았다.</p>';
+  else { st.lines.forEach(r=>{ if(r.day!==last&&days[r.day]) html+=`<div class="d">${days[r.day]}</div>`;
+      last=r.day; html+=`<p class="${r.good?'good':'bad'}">${r.text}</p>`; });
+    if(!st.lines.length) html='<p>아무 일도 없었다. 무난한 여행이었다.</p>'; }
+  $('#show').innerHTML=`<div class="nav">← → 조 넘기기 · Esc 닫기 (${showIdx+1}/${ts.length})</div>
+    <h2>${t}의 수학여행</h2>
+    <div class="sub">${won(sp)}원 씀 · ${rest<0?`<b style="color:#ff8c6b">${won(-rest)}원 초과</b>`:won(rest)+'원 남음'}${c.votes?` · 표 ${c.votes}`:''}</div>
+    <div class="st">${html}</div>
+    ${bg.length?`<div class="bg">${bg.map(b=>`<span>${b.em} ${b.name}</span>`).join('')}</div>`:''}
+    <div class="items">${slotList().map(s=>{const it=(c.items||{})[s.key];
+      return `${s.emoji} ${it?it.name:'안 챙김'}`;}).join('　·　')}</div>`;
+}
+setInterval(()=>{
+  if(t0){ const s=Math.floor((Date.now()-t0)/1000);
+    $('#clock').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+  draw();
+},1000);
+</script>
+</body>
+</html>
