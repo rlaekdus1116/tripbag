@@ -17,16 +17,42 @@ input{font-family:inherit;font-size:16px}
 
 /* 예산 헤더 */
 .money{position:sticky;top:0;z-index:30;background:#26241f;color:#f3eee4;padding:14px 16px 12px}
-.money .top{display:flex;align-items:baseline;gap:8px}
-.money .team{font-size:13px;color:#a9a094;font-weight:700}
-.money .me{margin-left:auto;font-size:11.5px;color:#8b8377}
-.money .amt{font-size:31px;font-weight:800;letter-spacing:-0.045em;margin:2px 0 8px}
+.money .top{display:flex;align-items:center;gap:8px}
+.money .team{font-size:12.5px;color:#a9a094;font-weight:700}
+.money .mbtn{margin-left:auto;font-size:11.5px;font-weight:800;color:#ffd9a8;
+ border:1px solid #4a443b;border-radius:999px;padding:4px 10px}
+.money .amt{font-size:32px;font-weight:800;letter-spacing:-0.045em;margin:4px 0 8px}
 .money .amt.over{color:#ff8c6b}
 .money .amt span{font-size:15px;font-weight:700}
+.money .amt .of{font-size:13px;color:#8b8377;font-weight:600}
 .money .tk{height:7px;background:#413c34;border-radius:99px;overflow:hidden}
 .money .fl{height:100%;background:#e8a34a;border-radius:99px;transition:width .5s}
 .money .fl.over{background:#e0503a}
-.money .warn{font-size:12px;color:#ffb08e;margin-top:7px;font-weight:700}
+.money .warn{font-size:12.5px;color:#c9c0b2;margin-top:8px;font-weight:700}
+.money .warn b{color:#ffd9a8}
+.money .warn.bad b,.money .warn.bad{color:#ffb08e}
+
+/* 미션 */
+.mission{padding:26px 20px 20px}
+.mission h1{font-size:24px;margin:0 0 6px;letter-spacing:-0.04em;text-align:center}
+.mission .lead{text-align:center;color:var(--sub);font-size:14px;margin:0 0 22px}
+.mrow{display:grid;grid-template-columns:30px 1fr;gap:6px 12px;align-items:start;
+ background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 16px;margin-bottom:10px}
+.mrow .em{font-size:22px;grid-row:span 2}
+.mrow .t{font-weight:800;font-size:15.5px;letter-spacing:-0.03em}
+.mrow .d{font-size:13.5px;color:#5c564d;line-height:1.65}
+.mrow.hi{background:var(--soft);border-color:#f3d7c6}
+
+/* 하단 제출 바 */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:60;background:rgba(255,255,255,.97);
+ backdrop-filter:blur(8px);border-top:1px solid var(--line);
+ padding:11px 14px calc(11px + env(safe-area-inset-bottom))}
+.dock .in{max-width:560px;margin:0 auto}
+.dock .btn{margin:0}
+.dock .note{text-align:center;font-size:12px;color:var(--sub);margin-top:7px}
+.btn.ok{background:var(--green)}
+.done{margin:0 14px 10px;background:var(--green-soft);border:1px solid #cee2d6;color:#25563a;
+ border-radius:14px;padding:14px 16px;font-weight:700;font-size:14px;text-align:center}
 
 /* 칸 목록 */
 .slots{padding:12px 14px}
@@ -35,6 +61,7 @@ input{font-family:inherit;font-size:16px}
  width:100%;text-align:left}
 .slot:active{border-color:var(--accent)}
 .slot.empty{border-style:dashed;background:#fbfaf7}
+.slot:disabled{opacity:.5}
 .slot.mine{border-color:#e2c8b6}
 .slot .em{font-size:23px;grid-row:span 2}
 .slot .k{font-size:12px;color:var(--sub);font-weight:700}
@@ -142,7 +169,7 @@ input{font-family:inherit;font-size:16px}
 <div id="over"></div>
 
 <!-- ▼▼▼ 수업 내용 ▼▼▼ -->
-<!-- ▼ 수업 내용 (값·문구는 여기서 고칩니다). 두 파일이 같은 내용이어야 합니다 ▼ -->
+<!-- ▼ 수업 내용 ▼ -->
 <script>
 /* ===================================================================
    우리 조 장바구니 — 내용 파일
@@ -211,27 +238,66 @@ window.EVENTS = [
    desc:'전 조 예산 +10,000원', toast:'담임 선생님이 10,000원을 보태주셨습니다' }
 ];
 
-/* 결과 이야기 — 위에서부터 순서대로 조립됩니다 */
+/* ─────────────────────────────────────────────────────────
+   결과 이야기 — 위에서부터 순서대로 조립됩니다
+
+   need : 이 표시가 다 있어야 나옵니다
+   not  : 이 표시가 있으면 안 나옵니다
+   good : 좋은 일 (초록으로 뜨고, 조원 이름이 들어갑니다)
+   fx   : 화면 연출
+        shake 흔들림 / rain 비 / dark 암전 / clock 시계 / photos 사진이 사라짐
+        film 필름 / flash 플래시 / none 없음
+   글 안에 쓸 수 있는 것
+        {p:칸이름}  그 칸에 쓴 금액        예) {p:보조배터리}
+        {rest}      남은 돈
+        {n}         조원 이름 (좋은 일에만 넣으세요)
+   ───────────────────────────────────────────────────────── */
 window.STORY = [
- { day:1, need:['지퍼'],     text:'버스에서 가방 지퍼가 터졌다. 옷을 손에 들고 다녔다.' },
- { day:1, need:['바퀴'],     text:'바퀴 하나가 안 굴렀다. 끌 때마다 소리가 났다.' },
- { day:1, need:['지각'],     text:'택배는 여행에서 돌아온 다음 날 도착했다. 상자를 여는데 기분이 이상했다.' },
- { day:2, need:['우비'],     text:'비가 왔다. 너희 조만 멀쩡했다. 다른 조가 부러워했다.', good:true },
- { day:2, need:['비맞음'],   text:'오후부터 비가 왔다. 젖은 채로 세 시간을 걸었다.' },
- { day:2, need:['방전','폰만'], text:'네 시에 폰이 꺼졌다. 사진이 한 장도 없다.' },
- { day:2, need:['방전'],     text:'폰은 꺼졌다. 그래도 카메라가 있었다.' },
- { day:2, need:['필름'],     text:'쉰네 장을 다 썼다. 현상하고 나서야 뭐가 찍혔는지 알았다. 그게 제일 재밌었다.', good:true },
- { day:2, need:['즉석'],     text:'찍는 자리에서 사진이 나왔다. 다른 조가 몰려와서 찍어달라고 했다.', good:true },
- { day:3, need:['무방비'],   text:'한 명이 넘어져서 무릎이 까졌다. 아무것도 없었다.' },
- { day:3, need:['준비됨'],   text:'누가 멀미를 했는데 너희 조에 약이 있었다. 그날 영웅이 됐다.', good:true },
- { day:3, need:['심심'],     text:'밤 열 시에 할 게 없어서 그냥 잤다.' },
- { day:3, need:['놀이'],     text:'새벽 한 시까지 했다. 결국 선생님한테 걸렸다.', good:true },
- { day:3, need:['배고픔'],   text:'밤에 배가 고팠다. 옆 조에게 얻어먹었다.' },
- { day:3, need:['파티'],     text:'다른 조가 너희 방으로 몰려왔다. 그날 밤이 제일 재밌었다.', good:true },
- { day:3, need:['나눔'],     text:'간식이 조금 남아서 옆 조랑 나눠 먹었다.', good:true },
- { day:4, need:['짐2'],      text:'가방이 터질 것 같았다. 셋이 번갈아 들었다.' },
- { day:4, need:['여유'],     text:'남은 돈으로 휴게소에서 다 같이 먹었다.', good:true }
+ { day:1, need:['지퍼'],   fx:'shake',
+   text:'버스에서 가방 지퍼가 터졌다. 옷을 손에 들고 다녔다.' },
+ { day:1, need:['바퀴'],   fx:'shake',
+   text:'바퀴 하나가 끝까지 안 굴렀다. 끌 때마다 소리가 났다.' },
+ { day:1, need:['지각'],   fx:'none',
+   text:'택배는 여행에서 돌아온 다음 날 도착했다. 상자를 여는데 기분이 이상했다.' },
+
+ { day:2, need:['우비'],   fx:'rain', good:true,
+   text:'오후부터 비가 왔다. {p:우비}원짜리 우비 덕에 너희 조만 멀쩡했다.' },
+ { day:2, need:['비맞음'], fx:'rain',
+   text:'오후부터 비가 왔다. 9,000원이 없어서 우비를 못 샀다. 세 시간을 젖은 채로 걸었다.' },
+ { day:2, need:['방전','폰만'], fx:'dark',
+   text:'너희 조는 배터리에 {p:보조배터리}원을 썼다. 네 시에 폰이 꺼졌다.' },
+ { day:2, need:['방전','폰만'], fx:'photos',
+   text:'단체사진에 너희 조만 없다. 사진이 한 장도 안 남았다.' },
+ { day:2, need:['방전'], not:['폰만'], fx:'dark',
+   text:'폰은 꺼졌다. 그래도 카메라가 있었다.' },
+ { day:2, need:['필름'],   fx:'film', good:true,
+   text:'{n}이 쉰네 장을 다 썼다. 현상하고 나서야 뭐가 찍혔는지 알았다. 그게 제일 재밌었다.' },
+ { day:2, need:['즉석'],   fx:'flash', good:true,
+   text:'찍는 자리에서 사진이 나왔다. 다른 조가 몰려와서 찍어달라고 했다.' },
+
+ { day:3, need:['무방비'], fx:'none',
+   text:'한 명이 넘어져서 무릎이 까졌다. 가방에 아무것도 없었다.' },
+ { day:3, need:['준비됨'], fx:'none', good:true,
+   text:'누가 멀미를 했는데 너희 조엔 약이 있었다. {n}이 그날 영웅이 됐다.' },
+ { day:3, need:['심심'],   fx:'clock',
+   text:'밤 열 시. 할 게 없어서 그냥 잤다.' },
+ { day:3, need:['놀이'],   fx:'clock', good:true,
+   text:'새벽 한 시까지 했다. 결국 선생님한테 걸렸다.' },
+ { day:3, need:['배고픔'], fx:'none',
+   text:'밤에 배가 고팠다. 옆 조에 얻으러 갔다.' },
+ { day:3, need:['파티'],   fx:'none', good:true,
+   text:'다른 조가 너희 방으로 몰려왔다. 그날 밤이 제일 재밌었다.' },
+ { day:3, need:['나눔'],   fx:'none', good:true,
+   text:'간식이 조금 남아서 옆 조랑 나눠 먹었다.' },
+
+ { day:4, need:['짐2'],    fx:'shake',
+   text:'가방이 터질 것 같았다. 번갈아 들었다.' },
+ { day:4, need:['여유'],   fx:'none', good:true,
+   text:'남은 돈 {rest}원으로 오는 길 휴게소에서 다 같이 먹었다.' }
 ];
+
+/* 이름을 나쁜 일에는 절대 안 넣습니다. false로 두면 이름을 아예 안 씁니다. */
+window.USE_NAMES = true;
 
 /* 배지 */
 window.BADGES = [
@@ -244,6 +310,68 @@ window.BADGES = [
  { id:'sleep',  em:'😴', name:'취침상',   desc:'밤에 할 게 없던 조' },
  { id:'broke',  em:'💀', name:'파산상',   desc:'예산 초과' }
 ];
+
+/* ===================================================================
+   공용 계산기 — 학생 화면과 진행판이 같은 규칙을 쓰도록 여기 모았습니다.
+   (여기는 고치지 않으셔도 됩니다)
+   =================================================================== */
+window.TRIPLIB = {
+  slotList(ST){ return ST.events && ST.events.rain ? [...window.SLOTS, window.RAIN_SLOT] : [...window.SLOTS]; },
+  spentOf(c){ return Object.values((c&&c.items)||{}).reduce((a,b)=>a+(b.price||0),0); },
+  flagsOf(c,ST){
+    const f=[];
+    this.slotList(ST).forEach(s=>{
+      const it=(c.items||{})[s.key], o = it ? s.opts[it.opt] : s.opts[0];
+      if(!o) return;
+      (o.flags||[]).forEach(x=>f.push(x));
+      if(it && s.opts[it.opt].days>=3 && !(ST.events||{}).delay) f.push('지각');
+    });
+    if(f.filter(x=>x==='짐').length>=2) f.push('짐2');
+    const sp=this.spentOf(c);
+    if(ST.budget-sp>=20000) f.push('여유');
+    if(sp>ST.budget) f.push('초과');
+    if((ST.events||{}).rain && !f.includes('우비')) f.push('비맞음');
+    return [...new Set(f)];
+  },
+  storyOf(c,ST){
+    const f=this.flagsOf(c,ST);
+    if(f.includes('초과')) return {fail:true, lines:[]};
+    const lines=window.STORY.filter(r=>
+      r.need.every(n=>f.includes(n)) && !(r.not||[]).some(n=>f.includes(n)));
+    return {fail:false, lines};
+  },
+  pickName(c){
+    if(!window.USE_NAMES) return '누군가';
+    const ns=[...new Set(Object.values((c&&c.items)||{})
+      .map(i=>(i.by||'').split(' ')[1]).filter(Boolean))];
+    if(!ns.length) return '누군가';
+    let h=0; const s=(c.team||'')+ns.join('');
+    for(const ch of s) h=(h*31+ch.charCodeAt(0))>>>0;
+    return ns[h%ns.length];
+  },
+  fill(text,c,ST){
+    const w=n=>Number(n).toLocaleString('ko-KR');
+    return String(text)
+      .replace(/\{p:([^}]+)\}/g,(_,k)=>{ const it=(c.items||{})[k.trim()]; return w(it?it.price:0); })
+      .replace(/\{rest\}/g,()=>w(Math.max(0,ST.budget-this.spentOf(c))))
+      .replace(/\{n\}/g,()=>this.pickName(c));
+  },
+  badgesOf(c,ST,all){
+    const f=this.flagsOf(c,ST), out=[], B=window.BADGES, get=i=>B.find(b=>b.id===i);
+    const rest=ST.budget-this.spentOf(c);
+    const list=Object.values(all||{});
+    const maxRest=list.length?Math.max(...list.map(x=>ST.budget-this.spentOf(x))):rest;
+    if(f.includes('초과')) out.push(get('broke'));
+    else if(rest===maxRest && rest>0) out.push(get('thrift'));
+    if(f.includes('우비'))out.push(get('rain'));
+    if(f.includes('필름')||f.includes('즉석'))out.push(get('photo'));
+    if(f.includes('파티'))out.push(get('party'));
+    if(f.includes('준비됨'))out.push(get('aid'));
+    if(f.includes('놀이'))out.push(get('night'));
+    if(f.includes('심심'))out.push(get('sleep'));
+    return out.filter(Boolean);
+  }
+};
 </script>
 <!-- ▲ -->
 <!-- ▲▲▲ -->
@@ -268,70 +396,26 @@ if(!window.SLOTS){ app.innerHTML='<div class="fatal"><div style="font-size:44px"
 let DB=null,api=null,online=false;
 const DIAG={err:''};
 const S={ id:localStorage.getItem('trip_id')||'', team:localStorage.getItem('trip_team')||'',
-          voted:localStorage.getItem('trip_voted')||'' };
+          voted:localStorage.getItem('trip_voted')||'',
+          briefed:localStorage.getItem('trip_brief')||'' };
 const ST={ budget:window.BUDGET, events:{}, saleUntil:0, phase:'shop' };
 let CARTS={}, myCart={items:{}};
 let lastEv='', evToast='';
 
 /* ── 계산 ─────────────────────────────── */
-function slotList(){
-  const l=[...window.SLOTS];
-  if(ST.events.rain) l.push(window.RAIN_SLOT);
-  return l;
-}
+const L=window.TRIPLIB;
+const slotList = () => L.slotList(ST);
 const saleOn = () => ST.events.sale && Date.now() < (ST.saleUntil||0);
 function optPrice(slotKey,oi,o){
   if(slotKey==='카메라' && oi===3 && saleOn()) return 55000;
   return o.price + (o.extra||0);
 }
-function spent(){ return Object.values(myCart.items||{}).reduce((a,b)=>a+(b.price||0),0); }
-function left(){ return ST.budget - spent(); }
-function emptyCount(){ return slotList().filter(s=>!(myCart.items||{})[s.key]).length; }
-
-function flagsOf(cart){
-  const f=[];
-  slotList().forEach(s=>{
-    const it=(cart.items||{})[s.key];
-    const o = it ? s.opts[it.opt] : s.opts[0];      // 빈칸은 ①번과 같게 봅니다
-    (o.flags||[]).forEach(x=>f.push(x));
-    if(it && s.opts[it.opt].days>=3 && !ST.events.delay) f.push('지각');
-  });
-  if(f.filter(x=>x==='짐').length>=2) f.push('짐2');
-  const sp=Object.values(cart.items||{}).reduce((a,b)=>a+(b.price||0),0);
-  if(ST.budget-sp>=20000) f.push('여유');
-  if(sp>ST.budget) f.push('초과');
-  if(ST.events.rain && !f.includes('우비')) f.push('비맞음');
-  return f;
-}
-function storyOf(cart){
-  const f=flagsOf(cart);
-  if(f.includes('초과')) return {fail:true, lines:[]};
-  const used=new Set(), lines=[];
-  window.STORY.forEach(r=>{
-    if(!r.need.every(n=>f.includes(n))) return;
-    if(r.need.includes('방전') && used.has('방전')) return;
-    if(r.need[0]==='방전') used.add('방전');
-    lines.push(r);
-  });
-  return {fail:false, lines};
-}
-function badgesOf(cart, allCarts){
-  const f=flagsOf(cart), out=[];
-  const sp=Object.values(cart.items||{}).reduce((a,b)=>a+(b.price||0),0);
-  const rest=ST.budget-sp;
-  const maxRest=Math.max(...Object.values(allCarts||{}).map(c=>
-    ST.budget-Object.values(c.items||{}).reduce((a,b)=>a+(b.price||0),0)));
-  const B=window.BADGES, get=id=>B.find(b=>b.id===id);
-  if(f.includes('초과')) out.push(get('broke'));
-  else if(rest===maxRest && rest>0) out.push(get('thrift'));
-  if(f.includes('우비')) out.push(get('rain'));
-  if(f.includes('필름')||f.includes('즉석')) out.push(get('photo'));
-  if(f.includes('파티')) out.push(get('party'));
-  if(f.includes('준비됨')) out.push(get('aid'));
-  if(f.includes('놀이')) out.push(get('night'));
-  if(f.includes('심심')) out.push(get('sleep'));
-  return out.filter(Boolean);
-}
+const spent = () => L.spentOf(myCart);
+const left  = () => ST.budget - spent();
+const emptyCount = () => slotList().filter(s=>!(myCart.items||{})[s.key]).length;
+const storyOf = c => L.storyOf(c,ST);
+const badgesOf = (c,all) => L.badgesOf(c,ST,all);
+const fill = (t,c) => L.fill(t,c,ST);
 
 /* ── 저장 ─────────────────────────────── */
 async function put(obj){
@@ -349,14 +433,58 @@ function clearItem(key){ put({ items:{ [key]: api.deleteField() } }); }
 /* ── 렌더 ─────────────────────────────── */
 let key0='';
 function render(force){
-  const k=JSON.stringify([S.id,S.team,ST.phase,ST.budget,ST.events,spent(),
+  const k=JSON.stringify([S.id,S.team,S.briefed,ST.phase,ST.budget,ST.events,spent(),myCart.submitted,
     Object.keys(myCart.items||{}).map(x=>myCart.items[x].opt),
     myCart.ask||null, S.voted, evToast, Object.keys(CARTS).length, online]);
   if(k===key0 && !force) return; key0=k;
   if(!S.id||!S.team) return gate();
   if(ST.phase==='result') return result();
   if(ST.phase==='vote') return vote();
+  if(!S.briefed) return mission();
   board();
+}
+
+/* 미션 브리핑 — 장바구니 열기 전에 한 번 */
+function mission(){
+  app.innerHTML=`<div class="mission">
+    <h1>🧳 우리 조 장바구니</h1>
+    <p class="lead">${S.team} · ${S.id.split(' ')[1]||''}</p>
+    <div class="mrow"><span class="em">📅</span>
+      <span class="t">3일 뒤에 수학여행을 갑니다</span>
+      <span class="d">우리 조가 <b>같이 쓸 짐</b>을 지금 사야 해요.</span></div>
+    <div class="mrow hi"><span class="em">💰</span>
+      <span class="t">돈은 조에 ${won(ST.budget)}원, 딱 하나</span>
+      <span class="d">누가 담든 <b>이 돈에서 같이 빠집니다.</b>
+      내가 비싼 걸 담으면 친구가 살 돈이 없어져요.</span></div>
+    <div class="mrow"><span class="em">🛒</span>
+      <span class="t">여섯 칸을 다 채워야 해요</span>
+      <span class="d">캐리어 · 카메라 · 보조배터리 · 간식 · 밤에 할 것 · 비상 세트<br>
+      <b>「안 삼」도 고를 수 있어요.</b> 대신 여행 가서 아쉬울 수 있습니다.</span></div>
+    <div class="mrow"><span class="em">🚚</span>
+      <span class="t">3일 안에 오는 것만 쓸 수 있어요</span>
+      <span class="d">싼 물건은 대개 늦게 옵니다. <b>여행 끝나고 도착하면 소용없어요.</b></span></div>
+    <div class="mrow"><span class="em">🗣️</span>
+      <span class="t">친구가 담은 건 마음대로 못 뺍니다</span>
+      <span class="d">바꾸고 싶으면 <b>물어보기</b>를 눌러서 허락을 받으세요.</span></div>
+    <button class="btn" id="go2">장바구니 열기</button>
+    <p style="text-align:center;font-size:12.5px;color:var(--sub);margin-top:12px">
+      이 설명은 위쪽 <b>📋 할 일</b> 을 누르면 다시 볼 수 있어요</p>
+  </div>`;
+  $('#go2').onclick=()=>{ S.briefed=1; localStorage.setItem('trip_brief','1'); render(true); };
+}
+function missionSheet(){
+  over.innerHTML=`<div class="modal"><div class="sheet">
+    <h3>📋 지금 할 일</h3><p class="cap">${S.team} · 예산 ${won(ST.budget)}원</p>
+    <div class="mrow"><span class="em">🛒</span><span class="t">여섯 칸을 다 채우기</span>
+      <span class="d">「안 삼」도 선택입니다</span></div>
+    <div class="mrow hi"><span class="em">💰</span><span class="t">돈은 조에 하나</span>
+      <span class="d">누가 담든 같이 빠집니다</span></div>
+    <div class="mrow"><span class="em">🚚</span><span class="t">3일 안에 오는 것만 씀</span>
+      <span class="d">늦게 오면 여행 때 못 씁니다</span></div>
+    <div class="mrow"><span class="em">✅</span><span class="t">다 담으면 아래 제출</span>
+      <span class="d">제출해도 마감 전까진 취소하고 고칠 수 있어요</span></div>
+    <button class="btn ghost" id="cl">닫기</button></div></div>`;
+  $('#cl').onclick=()=>over.innerHTML='';
 }
 
 function gate(){
@@ -393,32 +521,53 @@ function board(){
   else if(ask && ask.state==='no' && ask.by===S.id)
     banner+=`<div class="banner wait">🙅 거절당했어요. 직접 말해보세요 — ${ask.slot}</div>`;
 
+  const total=slotList().length, filled=total-ec, sub=!!myCart.submitted;
+
   app.innerHTML=`
   <div class="money">
-    <div class="top"><span class="team">${S.team}</span><span class="me">${S.id}</span></div>
-    <div class="amt ${over_?'over':''}">${won(L)}<span>원 남음</span></div>
+    <div class="top"><span class="team">${S.team} · 우리 조가 쓸 수 있는 돈</span>
+      <button class="mbtn" id="mb">📋 할 일</button></div>
+    <div class="amt ${over_?'over':''}">${won(L)}<span>원 남음</span>
+      <span class="of">/ ${won(ST.budget)}원</span></div>
     <div class="tk"><div class="fl ${over_?'over':''}" style="width:${pct}%"></div></div>
-    ${over_?`<div class="warn">⚠️ 예산을 ${won(-L)}원 넘겼어요</div>`
-           :(ec?`<div class="warn">아직 ${ec}칸 비었어요</div>`:'')}
+    ${over_
+      ? `<div class="warn bad">⚠️ 예산을 <b>${won(-L)}원</b> 넘겼어요. 뭔가를 빼야 합니다</div>`
+      : `<div class="warn">${total}칸 중 <b>${filled}칸</b> 채움${ec?` · 아직 <b>${ec}칸</b> 남았어요`:' · 다 채웠어요'}</div>`}
   </div>
   ${banner}
+  ${sub?`<div class="done">✅ 제출했어요 · 선생님을 기다리는 중<br>
+    <span style="font-weight:600;font-size:12.5px">고치고 싶으면 아래 <b>취소</b>를 누르세요</span></div>`:''}
   <div class="slots">${slotList().map(s=>{
     const it=(myCart.items||{})[s.key];
-    if(!it) return `<button class="slot empty" data-s="${s.key}">
+    if(!it) return `<button class="slot empty" data-s="${s.key}" ${sub?'disabled':''}>
       <span class="em">${s.emoji}</span><span class="k">${s.key}</span>
-      <span class="p" style="color:#b9b1a6">고르기</span>
-      <span class="v none">비어 있음</span></button>`;
-    return `<button class="slot ${it.by===S.id?'mine':''}" data-s="${s.key}">
+      <span class="p" style="color:var(--accent);font-size:13px">선택지 4개 보기 ›</span>
+      <span class="v none">아직 안 골랐어요</span></button>`;
+    return `<button class="slot ${it.by===S.id?'mine':''}" data-s="${s.key}" ${sub?'disabled':''}>
       <span class="em">${s.emoji}</span><span class="k">${s.key}</span>
-      <span class="p">${won(it.price)}</span>
+      <span class="p">${won(it.price)}<br><span style="font-size:11.5px;color:var(--sub);font-weight:700">바꾸기 ›</span></span>
       <span class="v">${it.name}</span>
       <span class="by">${it.by===S.id?'<b>내가 담음</b>':(it.by||'').split(' ')[1]+' 담음'}</span></button>`;
   }).join('')}</div>
-  <div class="diag">${online?'':'<span class="bad">서버 연결 안 됨</span>'}${DIAG.err?`<br><span class="bad">${DIAG.err}</span>`:''}</div>`;
+  <div class="diag">${online?'':'<span class="bad">서버 연결 안 됨</span>'}${DIAG.err?`<br><span class="bad">${DIAG.err}</span>`:''}</div>
+  <div style="height:78px"></div>
+  <div class="dock"><div class="in">
+    ${sub
+      ? `<button class="btn ghost" id="unsub">제출 취소하고 고치기</button>`
+      : (ec
+        ? `<button class="btn" disabled>아직 ${ec}칸 남았어요</button>
+           <div class="note">여섯 칸을 다 채워야 제출할 수 있어요</div>`
+        : `<button class="btn ${over_?'':'ok'}" id="sub">✅ 다 담았어요 · 제출하기</button>
+           ${over_?'<div class="note">예산을 넘긴 채로도 낼 수 있어요. 정말 낼까요?</div>'
+                 :'<div class="note">낸 뒤에도 마감 전까진 고칠 수 있어요</div>'}`)}
+  </div></div>`;
 
   document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>openSlot(b.dataset.s));
+  $('#mb').onclick=missionSheet;
   if($('#ay')) $('#ay').onclick=()=>{ clearItem(ask.slot); put({ask:{...ask,state:'ok'}}); };
   if($('#an')) $('#an').onclick=()=>put({ask:{...ask,state:'no'}});
+  if($('#sub')) $('#sub').onclick=()=>put({submitted:true, submittedBy:S.id, submittedAt:Date.now()});
+  if($('#unsub')) $('#unsub').onclick=()=>put({submitted:false});
 }
 
 function openSlot(key){
@@ -437,7 +586,8 @@ function openSlot(key){
   }
   const cur = it ? it.price : 0;
   over.innerHTML=`<div class="modal"><div class="sheet">
-    <h3>${s.emoji} ${key}</h3><p class="cap">${s.note}</p>
+    <h3>${s.emoji} ${key}</h3>
+    <p class="cap">${s.note} · <b style="color:var(--accent)">누르면 바로 담깁니다</b></p>
     ${s.opts.map((o,i)=>{
       const p=optPrice(key,i,o), after=left()+cur-p, sale=(key==='카메라'&&i===3&&saleOn());
       const late=o.days>=3;
@@ -447,7 +597,8 @@ function openSlot(key){
         ${o.extra?`<div class="ex">${won(o.price)}원 + ${o.extraName} ${won(o.extra)}원</div>`:''}
         ${o.desc?`<div class="ds">${o.desc}</div>`:''}
         <div class="ar ${late?'late':''}">${o.arrive}${late?' · 여행 끝나고 옴':''}</div>
-        <div class="after">담으면 ${won(left())} → <b class="${after<0?'bad':''}">${won(after)}원</b></div>
+        <div class="after">이걸 담으면 남은 돈 ${won(left())} → <b class="${after<0?'bad':''}">${won(after)}원</b>
+          <span style="float:right;color:var(--accent)">담기 ›</span></div>
       </button>`;}).join('')}
     ${mine?`<button class="btn gray" id="rm">이 칸 비우기</button>`:''}
     <button class="btn ghost" id="cl">닫기</button></div></div>`;
@@ -467,7 +618,7 @@ function result(){
     st.lines.forEach(r=>{
       if(r.day!==last && days[r.day]) html+=`<div class="d">${days[r.day]}</div>`;
       last=r.day;
-      html+=`<p class="${r.good?'good':'bad'}">${r.text}</p>`;
+      html+=`<p class="${r.good?'good':'bad'}">${fill(r.text,myCart)}</p>`;
     });
     if(!st.lines.length) html='<p>아무 일도 없었다. 무난한 여행이었다.</p>';
   }

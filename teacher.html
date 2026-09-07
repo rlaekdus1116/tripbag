@@ -60,17 +60,54 @@ th{background:#f4f0e8;font-size:11.5px;color:#5c564d;position:sticky;top:0}
 .gate{max-width:340px;margin:120px auto;text-align:center}
 .gate input{width:100%;padding:13px;border:2px solid var(--line);border-radius:12px;text-align:center;font-size:17px}
 .hide{display:none}
-#show{position:fixed;inset:0;background:#191815;color:#f5f1e8;z-index:100;padding:36px 44px;overflow:auto}
-#show .nav{position:absolute;top:14px;right:20px;color:#7a736a;font-size:13px}
-#show h2{font-size:40px;margin:0 0 4px;letter-spacing:-0.04em}
-#show .sub{color:#a49c91;font-size:18px;margin-bottom:26px}
-#show .st p{font-size:23px;line-height:1.65;margin:0 0 10px}
-#show .st p.good{color:#a9dcc0} #show .st p.bad{color:#ffb4a0}
-#show .st .d{font-size:13px;letter-spacing:.1em;color:#7a736a;margin:20px 0 8px;font-weight:800}
-#show .bg{margin-top:22px;display:flex;gap:9px;flex-wrap:wrap}
-#show .bg span{border:1px solid #3d3931;border-radius:10px;padding:7px 13px;font-size:17px}
-#show .items{margin-top:22px;color:#a49c91;font-size:16px;line-height:1.9}
-#show .fail{color:#ff8c6b;font-weight:800;font-size:26px}
+/* ── 발표 화면 (재생기) ───────────────────────────── */
+#show{position:fixed;inset:0;background:#141311;color:#f5f1e8;z-index:100;padding:40px 52px;
+ overflow:auto;cursor:pointer}
+#show.shaking{animation:shk .45s}
+@keyframes shk{0%,100%{transform:none}15%{transform:translate(-9px,4px)}
+ 35%{transform:translate(8px,-5px)}55%{transform:translate(-6px,-3px)}75%{transform:translate(5px,3px)}}
+#show .nav{position:absolute;top:14px;right:20px;color:#6d675e;font-size:13px;z-index:5}
+#show .nav button{margin-left:10px;font-size:17px;background:none;border:none;cursor:pointer}
+#show .stage{position:relative;z-index:3;max-width:1000px;margin:0 auto}
+#show .head{font-size:40px;font-weight:800;letter-spacing:-0.045em;margin-bottom:4px}
+#show .money2{color:#a49c91;font-size:19px;margin-bottom:34px}
+#show .money2 .bad{color:#ff8c6b}
+#show .dayline{font-size:13px;letter-spacing:.14em;color:#6d675e;margin:26px 0 10px;font-weight:800}
+#show .ln{font-size:30px;line-height:1.6;margin:0 0 14px;letter-spacing:-0.03em;
+ min-height:1.6em;transition:opacity .5s,color .5s}
+#show .ln.old{opacity:.3;font-size:24px}
+#show .ln.good{color:#a9dcc0}
+#show .ln.bad{color:#ffbfae}
+#show .tail{margin-top:30px}
+#show .bg{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+#show .bg span{border:1px solid #3d3931;border-radius:11px;padding:8px 14px;font-size:19px;
+ animation:pop2 .45s cubic-bezier(.2,1.5,.4,1)}
+@keyframes pop2{from{transform:scale(1.6);opacity:0}to{transform:none;opacity:1}}
+#show .items{color:#8b8377;font-size:16px;line-height:1.9}
+#show .more{color:#6d675e;font-size:14px;margin-top:22px}
+
+/* 연출 레이어 */
+#show .fx{position:fixed;inset:0;pointer-events:none;z-index:2}
+#show .fx.dark{background:#000;animation:blk .55s ease-out}
+@keyframes blk{0%{opacity:1}70%{opacity:.9}100%{opacity:0}}
+#show .fx.flash{background:#fff;animation:fls .35s ease-out}
+@keyframes fls{0%{opacity:.9}100%{opacity:0}}
+#show .fx.rain{background-image:repeating-linear-gradient(104deg,
+ rgba(180,205,230,0) 0 22px, rgba(180,205,230,.30) 22px 24px);
+ background-size:200px 200px;animation:rn .55s linear infinite;opacity:.55}
+@keyframes rn{from{background-position:0 0}to{background-position:-48px 200px}}
+#show .fx.clock{background:radial-gradient(circle at 50% 40%,rgba(0,0,0,0) 30%,rgba(0,0,0,.75) 100%)}
+#show .fx .cl{position:absolute;top:34px;left:52px;font-size:44px;font-weight:800;
+ color:#7d7466;font-variant-numeric:tabular-nums;letter-spacing:-0.04em}
+#show .fx.photos{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+#show .fx .ph{width:130px;height:100px;background:#efe9dc;border:7px solid #fff;border-radius:3px;
+ box-shadow:0 8px 24px rgba(0,0,0,.5);animation:phg 2.2s forwards}
+@keyframes phg{0%{opacity:.95;transform:none}70%{opacity:.95}100%{opacity:0;transform:translateY(-30px) rotate(6deg)}}
+#show .fx.film{display:flex;align-items:center;overflow:hidden}
+#show .fx .strip{display:flex;gap:10px;padding:14px;background:#000;border-top:3px solid #2a2721;
+ border-bottom:3px solid #2a2721;animation:flm 2.4s linear;width:200%}
+@keyframes flm{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+#show .fx .strip i{width:120px;height:88px;background:#3b362d;border-radius:2px;flex:none}
 </style>
 </head>
 <body>
@@ -124,7 +161,7 @@ th{background:#f4f0e8;font-size:11.5px;color:#5c564d;position:sticky;top:0}
 
 <div id="show" class="hide"></div>
 
-<!-- ▼ 수업 내용 (값·문구는 여기서 고칩니다). 두 파일이 같은 내용이어야 합니다 ▼ -->
+<!-- ▼ 수업 내용 ▼ -->
 <script>
 /* ===================================================================
    우리 조 장바구니 — 내용 파일
@@ -193,27 +230,66 @@ window.EVENTS = [
    desc:'전 조 예산 +10,000원', toast:'담임 선생님이 10,000원을 보태주셨습니다' }
 ];
 
-/* 결과 이야기 — 위에서부터 순서대로 조립됩니다 */
+/* ─────────────────────────────────────────────────────────
+   결과 이야기 — 위에서부터 순서대로 조립됩니다
+
+   need : 이 표시가 다 있어야 나옵니다
+   not  : 이 표시가 있으면 안 나옵니다
+   good : 좋은 일 (초록으로 뜨고, 조원 이름이 들어갑니다)
+   fx   : 화면 연출
+        shake 흔들림 / rain 비 / dark 암전 / clock 시계 / photos 사진이 사라짐
+        film 필름 / flash 플래시 / none 없음
+   글 안에 쓸 수 있는 것
+        {p:칸이름}  그 칸에 쓴 금액        예) {p:보조배터리}
+        {rest}      남은 돈
+        {n}         조원 이름 (좋은 일에만 넣으세요)
+   ───────────────────────────────────────────────────────── */
 window.STORY = [
- { day:1, need:['지퍼'],     text:'버스에서 가방 지퍼가 터졌다. 옷을 손에 들고 다녔다.' },
- { day:1, need:['바퀴'],     text:'바퀴 하나가 안 굴렀다. 끌 때마다 소리가 났다.' },
- { day:1, need:['지각'],     text:'택배는 여행에서 돌아온 다음 날 도착했다. 상자를 여는데 기분이 이상했다.' },
- { day:2, need:['우비'],     text:'비가 왔다. 너희 조만 멀쩡했다. 다른 조가 부러워했다.', good:true },
- { day:2, need:['비맞음'],   text:'오후부터 비가 왔다. 젖은 채로 세 시간을 걸었다.' },
- { day:2, need:['방전','폰만'], text:'네 시에 폰이 꺼졌다. 사진이 한 장도 없다.' },
- { day:2, need:['방전'],     text:'폰은 꺼졌다. 그래도 카메라가 있었다.' },
- { day:2, need:['필름'],     text:'쉰네 장을 다 썼다. 현상하고 나서야 뭐가 찍혔는지 알았다. 그게 제일 재밌었다.', good:true },
- { day:2, need:['즉석'],     text:'찍는 자리에서 사진이 나왔다. 다른 조가 몰려와서 찍어달라고 했다.', good:true },
- { day:3, need:['무방비'],   text:'한 명이 넘어져서 무릎이 까졌다. 아무것도 없었다.' },
- { day:3, need:['준비됨'],   text:'누가 멀미를 했는데 너희 조에 약이 있었다. 그날 영웅이 됐다.', good:true },
- { day:3, need:['심심'],     text:'밤 열 시에 할 게 없어서 그냥 잤다.' },
- { day:3, need:['놀이'],     text:'새벽 한 시까지 했다. 결국 선생님한테 걸렸다.', good:true },
- { day:3, need:['배고픔'],   text:'밤에 배가 고팠다. 옆 조에게 얻어먹었다.' },
- { day:3, need:['파티'],     text:'다른 조가 너희 방으로 몰려왔다. 그날 밤이 제일 재밌었다.', good:true },
- { day:3, need:['나눔'],     text:'간식이 조금 남아서 옆 조랑 나눠 먹었다.', good:true },
- { day:4, need:['짐2'],      text:'가방이 터질 것 같았다. 셋이 번갈아 들었다.' },
- { day:4, need:['여유'],     text:'남은 돈으로 휴게소에서 다 같이 먹었다.', good:true }
+ { day:1, need:['지퍼'],   fx:'shake',
+   text:'버스에서 가방 지퍼가 터졌다. 옷을 손에 들고 다녔다.' },
+ { day:1, need:['바퀴'],   fx:'shake',
+   text:'바퀴 하나가 끝까지 안 굴렀다. 끌 때마다 소리가 났다.' },
+ { day:1, need:['지각'],   fx:'none',
+   text:'택배는 여행에서 돌아온 다음 날 도착했다. 상자를 여는데 기분이 이상했다.' },
+
+ { day:2, need:['우비'],   fx:'rain', good:true,
+   text:'오후부터 비가 왔다. {p:우비}원짜리 우비 덕에 너희 조만 멀쩡했다.' },
+ { day:2, need:['비맞음'], fx:'rain',
+   text:'오후부터 비가 왔다. 9,000원이 없어서 우비를 못 샀다. 세 시간을 젖은 채로 걸었다.' },
+ { day:2, need:['방전','폰만'], fx:'dark',
+   text:'너희 조는 배터리에 {p:보조배터리}원을 썼다. 네 시에 폰이 꺼졌다.' },
+ { day:2, need:['방전','폰만'], fx:'photos',
+   text:'단체사진에 너희 조만 없다. 사진이 한 장도 안 남았다.' },
+ { day:2, need:['방전'], not:['폰만'], fx:'dark',
+   text:'폰은 꺼졌다. 그래도 카메라가 있었다.' },
+ { day:2, need:['필름'],   fx:'film', good:true,
+   text:'{n}이 쉰네 장을 다 썼다. 현상하고 나서야 뭐가 찍혔는지 알았다. 그게 제일 재밌었다.' },
+ { day:2, need:['즉석'],   fx:'flash', good:true,
+   text:'찍는 자리에서 사진이 나왔다. 다른 조가 몰려와서 찍어달라고 했다.' },
+
+ { day:3, need:['무방비'], fx:'none',
+   text:'한 명이 넘어져서 무릎이 까졌다. 가방에 아무것도 없었다.' },
+ { day:3, need:['준비됨'], fx:'none', good:true,
+   text:'누가 멀미를 했는데 너희 조엔 약이 있었다. {n}이 그날 영웅이 됐다.' },
+ { day:3, need:['심심'],   fx:'clock',
+   text:'밤 열 시. 할 게 없어서 그냥 잤다.' },
+ { day:3, need:['놀이'],   fx:'clock', good:true,
+   text:'새벽 한 시까지 했다. 결국 선생님한테 걸렸다.' },
+ { day:3, need:['배고픔'], fx:'none',
+   text:'밤에 배가 고팠다. 옆 조에 얻으러 갔다.' },
+ { day:3, need:['파티'],   fx:'none', good:true,
+   text:'다른 조가 너희 방으로 몰려왔다. 그날 밤이 제일 재밌었다.' },
+ { day:3, need:['나눔'],   fx:'none', good:true,
+   text:'간식이 조금 남아서 옆 조랑 나눠 먹었다.' },
+
+ { day:4, need:['짐2'],    fx:'shake',
+   text:'가방이 터질 것 같았다. 번갈아 들었다.' },
+ { day:4, need:['여유'],   fx:'none', good:true,
+   text:'남은 돈 {rest}원으로 오는 길 휴게소에서 다 같이 먹었다.' }
 ];
+
+/* 이름을 나쁜 일에는 절대 안 넣습니다. false로 두면 이름을 아예 안 씁니다. */
+window.USE_NAMES = true;
 
 /* 배지 */
 window.BADGES = [
@@ -226,6 +302,68 @@ window.BADGES = [
  { id:'sleep',  em:'😴', name:'취침상',   desc:'밤에 할 게 없던 조' },
  { id:'broke',  em:'💀', name:'파산상',   desc:'예산 초과' }
 ];
+
+/* ===================================================================
+   공용 계산기 — 학생 화면과 진행판이 같은 규칙을 쓰도록 여기 모았습니다.
+   (여기는 고치지 않으셔도 됩니다)
+   =================================================================== */
+window.TRIPLIB = {
+  slotList(ST){ return ST.events && ST.events.rain ? [...window.SLOTS, window.RAIN_SLOT] : [...window.SLOTS]; },
+  spentOf(c){ return Object.values((c&&c.items)||{}).reduce((a,b)=>a+(b.price||0),0); },
+  flagsOf(c,ST){
+    const f=[];
+    this.slotList(ST).forEach(s=>{
+      const it=(c.items||{})[s.key], o = it ? s.opts[it.opt] : s.opts[0];
+      if(!o) return;
+      (o.flags||[]).forEach(x=>f.push(x));
+      if(it && s.opts[it.opt].days>=3 && !(ST.events||{}).delay) f.push('지각');
+    });
+    if(f.filter(x=>x==='짐').length>=2) f.push('짐2');
+    const sp=this.spentOf(c);
+    if(ST.budget-sp>=20000) f.push('여유');
+    if(sp>ST.budget) f.push('초과');
+    if((ST.events||{}).rain && !f.includes('우비')) f.push('비맞음');
+    return [...new Set(f)];
+  },
+  storyOf(c,ST){
+    const f=this.flagsOf(c,ST);
+    if(f.includes('초과')) return {fail:true, lines:[]};
+    const lines=window.STORY.filter(r=>
+      r.need.every(n=>f.includes(n)) && !(r.not||[]).some(n=>f.includes(n)));
+    return {fail:false, lines};
+  },
+  pickName(c){
+    if(!window.USE_NAMES) return '누군가';
+    const ns=[...new Set(Object.values((c&&c.items)||{})
+      .map(i=>(i.by||'').split(' ')[1]).filter(Boolean))];
+    if(!ns.length) return '누군가';
+    let h=0; const s=(c.team||'')+ns.join('');
+    for(const ch of s) h=(h*31+ch.charCodeAt(0))>>>0;
+    return ns[h%ns.length];
+  },
+  fill(text,c,ST){
+    const w=n=>Number(n).toLocaleString('ko-KR');
+    return String(text)
+      .replace(/\{p:([^}]+)\}/g,(_,k)=>{ const it=(c.items||{})[k.trim()]; return w(it?it.price:0); })
+      .replace(/\{rest\}/g,()=>w(Math.max(0,ST.budget-this.spentOf(c))))
+      .replace(/\{n\}/g,()=>this.pickName(c));
+  },
+  badgesOf(c,ST,all){
+    const f=this.flagsOf(c,ST), out=[], B=window.BADGES, get=i=>B.find(b=>b.id===i);
+    const rest=ST.budget-this.spentOf(c);
+    const list=Object.values(all||{});
+    const maxRest=list.length?Math.max(...list.map(x=>ST.budget-this.spentOf(x))):rest;
+    if(f.includes('초과')) out.push(get('broke'));
+    else if(rest===maxRest && rest>0) out.push(get('thrift'));
+    if(f.includes('우비'))out.push(get('rain'));
+    if(f.includes('필름')||f.includes('즉석'))out.push(get('photo'));
+    if(f.includes('파티'))out.push(get('party'));
+    if(f.includes('준비됨'))out.push(get('aid'));
+    if(f.includes('놀이'))out.push(get('night'));
+    if(f.includes('심심'))out.push(get('sleep'));
+    return out.filter(Boolean);
+  }
+};
 </script>
 <!-- ▲ -->
 <script type="module">
@@ -273,43 +411,14 @@ function save(o){ if(!api) return;
   return api.setDoc(api.doc(DB,'live',STATE),o,{merge:true}).catch(e=>{
     $('#conn').textContent = e.code==='permission-denied'?'권한 거부':'쓰기 실패'; $('#conn').className='conn no'; }); }
 
-/* 계산 (학생 앱과 같은 규칙) */
-const slotList=()=> ST.events.rain ? [...window.SLOTS, window.RAIN_SLOT] : [...window.SLOTS];
-const spentOf=c=>Object.values(c.items||{}).reduce((a,b)=>a+(b.price||0),0);
-function flagsOf(c){
-  const f=[];
-  slotList().forEach(s=>{ const it=(c.items||{})[s.key]; const o=it?s.opts[it.opt]:s.opts[0];
-    (o.flags||[]).forEach(x=>f.push(x));
-    if(it && s.opts[it.opt].days>=3 && !ST.events.delay) f.push('지각'); });
-  if(f.filter(x=>x==='짐').length>=2) f.push('짐2');
-  const sp=spentOf(c);
-  if(ST.budget-sp>=20000) f.push('여유');
-  if(sp>ST.budget) f.push('초과');
-  if(ST.events.rain && !f.includes('우비')) f.push('비맞음');
-  return f;
-}
-function storyOf(c){ const f=flagsOf(c);
-  if(f.includes('초과')) return {fail:true,lines:[]};
-  const used=new Set(), lines=[];
-  window.STORY.forEach(r=>{ if(!r.need.every(n=>f.includes(n)))return;
-    if(r.need.includes('방전')&&used.has('방전'))return; if(r.need[0]==='방전')used.add('방전');
-    lines.push(r); });
-  return {fail:false,lines};
-}
-function badgesOf(c){
-  const f=flagsOf(c), out=[], B=window.BADGES, get=i=>B.find(b=>b.id===i);
-  const rest=ST.budget-spentOf(c);
-  const maxRest=Math.max(...Object.values(CARTS).map(x=>ST.budget-spentOf(x)));
-  if(f.includes('초과')) out.push(get('broke'));
-  else if(rest===maxRest&&rest>0) out.push(get('thrift'));
-  if(f.includes('우비'))out.push(get('rain'));
-  if(f.includes('필름')||f.includes('즉석'))out.push(get('photo'));
-  if(f.includes('파티'))out.push(get('party'));
-  if(f.includes('준비됨'))out.push(get('aid'));
-  if(f.includes('놀이'))out.push(get('night'));
-  if(f.includes('심심'))out.push(get('sleep'));
-  return out.filter(Boolean);
-}
+/* 계산 — 공용 계산기 사용 */
+const L=window.TRIPLIB;
+const slotList=()=>L.slotList(ST);
+const spentOf=c=>L.spentOf(c);
+const flagsOf=c=>L.flagsOf(c,ST);
+const storyOf=c=>L.storyOf(c,ST);
+const badgesOf=c=>L.badgesOf(c,ST,CARTS);
+const fill=(t,c)=>L.fill(t,c,ST);
 
 /* 이벤트 */
 async function fire(id){
@@ -334,12 +443,13 @@ $('#tstart').onclick=()=>{ t0=Date.now(); localStorage.setItem('trip_t0',t0); };
 $('#lock').onclick=()=>save({phase:'result'});
 $('#votebtn').onclick=()=>save({phase:'vote'});
 $('#back').onclick=()=>save({phase:'shop'});
-$('#showb').onclick=()=>{ showIdx=0; $('#show').classList.remove('hide'); drawShow(); };
+$('#showb').onclick=()=>{ $('#show').classList.remove('hide'); startShow(0); };
 document.addEventListener('keydown',e=>{
   if($('#show').classList.contains('hide')) return;
-  if(e.key==='Escape') $('#show').classList.add('hide');
-  if(e.key==='ArrowRight'){ showIdx++; drawShow(); }
-  if(e.key==='ArrowLeft'){ showIdx=Math.max(0,showIdx-1); drawShow(); }
+  if(e.key==='Escape'){ stopShow(); $('#show').classList.add('hide'); }
+  if(e.key==='ArrowRight') startShow(showIdx+1);
+  if(e.key==='ArrowLeft')  startShow(showIdx-1);
+  if(e.key===' '){ e.preventDefault(); startShow(showIdx); }
 });
 $('#clr').onclick=async()=>{
   if(!confirm('앞 반 기록까지 전부 지웁니다. 계속할까요?')) return;
@@ -367,11 +477,12 @@ function draw(){
   $('#bud').textContent=won(ST.budget);
   $('#phase').textContent = ST.phase==='shop'?'편성 중':(ST.phase==='result'?'결과 공개 중':'투표 중');
   const ts=Object.keys(CARTS).sort((a,b)=>parseInt(a)-parseInt(b));
-  $('#cnt').textContent=`${ts.length}개 조`;
+  const done=ts.filter(t=>CARTS[t].submitted).length;
+  $('#cnt').textContent=`${ts.length}개 조 · 제출 ${done}/${ts.length}`;
   $('#teams').innerHTML = ts.length? ts.map(t=>{
     const c=CARTS[t], sp=spentOf(c), rest=ST.budget-sp, over=rest<0;
     const empty=slotList().filter(s=>!(c.items||{})[s.key]).length;
-    return `<div class="row"><div class="lb"><span>${t}${empty?` · <span style="color:#c2410c">${empty}칸 빔</span>`:''}</span>
+    return `<div class="row"><div class="lb"><span>${c.submitted?'<span style="color:#2f7048">✅</span> ':''}${t}${empty?` · <span style="color:#c2410c">${empty}칸 빔</span>`:''}</span>
       <span class="n ${over?'over':''}">${over?`${won(-rest)}원 초과`:`${won(rest)}원 남음`}</span></div>
       <div class="tk"><div class="fl ${over?'over':''}" style="width:${Math.min(100,Math.round(sp/ST.budget*100))}%"></div></div>
       <div class="it">${slotList().map(s=>{const it=(c.items||{})[s.key];
@@ -398,26 +509,135 @@ function draw(){
 
   if(!$('#show').classList.contains('hide')) drawShow();
 }
-function drawShow(){
-  const ts=Object.keys(CARTS).sort((a,b)=>parseInt(a)-parseInt(b));
+let play={team:null,i:0,typing:null,waiting:null,done:false,lines:[],mute:false};
+function showTeams(){ return Object.keys(CARTS).sort((x,y)=>parseInt(x)-parseInt(y)); }
+function stopShow(){ clearInterval(play.typing); clearTimeout(play.waiting); play.typing=play.waiting=null; }
+
+function startShow(idx){
+  stopShow();
+  const ts=showTeams();
   if(!ts.length){ $('#show').innerHTML='<div class="nav">Esc 닫기</div><h2>아직 조가 없습니다</h2>'; return; }
-  if(showIdx>=ts.length) showIdx=ts.length-1;
-  const t=ts[showIdx], c=CARTS[t], st=storyOf(c), bg=badgesOf(c);
+  showIdx=Math.max(0,Math.min(idx,ts.length-1));
+  const t=ts[showIdx], c=CARTS[t], st=storyOf(c);
+  play.team=t; play.i=0; play.done=false;
+  play.lines = st.fail
+    ? [{day:1,fx:'dark',bad:true,text:'출발 전날 엄마가 결제를 취소했다. 이 조는 아무것도 못 받았다.'}]
+    : (st.lines.length?st.lines:[{day:1,fx:'none',text:'아무 일도 없었다. 무난한 여행이었다.'}]);
   const sp=spentOf(c), rest=ST.budget-sp;
+  $('#show').innerHTML=`
+    <div class="fx" id="fx"></div>
+    <div class="nav">← → 조 넘기기 · 스페이스 다시 · Esc 닫기 &nbsp;(${showIdx+1}/${ts.length})
+      <button id="mute">${play.mute?'🔇':'🔊'}</button></div>
+    <div class="stage">
+      <div class="head">${t}의 수학여행</div>
+      <div class="money2">${won(sp)}원 씀 · ${rest<0?`<b class="bad">${won(-rest)}원 초과</b>`:won(rest)+'원 남음'}</div>
+      <div class="lines" id="lines"></div>
+      <div class="tail" id="tail"></div>
+    </div>`;
+  $('#mute').onclick=e=>{ e.stopPropagation(); play.mute=!play.mute; $('#mute').textContent=play.mute?'🔇':'🔊'; };
+  $('#show').onclick=()=>{
+    if(play.typing) finishLine();
+    else if(play.done) startShow(showIdx+1);
+    else nextLine();
+  };
+  nextLine();
+}
+
+function nextLine(){
+  stopShow();
+  const r=play.lines[play.i];
+  if(!r){ endShow(); return; }
+  const c=CARTS[play.team];
+  const el=document.createElement('p');
+  el.className='ln '+(r.good?'good':(r.bad!==false?'bad':''));
   const days={1:'첫째 날',2:'둘째 날',3:'셋째 날 · 밤',4:''};
-  let html='', last=0;
-  if(st.fail) html='<p class="fail">출발 전날 엄마가 결제를 취소했다.<br>이 조는 아무것도 못 받았다.</p>';
-  else { st.lines.forEach(r=>{ if(r.day!==last&&days[r.day]) html+=`<div class="d">${days[r.day]}</div>`;
-      last=r.day; html+=`<p class="${r.good?'good':'bad'}">${r.text}</p>`; });
-    if(!st.lines.length) html='<p>아무 일도 없었다. 무난한 여행이었다.</p>'; }
-  $('#show').innerHTML=`<div class="nav">← → 조 넘기기 · Esc 닫기 (${showIdx+1}/${ts.length})</div>
-    <h2>${t}의 수학여행</h2>
-    <div class="sub">${won(sp)}원 씀 · ${rest<0?`<b style="color:#ff8c6b">${won(-rest)}원 초과</b>`:won(rest)+'원 남음'}${c.votes?` · 표 ${c.votes}`:''}</div>
-    <div class="st">${html}</div>
+  const prev=play.lines[play.i-1];
+  if(days[r.day] && (!prev || prev.day!==r.day)){
+    const d=document.createElement('div'); d.className='dayline'; d.textContent=days[r.day];
+    $('#lines').appendChild(d);
+  }
+  $('#lines').appendChild(el);
+  document.querySelectorAll('#lines .ln').forEach(p=>p.classList.add('old'));
+  el.classList.remove('old');
+  fx(r.fx);
+  const full=fill(r.text,c); let k=0;
+  play.typing=setInterval(()=>{
+    el.textContent=full.slice(0,++k);
+    $('#show').scrollTop=$('#show').scrollHeight;
+    if(k>=full.length) finishLine();
+  }, 38);
+}
+function finishLine(){
+  clearInterval(play.typing); play.typing=null;
+  const r=play.lines[play.i], c=CARTS[play.team];
+  const el=$('#lines').lastElementChild; if(el) el.textContent=fill(r.text,c);
+  play.i++;
+  play.waiting=setTimeout(nextLine, r.good?1300:1900);
+}
+function endShow(){
+  play.done=true;
+  const c=CARTS[play.team], bg=badgesOf(c);
+  $('#tail').innerHTML=`
     ${bg.length?`<div class="bg">${bg.map(b=>`<span>${b.em} ${b.name}</span>`).join('')}</div>`:''}
     <div class="items">${slotList().map(s=>{const it=(c.items||{})[s.key];
-      return `${s.emoji} ${it?it.name:'안 챙김'}`;}).join('　·　')}</div>`;
+      return `${s.emoji} ${it?it.name:'안 챙김'}`;}).join('　·　')}</div>
+    <div class="more">화면을 누르면 다음 조 →</div>`;
 }
+
+/* 화면 연출 */
+function fx(kind){
+  const box=$('#fx'); if(!box) return;
+  box.className='fx'; box.innerHTML='';
+  const sh=$('#show');
+  sh.classList.remove('shaking');
+  if(kind==='shake'){ sh.classList.add('shaking'); beep('thud');
+    setTimeout(()=>sh.classList.remove('shaking'),500); }
+  if(kind==='rain'){ box.className='fx rain'; beep('rain'); }
+  if(kind==='dark'){ box.className='fx dark'; beep('off'); }
+  if(kind==='flash'){ box.className='fx flash'; beep('click'); }
+  if(kind==='clock'){ box.className='fx clock';
+    box.innerHTML='<div class="cl" id="cl">11:00</div>';
+    let h=11; const t=setInterval(()=>{ h=h===12?1:h+1;
+      const e=$('#cl'); if(!e){clearInterval(t);return;}
+      e.textContent=(h<10?'0':'')+h+':00'; }, 500);
+    setTimeout(()=>clearInterval(t),2600); }
+  if(kind==='photos'){ box.className='fx photos';
+    box.innerHTML=Array.from({length:6},(_,i)=>`<div class="ph" style="animation-delay:${i*.22}s"></div>`).join(''); }
+  if(kind==='film'){ box.className='fx film';
+    box.innerHTML='<div class="strip">'+Array.from({length:14},()=>'<i></i>').join('')+'</div>';
+    beep('click'); }
+}
+
+/* 소리 — 파일 없이 만듭니다 */
+let AC=null;
+function beep(kind){
+  if(play.mute) return;
+  try{
+    AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+    const t=AC.currentTime;
+    if(kind==='off'){ const o=AC.createOscillator(),g=AC.createGain();
+      o.type='sine'; o.frequency.setValueAtTime(440,t); o.frequency.exponentialRampToValueAtTime(70,t+.45);
+      g.gain.setValueAtTime(.18,t); g.gain.exponentialRampToValueAtTime(.001,t+.5);
+      o.connect(g).connect(AC.destination); o.start(t); o.stop(t+.5); }
+    if(kind==='click'){ const o=AC.createOscillator(),g=AC.createGain();
+      o.type='square'; o.frequency.setValueAtTime(1400,t);
+      g.gain.setValueAtTime(.12,t); g.gain.exponentialRampToValueAtTime(.001,t+.08);
+      o.connect(g).connect(AC.destination); o.start(t); o.stop(t+.09); }
+    if(kind==='thud'){ const o=AC.createOscillator(),g=AC.createGain();
+      o.type='sine'; o.frequency.setValueAtTime(90,t); o.frequency.exponentialRampToValueAtTime(40,t+.2);
+      g.gain.setValueAtTime(.25,t); g.gain.exponentialRampToValueAtTime(.001,t+.25);
+      o.connect(g).connect(AC.destination); o.start(t); o.stop(t+.26); }
+    if(kind==='rain'){ const n=AC.createBufferSource();
+      const buf=AC.createBuffer(1,AC.sampleRate*2,AC.sampleRate), d=buf.getChannelData(0);
+      for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*.25;
+      n.buffer=buf; const f=AC.createBiquadFilter(); f.type='highpass'; f.frequency.value=1200;
+      const g=AC.createGain(); g.gain.setValueAtTime(.001,t);
+      g.gain.linearRampToValueAtTime(.13,t+.3); g.gain.linearRampToValueAtTime(.001,t+2);
+      n.connect(f).connect(g).connect(AC.destination); n.start(t); n.stop(t+2); }
+  }catch(e){}
+}
+function drawShow(){ if(play.team && !CARTS[play.team]) startShow(0); }
+
 setInterval(()=>{
   if(t0){ const s=Math.floor((Date.now()-t0)/1000);
     $('#clock').textContent=String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
