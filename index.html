@@ -101,6 +101,7 @@ input{font-family:inherit}
 .gd.on{border-color:var(--gold);background:#332a15}
 .gd.on .p{color:#ffd489}
 .gd.full{opacity:.32}
+.once{font-size:.68em;color:#c98a6a;background:#2f1f18;border-radius:6px;padding:0 5px;margin-top:1px}
 .cart{background:#1c1a13;border-left:1px solid var(--line);padding:9px 12px;display:flex;
  flex-direction:column;min-height:0}
 .cart h3{margin:0;font-size:1.25em;font-weight:700;display:flex;align-items:baseline}
@@ -156,6 +157,7 @@ input{font-family:inherit}
 .mn .e{font-size:1.5em;line-height:1.05}
 .mn.on{border-color:var(--gold);background:#332a15}
 .mn.dim{opacity:.4}
+.mn .once{font-size:.68em;color:#c98a6a;background:#2f1f18;border-radius:6px;padding:0 4px;display:inline-block}
 .selbox{margin-top:7px;background:#2b2416;border:1px solid #5f4c22;border-radius:13px;padding:8px 12px;
  text-align:center;font-size:1.1em;min-height:44px;display:flex;flex-direction:column;justify-content:center}
 .selbox .lb{font-size:.78em;color:var(--gold)}
@@ -187,6 +189,8 @@ input{font-family:inherit}
  font-weight:700;font-size:1.25em;width:100%}
 .bidgo.off{background:#2d2820;color:#5f5849}
 .bidgo.done{background:#1d3a2a;color:#a5e2c0;border:2px solid var(--green)}
+.warn{margin-top:5px;background:#2f1f18;border:1px solid #6b4230;border-radius:9px;padding:3px 8px;
+ font-size:.9em;color:#e9a184}
 .aucres{text-align:center;padding:12px;animation:pop .4s}
 .aucres .w{font-size:2.2em;font-weight:700;color:var(--gold)}
 .aucres .l{font-size:1.1em;color:var(--dim)}
@@ -264,28 +268,29 @@ window.CFG = {
 /* ─────────────────────────────────────────────
    짐 후보 20개  (비싼 순으로 자동 정렬)
    price : 한국에서의 가격(원)
-   cash  : 도착한 나라에서 바꿀 수 있는 돈(억).  0이면 아무도 안 쳐줌
+   cash  : 환전소에서 바꿔주는 돈(억). 금·보석·현금만 쳐준다. 0이면 안 쳐줌
+   once  : true 면 한 번 쓰면 없어지는 소모품
    ───────────────────────────────────────────── */
 window.GOODS = [
  { id:'cash',  em:'💵', name:'현금 다발',    sub:'100억 원',       price:10000000000, cash:100, kind:'lux'  },
  { id:'ring',  em:'💍', name:'다이아몬드 반지', sub:'3캐럿',        price:300000000,   cash:30,  kind:'lux'  },
  { id:'neck',  em:'📿', name:'금목걸이',      sub:'24K 100g',      price:50000000,    cash:5,   kind:'lux'  },
- { id:'watch', em:'⌚', name:'명품 시계',     sub:'스위스제',        price:30000000,    cash:3,   kind:'lux'  },
- { id:'coat',  em:'🧥', name:'명품 코트',     sub:'캐시미어 100%',   price:8000000,     cash:1,   kind:'lux'  },
+ { id:'watch', em:'⌚', name:'명품 시계',     sub:'스위스제',        price:30000000,    cash:0,   kind:'lux'  },
+ { id:'coat',  em:'🧥', name:'명품 코트',     sub:'캐시미어 100%',   price:8000000,     cash:0,   kind:'lux', once:true  },
  { id:'cam',   em:'📷', name:'미러리스 카메라', sub:'여행 브이로그용',  price:1500000,    cash:0,   kind:'trip' },
- { id:'perf',  em:'🌸', name:'향수',         sub:'100ml',          price:300000,      cash:0,   kind:'lux'  },
+ { id:'perf',  em:'🌸', name:'향수',         sub:'100ml',          price:300000,      cash:0,   kind:'lux', once:true  },
  { id:'spk',   em:'🔊', name:'블루투스 스피커', sub:'방수·소리 큼',    price:200000,     cash:0,   kind:'trip' },
  { id:'shoe',  em:'👟', name:'에어포스 운동화', sub:'한정판',         price:150000,      cash:0,   kind:'lux'  },
  { id:'rod',   em:'🎣', name:'낚싯대',       sub:'미끼 포함',        price:80000,       cash:0,   kind:'life' },
  { id:'swim',  em:'🩳', name:'수영복',       sub:'리조트 필수템',     price:50000,       cash:0,   kind:'trip' },
  { id:'knife', em:'🔪', name:'맥가이버칼',    sub:'12가지 기능',      price:50000,       cash:0,   kind:'life' },
- { id:'aid',   em:'🧰', name:'구급함',       sub:'소독약·붕대',      price:40000,       cash:0,   kind:'life' },
+ { id:'aid',   em:'🧰', name:'구급함',       sub:'소독약·붕대',      price:40000,       cash:0,   kind:'life', once:true },
  { id:'blank', em:'🧣', name:'담요',         sub:'두꺼운 것',        price:30000,       cash:0,   kind:'life' },
  { id:'tube',  em:'🛟', name:'튜브',         sub:'대형',            price:30000,       cash:0,   kind:'trip' },
  { id:'umb',   em:'☂️', name:'우산',         sub:'장우산',          price:20000,       cash:0,   kind:'life' },
- { id:'noodle',em:'🍜', name:'라면 20개',    sub:'한 박스',          price:20000,       cash:0,   kind:'life' },
+ { id:'noodle',em:'🍜', name:'라면 20개',    sub:'한 박스',          price:20000,       cash:0,   kind:'life', once:true },
  { id:'mirror',em:'🪞', name:'손거울',       sub:'접이식',           price:10000,       cash:0,   kind:'life' },
- { id:'water', em:'💧', name:'생수 6병',     sub:'2L × 6',          price:6000,        cash:0,   kind:'life' },
+ { id:'water', em:'💧', name:'생수 6병',     sub:'2L × 6',          price:6000,        cash:0,   kind:'life', once:true },
  { id:'fire',  em:'🔥', name:'라이터',       sub:'편의점 것',        price:1000,        cash:0,   kind:'life' }
 ];
 
@@ -293,14 +298,14 @@ window.GOODS = [
 window.FIRST = {
   em:'🥂',
   head:'일등석',
-  desc:'좌석이 180도로 눕는다. 승무원이 이름을 불러준다.\n메뉴판이 왔다. 오늘 기내식을 고르세요.',
+  desc:'짐은 부쳤다. 좌석이 180도로 눕고, 승무원이 이름을 불러준다.\n메뉴판이 왔다. 오늘 기내식을 고르세요.',
   menu:[
     {em:'🦞', name:'랍스터 테르미도르', line:'승무원이 "탁월한 선택이십니다" 라고 했다.'},
     {em:'🥩', name:'한우 안심 스테이크', line:'칼이 스르륵 들어간다. 이런 건 처음이다.'},
     {em:'🍣', name:'오마카세 12피스',   line:'초밥이 한 점씩 나온다. 열두 번 감탄했다.'},
     {em:'🍚', name:'그냥 비빔밥',       line:'승무원이 살짝 웃었다. 맛있으면 됐지.'}
   ],
-  after:'창밖은 구름뿐이다. 인생 최고의 순간이다.'
+  after:'창밖은 구름뿐이다. 인생 최고의 순간이다.\n…여기까지가 좋았다.'
 };
 
 /* ─────────────────────────────────────────────
@@ -308,7 +313,7 @@ window.FIRST = {
    solves : need 가 「고른 물건」에 모두 포함되면 성립. 그중 최고점 적용
    ───────────────────────────────────────────── */
 window.EVENTS = [
- { id:'e1', day:1, when:'첫째 날 · 밤', em:'🌑',
+ { id:'e1', lot:'fire', day:1, when:'첫째 날 · 밤', em:'🌑',
    title:'이가 딱딱 부딪힌다',
    desc:'낮엔 그렇게 덥더니 해가 지자 얼음장이다.\n마을은 멀고, 오늘 밤은 여기서 자야 한다.',
    ask:'이 밤을 뭘로 버틸까?', need:'따뜻하게 할 것',
@@ -322,7 +327,7 @@ window.EVENTS = [
    ],
    fail:{pts:-3, down:1, line:'아무것도 없었다. 셋이 끌어안고 덜덜 떨다 새벽을 맞았다. 한 명이 열이 났다.'} },
 
- { id:'e2', day:2, when:'둘째 날 · 낮', em:'💧',
+ { id:'e2', lot:'water', day:2, when:'둘째 날 · 낮', em:'💧',
    title:'목이 탄다',
    desc:'어제부터 한 모금도 못 마셨다. 눈앞이 노랗다.\n수도는 없고, 바닷물은 마실수록 더 목이 마르다.',
    ask:'물을 어떻게 구할까?', need:'마실 물',
@@ -335,7 +340,7 @@ window.EVENTS = [
    ],
    fail:{pts:-5, down:1, line:'결국 바닷물을 마셨다. 30분 뒤 다 토했다. 한 명이 주저앉았다.'} },
 
- { id:'e3', day:3, when:'셋째 날 · 낮', em:'🍽️',
+ { id:'e3', lot:'rod', day:3, when:'셋째 날 · 낮', em:'🍽️',
    title:'사흘째 아무것도 못 먹었다',
    desc:'배에서 소리가 난다. 손이 떨려서 물건을 못 잡겠다.\n눈앞에 바다는 있는데 잡을 방법이 없다.',
    ask:'뭘 먹을까?', need:'먹을 것',
@@ -348,7 +353,7 @@ window.EVENTS = [
    ],
    fail:{pts:-4, down:1, line:'풀을 뜯어 씹었다. 30분 뒤 셋 다 배를 잡고 굴렀다.'} },
 
- { id:'e4', day:4, when:'넷째 날 · 아침', em:'🩸',
+ { id:'e4', lot:'aid', day:4, when:'넷째 날 · 아침', em:'🩸',
    title:'발을 산호에 베였다',
    desc:'물을 뜨러 가다 미끄러졌다. 발바닥이 길게 갈라졌다.\n모래가 들어갔고, 벌써 붓기 시작한다.',
    ask:'상처를 어떻게 할까?', need:'소독하거나 감쌀 것',
@@ -362,7 +367,7 @@ window.EVENTS = [
    ],
    fail:{pts:-4, down:1, line:'모래를 털고 그냥 뒀다. 저녁이 되자 발이 두 배로 부었다. 걷지를 못한다.'} },
 
- { id:'e5', day:5, when:'다섯째 날 · 새벽', em:'🚢',
+ { id:'e5', lot:'mirror', day:5, when:'다섯째 날 · 새벽', em:'🚢',
    title:'수평선에 배가 지나간다',
    desc:'저 멀리 불빛이 보인다. 소리를 질러도 안 들린다.\n지금 못 알리면 다음 배가 언제 올지 모른다.',
    ask:'어떻게 알릴까?', need:'멀리서 보이게 할 것',
@@ -377,7 +382,8 @@ window.EVENTS = [
    fail:{pts:-6, down:1, line:'셋이 팔이 빠지도록 흔들었다. 배는 그대로 지나갔다.'} }
 ];
 
-/* 보급소에서 팔 수 있는 물건 (교사가 하나씩 경매에 올림) */
+/* 그날 보급소에 들어오는 물건은 사건마다 정해져 있습니다 (위 EVENTS 의 lot).
+   아래는 교사가 「한 번 더」 경매를 열 때 고를 수 있는 목록입니다. */
 window.SUPPLY = ['water','blank','fire','aid','noodle','mirror','rod','knife','umb','tube'];
 
 /* 도착한 나라 설명 */
@@ -502,7 +508,7 @@ function rkey(){
   if(ph==='pack')  return [...base,(me.pack||[]).join(),me.packLock,me.by,ST.packEnd].join('|');
   if(ph==='first') return [...base,me.first].join('|');
   if(ph==='money') return [...base,moneyOf(me),(me.inv||[]).join()].join('|');
-  if(ph==='ev'||ph==='evres'){
+  if(ph==='ev'||ph==='shop'||ph==='evres'){
     const others=Object.keys(TEAMS).sort().map(t=>t+':'+inv(TEAMS[t]).join(',')).join(';');
     return [...base,ST.evId,ST.evShown,selOf(curEv()).join(),(me.inv||[]).join(),moneyOf(me),
       JSON.stringify(me.res||{}),hpOf(me),a.id,a.open,a.doneAt,myBid(),S.bid,S.tab,S.target,
@@ -521,7 +527,7 @@ function render(f){
   if(ph==='pack')   return packView();
   if(ph==='land')   return landView();
   if(ph==='money')  return moneyView();
-  if(ph==='ev'||ph==='evres') return evView();
+  if(ph==='ev'||ph==='shop'||ph==='evres') return evView();
   if(ph==='store')  return storeView();
   if(ph==='result') return resultView();
   if(ph==='rank'||ph==='board') return waitView();
@@ -530,17 +536,20 @@ function render(f){
 function shell(h){
   app.innerHTML=topbar()+h;
   const rf=$('#rf'); if(rf) rf.onclick=()=>{snd('tap');render(true);};
+  const sw=$('#sw'); if(sw) sw.onclick=()=>{ if(!confirm('학번·조를 다시 입력할까요?')) return;
+    S.id='';S.team=''; localStorage.removeItem('bil_id'); localStorage.removeItem('bil_team'); render(true);};
   if(focusId){ const el=document.getElementById(focusId); if(el){el.focus();
     try{el.setSelectionRange(el.value.length,el.value.length);}catch(e){}} }
 }
 const PHN={lobby:'대기 중',lotto:'로또 발표',first:'일등석',pack:'짐 싸는 중',land:'비상 착륙',
- money:'환전소',ev:'생존',evres:'결과',rank:'결과 발표',board:'정리',store:'귀국',result:'끝'};
+ money:'환전소',shop:'보급소',ev:'생존',evres:'결과',rank:'결과 발표',board:'정리',store:'귀국',result:'끝'};
 function topbar(){
   const hp=hpOf(me);
   return `<div class="top"><span class="tm">${S.team}</span>
     <span class="ph">${PHN[ST.phase]||''}</span>
     <span class="me">${S.id}</span>
     <button class="rf" id="rf">🔄 새로고침</button>
+    <button class="rf" id="sw">조 바꾸기</button>
     <span class="sp">
       <span class="hp"><span class="lb">조원</span><br>${
         [0,1,2].map(i=>`<i class="${i<hp?'':'d'}">🧍</i>`).join('')}</span>
@@ -580,7 +589,8 @@ function lottoView(){
   shell(`<div class="lotto"><div class="t">로 또 １ 등</div>
     <div class="n">100억</div>
     <div class="s">${S.team}, 통장에 100억이 들어왔다.</div>
-    <div class="s" style="color:var(--gold);margin-top:12px">✈️ 인천 → 하와이 · <b>일등석</b> 예약 완료</div></div>`);
+    <div class="s" style="color:var(--gold);margin-top:12px">✈️ 인천 → 하와이 · <b>일등석</b> 예약 완료</div>
+    <div class="s">출발은 내일. 짐부터 싸자.</div></div>`);
   if(Date.now()-lastLotto>4000){ lastLotto=Date.now(); snd('lotto'); confetti(); }
 }
 
@@ -607,7 +617,8 @@ function packView(){
       const on=pack.includes(g.id);
       return `<button class="gd ${on?'on':''} ${(!on&&full)?'full':''}" data-g="${g.id}" ${locked?'disabled':''}>
         <div class="e">${g.em}</div><div class="n">${g.name}</div>
-        <div class="s">${g.sub}</div><div class="p">${won(g.price)}</div></button>`;}).join('')}</div></div>
+        <div class="s">${g.sub}</div><div class="p">${won(g.price)}</div>
+        ${g.once?'<div class="once">한 번 쓰면 끝</div>':''}</button>`;}).join('')}</div></div>
     <div class="cart">
       <h3>🧳 캐리어 ${pack.length}/${C.slots}
         ${end?`<span class="cd ${left<=15?'hot':''}" id="cd">${left}초</span>`:''}</h3>
@@ -671,7 +682,7 @@ function moneyView(){
 function evView(){
   const e=curEv(), r=(me.res||{})[e.id];
   if(ST.phase==='evres'&&r) return evResult(e,r);
-  const sel=selOf(e), a=ST.auc||{};
+  const sel=selOf(e).filter(id=>inv(me).includes(id)), a=ST.auc||{};
   if(a.open&&a.id&&S.seenAuc!==a.id){ S.seenAuc=a.id; S.tab='shop'; S.bid=0; snd('bell'); }
   shell(`<div class="ev3">
     <div class="cx"><div class="evc">
@@ -684,7 +695,7 @@ function evView(){
       <div class="cap">가진 짐에서 고르면 <b>바로 저장</b>돼요. 언제든 바꿀 수 있어요.</div>
       <div class="scroll"><div class="mini">${inv(me).map(id=>{const g=G(id);
         return `<button class="mn ${sel.includes(id)?'on':''}" data-s="${id}">
-          <div class="e">${g.em}</div>${g.name}</button>`;}).join('')
+          <div class="e">${g.em}</div>${g.name}${g.once?'<div class="once">1회</div>':''}</button>`;}).join('')
         ||'<div style="color:var(--dim);padding:16px;grid-column:span 2;text-align:center">가진 짐이 없다.<br>보급소나 다른 조에서 구해야 한다.</div>'}</div></div>
       <div class="selbox ${sel.length?'':'none'}">
         <span class="lb">우리 선택</span>
@@ -725,9 +736,11 @@ function shopPane(){
         <div class="l">${w===S.team?'우리가 가져왔다!':'우리는 못 샀다.'}</div>`
         :`<div class="l">아무도 값을 못 불렀다.<br>물건은 다시 배에 실렸다.</div>`}</div></div>`;
   }
+  const have=inv(me).includes(a.item);
   return `<div class="auc">
     <div class="auclot"><div class="e">${g.em}</div><div class="n">${g.name}</div>
-      <div class="q">딱 <b style="color:var(--red)">1개</b>. 제일 높은 값을 부른 조가 가져간다.</div></div>
+      <div class="q">딱 <b style="color:var(--red)">1개</b>${g.once?' · 한 번 쓰면 없어진다':''}</div>
+      ${have?'<div class="warn">우리 이미 있음 — 굳이 살 필요 없다</div>':''}</div>
     <div class="bidamt ${S.bid?'':'zero'}">${eok(S.bid)}</div>
     <div class="qk">
       <button data-b="0">0</button><button data-b="1">+1</button><button data-b="5">+5</button>
@@ -822,6 +835,7 @@ function evResult(e,r){
     <div class="pt ${r.p>=0?'p':'m'}">${r.p>=0?'+':''}${r.p}</div>
     <div class="ln">${r.line}</div>
     ${r.down?`<div style="color:var(--red);font-size:1.3em">🧍 조원 한 명이 쓰러졌다</div>`:''}
+    ${(r.gone||[]).length?`<div style="color:#e9a184;font-size:1.25em">📦 ${r.gone.map(id=>G(id).em+' '+G(id).name).join(', ')} — 다 써서 없어졌다</div>`:''}
   </div>`);
   const key=e.id+r.p; if(key!==lastRes){ lastRes=key; snd(plus?'win':'lose'); }
 }
