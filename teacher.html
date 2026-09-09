@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>무인도 100억 — 교사</title>
+<title>100억 — 교사</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300;400;700&family=Jua&family=Gaegu:wght@400;700&family=Do+Hyeon&display=swap" rel="stylesheet">
@@ -17,114 +17,143 @@ html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);overflow:hi
 button,select{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 #app{height:100%;display:flex;flex-direction:column;font-size:calc(16px * var(--fs))}
 
-/* 조작 스트립 */
-.ctrl{flex:none;background:#0c0a06;border-bottom:1px solid var(--line);padding:6px 10px;
- display:flex;flex-wrap:wrap;gap:5px;align-items:center;font-size:.9em}
-.ctrl.hide{display:none}
-.ctrl button{padding:6px 11px;border-radius:9px;background:#241f16;border:1px solid #3d372c;font-weight:700}
-.ctrl button:hover{background:#332c1e}
-.ctrl button.pri{background:var(--gold);color:#17150f;border-color:var(--gold)}
-.ctrl button.dan{background:#3a1c14;color:#ffb4a0;border-color:#5c2f22}
-.ctrl button.ok{background:#1c3a29;color:#a5e2c0;border-color:#2f6b4a}
-.ctrl .sep{width:1px;height:20px;background:#3d372c;margin:0 3px}
-.ctrl .lb{color:var(--dim2);font-size:.85em;padding:0 3px}
-.ctrl select{padding:5px 8px;border-radius:8px;background:#241f16;border:1px solid #3d372c}
+/* ══ 조종석 ══ */
+.pilot{flex:none;background:#0c0a06;border-bottom:2px solid #2a251b}
+.pilot.hide{display:none}
+.row1{display:flex;align-items:stretch;gap:12px;padding:8px 12px}
+.nowbox{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.nowbox .st{font-size:.85em;color:var(--dim2);letter-spacing:.08em}
+.nowbox .nm{font-size:1.6em;font-weight:700;line-height:1.1}
+.nowbox .hint{font-size:1em;color:var(--gold);line-height:1.25}
+.nowbox .hint b{color:var(--ink)}
+.nextbtn{flex:none;min-width:330px;border-radius:15px;background:var(--gold);color:#17150f;
+ font-weight:700;padding:10px 22px;display:flex;flex-direction:column;justify-content:center;
+ align-items:center;line-height:1.1;box-shadow:0 3px 0 #a97a2c}
+.nextbtn:active{transform:translateY(2px);box-shadow:0 1px 0 #a97a2c}
+.nextbtn .k{font-size:.8em;opacity:.7}
+.nextbtn .v{font-size:1.5em}
+.nextbtn.ready{animation:rdy 1s ease-in-out infinite}
+@keyframes rdy{0%,100%{box-shadow:0 3px 0 #a97a2c}50%{box-shadow:0 3px 0 #a97a2c,0 0 26px rgba(232,171,69,.75)}}
+.nextbtn.end{background:#2d2820;color:#5f5849;box-shadow:none}
+.row2{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:0 12px 8px;font-size:.92em}
+.row2 button,.row2 select{padding:6px 11px;border-radius:9px;background:#241f16;border:1px solid #3d372c;font-weight:700}
+.row2 button:hover{background:#332c1e}
+.row2 button.hot{background:#3a2c10;border-color:var(--gold);color:var(--gold)}
+.row2 button.dan{background:#3a1c14;color:#ffb4a0;border-color:#5c2f22}
+.row2 .sep{width:1px;height:20px;background:#3d372c;margin:0 4px}
+.row2 .lb{color:var(--dim2);font-size:.9em}
 
+/* ══ 무대 ══ */
 .stage{flex:1;display:flex;flex-direction:column;min-height:0;padding:14px 22px}
-h1{font-family:var(--font);font-size:2.6em;margin:0;font-weight:700;line-height:1.1}
+h1{font-size:2.5em;margin:0;font-weight:700;line-height:1.1}
 .sub{color:var(--dim);font-size:1.1em}
+.sub b{color:var(--gold)}
 .mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
  text-align:center;gap:8px;min-height:0}
-.mid .big{font-size:4.6em;line-height:1}
-.mid h2{font-size:2.8em;margin:0;font-weight:700;line-height:1.15}
-.mid p{font-size:1.35em;color:var(--dim);margin:0;line-height:1.5;white-space:pre-line}
-.pulse{animation:pl 1.6s ease-in-out infinite}
-@keyframes pl{0%,100%{opacity:.35}50%{opacity:1}}
+.mid .big{font-size:4.4em;line-height:1}
+.mid h2{font-size:2.6em;margin:0;font-weight:700;line-height:1.15}
+.mid p{font-size:1.35em;color:var(--dim);margin:0;line-height:1.55;white-space:pre-line}
+.mid p b{color:var(--ink)}
 @keyframes pop{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
 @keyframes sl{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+@keyframes pl{0%,100%{opacity:.35}50%{opacity:1}}
+.pulse{animation:pl 1.6s ease-in-out infinite}
 
-.grid8{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%}
-.tc{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:10px 12px;animation:sl .3s}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%}
+.grid8{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;width:100%}
+.tc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:9px 11px;animation:sl .3s}
 .tc .h{display:flex;align-items:baseline;gap:7px}
-.tc .h b{font-size:1.5em}
+.tc .h b{font-size:1.4em}
 .tc .h .n{margin-left:auto;font-size:.85em;color:var(--dim2)}
-.tc .st{font-size:1.15em;color:var(--dim)}
 .tc.done{border-color:#2f6b4a;background:#1a2a20}
-.tc.wait{opacity:.45}
+.tc.wait{opacity:.42}
 .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 .chips span{background:#2a251b;border:1px solid #3d372c;border-radius:9px;padding:2px 7px;font-size:.95em}
 
-.evhead{display:flex;align-items:center;gap:16px;padding:4px 0 10px;border-bottom:1px solid var(--line)}
-.evhead .em{font-size:3em;line-height:1}
-.evhead .when{font-size:.95em;color:var(--gold);letter-spacing:.1em}
-.evhead h2{font-size:2.3em;margin:0;font-weight:700;line-height:1.1}
-.evhead .ds{font-size:1.05em;color:var(--dim);white-space:pre-line;line-height:1.35}
+.evhead{display:flex;align-items:center;gap:16px;padding:2px 0 9px;border-bottom:1px solid var(--line)}
+.evhead .em{font-size:2.8em;line-height:1}
+.evhead .when{font-size:.92em;color:var(--gold);letter-spacing:.09em}
+.evhead h2{font-size:2.2em;margin:0;font-weight:700;line-height:1.1}
+.evhead .ds{font-size:1.02em;color:var(--dim);white-space:pre-line;line-height:1.35}
 .evhead .cnt{margin-left:auto;text-align:right}
-.evhead .cnt b{font-size:2.6em;color:var(--gold);font-variant-numeric:tabular-nums}
+.evhead .cnt b{font-size:2.4em;color:var(--gold);font-variant-numeric:tabular-nums}
 
 .rows{flex:1;overflow:auto;margin-top:8px}
 .rw{display:flex;align-items:center;gap:12px;padding:7px 14px;border-radius:12px;margin-bottom:5px;
  background:var(--card);font-size:1.25em;animation:sl .28s both}
 .rw .t{font-weight:700;width:56px;flex:none}
-.rw .u{display:flex;gap:5px;flex:none;width:230px;flex-wrap:wrap}
+.rw .u{display:flex;gap:5px;flex:none;width:250px;flex-wrap:wrap}
 .rw .u span{background:#2a251b;border:1px solid #3d372c;border-radius:9px;padding:1px 7px;font-size:.85em}
 .rw .ln{flex:1;font-size:.95em;color:var(--dim)}
-.rw .p{font-weight:700;font-variant-numeric:tabular-nums;width:70px;text-align:right;font-size:1.35em}
+.rw .p{font-weight:700;font-variant-numeric:tabular-nums;width:74px;text-align:right;font-size:1.35em}
 .rw.g{background:#1c3527;color:#c9f0da} .rw.g .p{color:#8fe6b6} .rw.g .ln{color:#8fbfa4}
 .rw.b{background:#331d18;color:#ffcdbf} .rw.b .p{color:#ff9b82} .rw.b .ln{color:#c99384}
 
-/* 거래 */
-.trw{flex:1;display:grid;grid-template-columns:1.4fr 1fr;gap:16px;min-height:0}
-.log{overflow:auto;min-height:0}
-.lg{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);
- border-radius:13px;padding:8px 13px;margin-bottom:6px;font-size:1.2em;animation:sl .3s}
-.lg .a{color:var(--dim)} .lg .b{color:var(--gold);font-weight:700}
-.lg .ar{color:var(--dim2)}
-.lg .pr{margin-left:auto;font-size:.9em;color:var(--dim2);text-align:right}
-.tmrbig{font-size:6em;font-weight:700;color:var(--gold);text-align:center;
- font-variant-numeric:tabular-nums;line-height:1}
-.tmrbig.hot{color:var(--red);animation:tk .5s infinite}
-@keyframes tk{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+/* 경매 */
+.aucw{flex:1;display:grid;grid-template-columns:1fr 1.25fr;gap:18px;min-height:0;align-items:center}
+.lot{text-align:center;background:var(--card);border:3px solid var(--gold);border-radius:22px;padding:18px;
+ animation:pop .45s cubic-bezier(.2,1.3,.4,1)}
+.lot .e{font-size:5em;line-height:1}
+.lot .n{font-size:2.6em;font-weight:700;line-height:1.1}
+.lot .q{font-size:1.15em;color:var(--dim);margin-top:4px}
+.lot .q b{color:var(--red)}
+.bids{overflow:auto;min-height:0;max-height:100%}
+.bd{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
+ border-radius:12px;padding:6px 14px;margin-bottom:5px;font-size:1.35em;animation:sl .25s}
+.bd .t{font-weight:700;width:56px}
+.bd .m{color:var(--dim2);font-size:.75em}
+.bd .v{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums;color:var(--gold)}
+.bd.no .v{color:#5f5849;font-size:.8em;font-weight:400}
+.bd.win{background:#3a2c10;border-color:var(--gold)}
+.winbig{text-align:center;animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+.winbig .t{font-size:3.4em;font-weight:700;color:var(--gold);line-height:1.1}
+.winbig .p{font-size:2.2em;font-weight:700}
+.winbig .l{font-size:1.2em;color:var(--dim);margin-top:6px}
 
-/* 그래프 */
-.chart{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:80px;padding:46px 40px 46px;min-height:0}
-.bar{width:160px;background:linear-gradient(180deg,#e8593c,#8c3324);border-radius:12px 12px 0 0;
- position:relative;animation:gr .7s cubic-bezier(.2,1,.3,1) both}
-@keyframes gr{from{height:0!important}}
-.bar.ok{background:linear-gradient(180deg,#55b981,#2b6647)}
-.bar span{position:absolute;top:-1.75em;left:-24px;right:-24px;text-align:center;
- font-size:1.75em;font-weight:700;color:var(--ink);white-space:nowrap}
-.bar.ok span{color:#8fe6b6}
-.bar em{position:absolute;bottom:-32px;left:-30px;right:-30px;text-align:center;font-style:normal;
- font-size:1.05em;color:var(--dim);white-space:nowrap}
+/* 시장가 */
+.pricelist{flex:1;overflow:auto}
+.pr{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);
+ border-radius:14px;padding:9px 16px;margin-bottom:7px;font-size:1.4em;animation:sl .3s both}
+.pr .e{font-size:1.4em}
+.pr .k{color:var(--dim2);font-size:.75em}
+.pr .h{margin-left:auto;text-align:right}
+.pr .h .a{color:var(--red);font-weight:700;font-size:1.15em}
+.pr .h .b{color:var(--dim2);font-size:.72em}
 
 /* 순위 */
 .two{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:18px;min-height:0}
 .col{display:flex;flex-direction:column;min-height:0}
-.col h3{margin:0 0 6px;font-size:1.6em;font-weight:700}
+.col h3{margin:0 0 6px;font-size:1.55em;font-weight:700}
 .col h3 small{font-size:.6em;color:var(--dim);font-weight:400}
 .col .list{flex:1;overflow:auto}
 .rk{display:flex;align-items:center;gap:10px;padding:6px 13px;border-radius:11px;margin-bottom:4px;
  background:var(--card);font-size:1.3em;animation:sl .3s both}
-.rk .no{width:34px;color:var(--dim2);font-weight:700}
-.rk .t{font-weight:700;width:60px}
+.rk .no{width:32px;color:var(--dim2);font-weight:700}
+.rk .t{font-weight:700;width:58px}
+.rk .x{font-size:.72em;color:var(--dim2)}
 .rk .v{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums}
-.rk.top{background:#2b2416;border:1px solid #5f4c22}
-.rk.top .v{color:var(--gold)}
-.rk .x{font-size:.75em;color:var(--dim2)}
+.rk.top{background:#2b2416;border:1px solid #5f4c22} .rk.top .v{color:var(--gold)}
 
 .board .li{background:var(--card);border-left:4px solid var(--gold);border-radius:0 14px 14px 0;
- padding:12px 20px;margin-bottom:12px;animation:sl .4s both}
-.board .li b.k{color:var(--gold);font-size:1.6em;display:block}
-.board .li .v{font-size:1.3em;color:var(--ink);line-height:1.45}
+ padding:11px 20px;margin-bottom:11px;animation:sl .4s both}
+.board .li b.k{color:var(--gold);font-size:1.55em;display:block}
+.board .li .v{font-size:1.25em;line-height:1.45}
 .board .li .v b{color:var(--gold)}
 
-.foot{flex:none;padding:4px 0 0;font-size:.8em;color:#494336;text-align:center}
-.store{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+.store{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
  background:radial-gradient(circle at 50% 40%,#1e2a2e,#17150f 70%)}
-.store .p{font-size:5.6em;font-weight:700;color:var(--gold);line-height:1}
-.store .l{font-size:1.6em;color:var(--dim);line-height:1.55;text-align:center}
-.store .l b{color:var(--ink)}
+.store .two2{display:flex;gap:70px;align-items:flex-end;margin:14px 0 18px}
+.store .cell{text-align:center}
+.store .cell .k{font-size:1.2em;color:var(--dim)}
+.store .cell .v{font-size:3.6em;font-weight:700;line-height:1.05}
+.store .cell.a .v{color:var(--red)} .store .cell.b .v{color:var(--green)}
+.store .q{font-size:2.4em;font-weight:700}
+
+/* 거래 로그 */
+.lg{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);
+ border-radius:12px;padding:7px 13px;margin-bottom:5px;font-size:1.15em;animation:sl .3s}
+.lg .b{color:var(--gold);font-weight:700} .lg .ar{color:var(--dim2)}
+.lg .m{color:var(--dim);font-size:.85em}
 </style>
 </head>
 <body>
@@ -133,164 +162,184 @@ h1{font-family:var(--font);font-size:2.6em;margin:0;font-weight:700;line-height:
 <!-- ▼ 수업 내용 ▼ -->
 <script>
 /* ===================================================================
-   무인도 100억 — 내용 파일
-   로또 당첨 → 짐싸기 8칸 → 추락 → 4일 생존 → 구조
-   값·문구를 고치려면 여기만 보시면 됩니다.
+   100억  —  내용 파일
+   로또 → 일등석 → 짐싸기 8칸 → 비상착륙 → 환전 → 5일 생존 → 귀국
+   * 이 파일은 두 html 안에 이미 들어가 있습니다. (참고용)
    =================================================================== */
 
-/* 폰트 — 'Dongle' 동글 / 'Jua' 주아 / 'Gaegu' 개구 / 'Do Hyeon' 도현 */
 window.FONT = 'Dongle';
-window.FONT_SCALE = 1.42;   // 동글은 글자가 작아서 키웁니다. 주아로 바꾸면 1 로.
+window.FONT_SCALE = 1.42;
 
 window.CFG = {
   teams: 8,
-  slots: 8,           // 캐리어 칸수
-  prize: 10000000000, // 로또 1등 100억
-  tradeSeconds: 180,  // 물물교환 3분
-  hp: 3               // 조원 체력 (0 되면 탈진)
+  slots: 8,        // 캐리어 칸수
+  hp: 3,           // 조원 수
+  packSec: 0       // 짐싸기 제한시간(초). 0이면 무제한. 교사 화면에서 바꿀 수 있음
 };
 
 /* ─────────────────────────────────────────────
-   짐 후보 20개  (도시 가격 비싼 순으로 자동 정렬됩니다)
-   price : 도시 가격(원)
-   kind  : lux 사치 / trip 여행 / life 생필
+   짐 후보 20개  (비싼 순으로 자동 정렬)
+   price : 한국에서의 가격(원)
+   cash  : 도착한 나라에서 바꿀 수 있는 돈(억).  0이면 아무도 안 쳐줌
    ───────────────────────────────────────────── */
 window.GOODS = [
- { id:'cash',  em:'💵', name:'현금 다발',    sub:'100억 원',      price:10000000000, kind:'lux'  },
- { id:'ring',  em:'💍', name:'다이아몬드 반지', sub:'3캐럿',       price:300000000,   kind:'lux'  },
- { id:'neck',  em:'📿', name:'금목걸이',      sub:'24K 100g',      price:50000000,    kind:'lux'  },
- { id:'watch', em:'⌚', name:'명품 시계',     sub:'스위스제',       price:30000000,    kind:'lux'  },
- { id:'coat',  em:'🧥', name:'명품 코트',     sub:'캐시미어 100%',  price:8000000,     kind:'lux'  },
- { id:'cam',   em:'📷', name:'미러리스 카메라', sub:'여행 브이로그용', price:1500000,    kind:'trip' },
- { id:'perf',  em:'🌸', name:'향수',         sub:'100ml',          price:300000,      kind:'lux'  },
- { id:'spk',   em:'🔊', name:'블루투스 스피커', sub:'방수·최대출력 큼', price:200000,   kind:'trip' },
- { id:'shoe',  em:'👟', name:'에어포스 운동화', sub:'한정판',        price:150000,      kind:'lux'  },
- { id:'rod',   em:'🎣', name:'낚싯대',       sub:'미끼 포함',       price:80000,       kind:'life' },
- { id:'swim',  em:'🩳', name:'수영복',       sub:'하와이 필수템',    price:50000,       kind:'trip' },
- { id:'knife', em:'🔪', name:'맥가이버칼',    sub:'12가지 기능',     price:50000,       kind:'life' },
- { id:'aid',   em:'🧰', name:'구급함',       sub:'소독약·붕대',     price:40000,       kind:'life' },
- { id:'blank', em:'🧣', name:'담요',         sub:'두꺼운 것',       price:30000,       kind:'life' },
- { id:'tube',  em:'🛟', name:'튜브',         sub:'대형',           price:30000,       kind:'trip' },
- { id:'umb',   em:'☂️', name:'우산',         sub:'장우산',          price:20000,       kind:'life' },
- { id:'noodle',em:'🍜', name:'라면 20개',    sub:'한 박스',         price:20000,       kind:'life' },
- { id:'mirror',em:'🪞', name:'손거울',       sub:'접이식',          price:10000,       kind:'life' },
- { id:'water', em:'💧', name:'생수 6병',     sub:'2L × 6',         price:6000,        kind:'life' },
- { id:'fire',  em:'🔥', name:'라이터',       sub:'편의점 것',       price:1000,        kind:'life' }
+ { id:'cash',  em:'💵', name:'현금 다발',    sub:'100억 원',       price:10000000000, cash:100, kind:'lux'  },
+ { id:'ring',  em:'💍', name:'다이아몬드 반지', sub:'3캐럿',        price:300000000,   cash:30,  kind:'lux'  },
+ { id:'neck',  em:'📿', name:'금목걸이',      sub:'24K 100g',      price:50000000,    cash:5,   kind:'lux'  },
+ { id:'watch', em:'⌚', name:'명품 시계',     sub:'스위스제',        price:30000000,    cash:3,   kind:'lux'  },
+ { id:'coat',  em:'🧥', name:'명품 코트',     sub:'캐시미어 100%',   price:8000000,     cash:1,   kind:'lux'  },
+ { id:'cam',   em:'📷', name:'미러리스 카메라', sub:'여행 브이로그용',  price:1500000,    cash:0,   kind:'trip' },
+ { id:'perf',  em:'🌸', name:'향수',         sub:'100ml',          price:300000,      cash:0,   kind:'lux'  },
+ { id:'spk',   em:'🔊', name:'블루투스 스피커', sub:'방수·소리 큼',    price:200000,     cash:0,   kind:'trip' },
+ { id:'shoe',  em:'👟', name:'에어포스 운동화', sub:'한정판',         price:150000,      cash:0,   kind:'lux'  },
+ { id:'rod',   em:'🎣', name:'낚싯대',       sub:'미끼 포함',        price:80000,       cash:0,   kind:'life' },
+ { id:'swim',  em:'🩳', name:'수영복',       sub:'리조트 필수템',     price:50000,       cash:0,   kind:'trip' },
+ { id:'knife', em:'🔪', name:'맥가이버칼',    sub:'12가지 기능',      price:50000,       cash:0,   kind:'life' },
+ { id:'aid',   em:'🧰', name:'구급함',       sub:'소독약·붕대',      price:40000,       cash:0,   kind:'life' },
+ { id:'blank', em:'🧣', name:'담요',         sub:'두꺼운 것',        price:30000,       cash:0,   kind:'life' },
+ { id:'tube',  em:'🛟', name:'튜브',         sub:'대형',            price:30000,       cash:0,   kind:'trip' },
+ { id:'umb',   em:'☂️', name:'우산',         sub:'장우산',          price:20000,       cash:0,   kind:'life' },
+ { id:'noodle',em:'🍜', name:'라면 20개',    sub:'한 박스',          price:20000,       cash:0,   kind:'life' },
+ { id:'mirror',em:'🪞', name:'손거울',       sub:'접이식',           price:10000,       cash:0,   kind:'life' },
+ { id:'water', em:'💧', name:'생수 6병',     sub:'2L × 6',          price:6000,        cash:0,   kind:'life' },
+ { id:'fire',  em:'🔥', name:'라이터',       sub:'편의점 것',        price:1000,        cash:0,   kind:'life' }
 ];
 
+/* 일등석 — 그냥 즐기는 장면 (점수 없음) */
+window.FIRST = {
+  em:'🥂',
+  head:'일등석',
+  desc:'좌석이 180도로 눕는다. 승무원이 이름을 불러준다.\n메뉴판이 왔다. 오늘 기내식을 고르세요.',
+  menu:[
+    {em:'🦞', name:'랍스터 테르미도르', line:'승무원이 "탁월한 선택이십니다" 라고 했다.'},
+    {em:'🥩', name:'한우 안심 스테이크', line:'칼이 스르륵 들어간다. 이런 건 처음이다.'},
+    {em:'🍣', name:'오마카세 12피스',   line:'초밥이 한 점씩 나온다. 열두 번 감탄했다.'},
+    {em:'🍚', name:'그냥 비빔밥',       line:'승무원이 살짝 웃었다. 맛있으면 됐지.'}
+  ],
+  after:'창밖은 구름뿐이다. 인생 최고의 순간이다.'
+};
+
 /* ─────────────────────────────────────────────
-   사건 8개 (4일)
-   solves : 위에서부터 best 매칭. need 가 고른 물건에 포함되면 성립
-   pick   : 학생이 고를 수 있는 개수 (기본 2)
+   사건 5개
+   solves : need 가 「고른 물건」에 모두 포함되면 성립. 그중 최고점 적용
    ───────────────────────────────────────────── */
 window.EVENTS = [
  { id:'e1', day:1, when:'첫째 날 · 밤', em:'🌑',
    title:'이가 딱딱 부딪힌다',
-   desc:'낮에 그렇게 뜨겁던 모래가 해가 지자 얼음장이 됐다.\n바람을 막을 게 아무것도 없다.',
-   ask:'이 밤을 뭘로 버틸까?',
+   desc:'낮엔 그렇게 덥더니 해가 지자 얼음장이다.\n마을은 멀고, 오늘 밤은 여기서 자야 한다.',
+   ask:'이 밤을 뭘로 버틸까?', need:'따뜻하게 할 것',
    solves:[
-     {need:['fire','coat'], pts:3, line:'800만원짜리 코트를 찢어 불을 붙였다. 인생에서 제일 따뜻한 800만원이었다.'},
-     {need:['fire','cash'], pts:3, line:'100억을 한 장씩 태웠다. 잘 탄다. 아주 잘 탄다.'},
-     {need:['blank'],       pts:3, line:'담요 하나를 셋이 억지로 나눠 덮었다. 그래도 잤다.'},
-     {need:['fire'],        pts:2, line:'떠내려온 나뭇가지를 모아 불을 피웠다. 셋이 불 앞에 붙어 앉았다.'},
-     {need:['perf'],        pts:2, line:'향수를 뿌리고 불씨를 붙였다. 알코올이라 확 붙었다. 30만원이 5분 탔다.'},
-     {need:['coat'],        pts:1, line:'코트를 셋이 덮었다. 발이 나온다. 없는 것보단 낫다.'}
+     {need:['blank','fire'], pts:4, line:'담요를 덮고 앞에 불을 피웠다. 도착하고 처음으로 제대로 잤다.'},
+     {need:['fire','coat'],  pts:3, line:'800만원짜리 코트를 찢어 불을 붙였다. 인생에서 제일 따뜻한 800만원이었다.'},
+     {need:['blank'],        pts:3, line:'담요 하나를 셋이 억지로 나눠 덮었다. 그래도 잤다.'},
+     {need:['fire'],         pts:2, line:'나뭇가지를 모아 불을 피웠다. 셋이 불 앞에 딱 붙어 앉았다.'},
+     {need:['perf'],         pts:2, line:'향수를 뿌리고 불씨를 붙였다. 알코올이라 확 붙었다. 30만원이 5분 탔다.'},
+     {need:['coat'],         pts:1, line:'코트를 셋이 덮었다. 발이 나온다. 없는 것보단 낫다.'}
    ],
-   fail:{pts:-3, down:1, line:'아무것도 없었다. 셋이 끌어안고 덜덜 떨다 새벽을 맞았다.'} },
+   fail:{pts:-3, down:1, line:'아무것도 없었다. 셋이 끌어안고 덜덜 떨다 새벽을 맞았다. 한 명이 열이 났다.'} },
 
  { id:'e2', day:2, when:'둘째 날 · 낮', em:'💧',
    title:'목이 탄다',
-   desc:'어제부터 한 모금도 못 마셨다. 눈앞이 노랗다.\n바닷물은 마실수록 더 목이 마르다.',
-   ask:'물을 어떻게 구할까?',
+   desc:'어제부터 한 모금도 못 마셨다. 눈앞이 노랗다.\n수도는 없고, 바닷물은 마실수록 더 목이 마르다.',
+   ask:'물을 어떻게 구할까?', need:'마실 물',
    solves:[
-     {need:['water'],  pts:4, line:'뚜껑을 열자마자 셋이 돌려 마셨다. 6,000원짜리가 이렇게 맛있을 줄 몰랐다.'},
-     {need:['umb'],    pts:3, line:'우산을 뒤집어 밤새 빗물을 받았다. 반 컵쯤 고였다. 나눠 마셨다.'},
-     {need:['tube'],   pts:2, line:'튜브를 펴서 빗물을 받았다. 고무 맛이 나지만 마셨다.'},
-     {need:['knife'],  pts:2, line:'칼로 야자열매를 쪼갰다. 안에 물이 있었다. 셋이 소리를 질렀다.'}
+     {need:['water','umb'], pts:5, line:'생수는 아껴 마시고 우산으로 빗물까지 받았다. 이틀은 버틴다.'},
+     {need:['water'],       pts:4, line:'뚜껑을 열자마자 셋이 돌려 마셨다. 6,000원이 이렇게 맛있을 줄 몰랐다.'},
+     {need:['umb'],         pts:3, line:'우산을 뒤집어 밤새 빗물을 받았다. 반 컵쯤 고였다.'},
+     {need:['tube'],        pts:2, line:'튜브를 펴서 빗물을 받았다. 고무 맛이 나지만 마셨다.'},
+     {need:['knife'],       pts:2, line:'칼로 야자열매를 쪼갰다. 안에 물이 있었다. 셋이 소리를 질렀다.'}
    ],
-   fail:{pts:-5, down:1, line:'결국 바닷물을 마셨다. 30분 뒤 다 토했다. 한 명이 모래밭에 쓰러졌다.'} },
+   fail:{pts:-5, down:1, line:'결국 바닷물을 마셨다. 30분 뒤 다 토했다. 한 명이 주저앉았다.'} },
 
- { id:'e3', day:3, when:'셋째 날 · 아침', em:'🩸',
-   title:'발을 산호에 베였다',
-   desc:'물을 뜨러 가다 미끄러졌다. 발바닥이 길게 갈라졌다.\n모래가 들어갔고, 벌써 붓기 시작한다.',
-   ask:'상처를 어떻게 할까?',
-   solves:[
-     {need:['aid'],    pts:4, line:'소독약을 붓고 붕대를 감았다. 저녁이 되자 부기가 빠졌다.'},
-     {need:['shoe'],   pts:3, line:'운동화를 신고 있었다. 애초에 아무도 안 다쳤다. 15만원이 오늘의 MVP.'},
-     {need:['perf'],   pts:2, line:'향수를 상처에 부었다. 눈물이 찔끔 났지만 소독은 됐다.'},
-     {need:['knife'],  pts:1, line:'칼끝으로 박힌 산호 조각을 빼냈다. 피가 났지만 덜 아프다.'},
-     {need:['water'],  pts:1, line:'아까운 생수로 상처를 씻었다. 마실 물이 줄었다.'}
-   ],
-   fail:{pts:-4, down:1, line:'모래를 털고 그냥 뒀다. 저녁이 되자 발이 두 배로 부었다. 걷지를 못한다.'} },
-
- { id:'e4', day:3, when:'셋째 날 · 낮', em:'🍽️',
+ { id:'e3', day:3, when:'셋째 날 · 낮', em:'🍽️',
    title:'사흘째 아무것도 못 먹었다',
-   desc:'배에서 소리가 난다. 손이 떨려서 물건을 못 잡겠다.\n눈앞에 바다는 있는데, 잡을 방법이 없다.',
-   ask:'뭘 먹을까?',
+   desc:'배에서 소리가 난다. 손이 떨려서 물건을 못 잡겠다.\n눈앞에 바다는 있는데 잡을 방법이 없다.',
+   ask:'뭘 먹을까?', need:'먹을 것',
    solves:[
-     {need:['rod'],             pts:4, line:'두 시간 만에 손바닥만 한 물고기를 낚았다. 셋이 환호성을 질렀다.'},
-     {need:['noodle','fire'],   pts:3, line:'불을 피워 라면을 끓였다. 국물이 목을 타고 내려가는 순간 아무도 말을 안 했다.'},
-     {need:['knife'],           pts:2, line:'칼로 바위에 붙은 조개를 땄다. 날것이지만 먹었다.'},
-     {need:['noodle'],          pts:1, line:'생라면을 부숴 먹었다. 짜다. 더 목이 마르다.'}
+     {need:['rod','fire'],    pts:5, line:'물고기를 낚아 불에 구웠다. 셋이 손가락까지 빨았다.'},
+     {need:['rod'],           pts:3, line:'두 시간 만에 물고기를 낚았다. 날로 먹었다. 그래도 먹었다.'},
+     {need:['noodle','fire'], pts:3, line:'불을 피워 라면을 끓였다. 국물이 넘어가는 동안 아무도 말을 안 했다.'},
+     {need:['knife'],         pts:2, line:'칼로 바위에 붙은 조개를 땄다. 날것이지만 먹었다.'},
+     {need:['noodle'],        pts:1, line:'생라면을 부숴 먹었다. 짜다. 더 목이 마르다.'}
    ],
    fail:{pts:-4, down:1, line:'풀을 뜯어 씹었다. 30분 뒤 셋 다 배를 잡고 굴렀다.'} },
 
- { id:'e5', day:3, when:'셋째 날 · 밤', em:'⛈️',
-   title:'폭풍우가 몰아친다',
-   desc:'파도가 잠자리까지 넘어온다. 캐리어가 떠내려가려 한다.\n지금 뭔가 하지 않으면 짐을 잃는다.',
-   ask:'짐을 어떻게 지킬까?',
+ { id:'e4', day:4, when:'넷째 날 · 아침', em:'🩸',
+   title:'발을 산호에 베였다',
+   desc:'물을 뜨러 가다 미끄러졌다. 발바닥이 길게 갈라졌다.\n모래가 들어갔고, 벌써 붓기 시작한다.',
+   ask:'상처를 어떻게 할까?', need:'소독하거나 감쌀 것',
    solves:[
-     {need:['tube'],   pts:3, line:'튜브에 짐을 묶어 띄웠다. 아침에 보니 다 무사하다.'},
-     {need:['blank'],  pts:2, line:'담요로 짐을 통째로 싸서 끌어안고 버텼다.'},
-     {need:['knife'],  pts:2, line:'칼로 덩굴을 잘라 짐을 나무에 묶었다.'},
-     {need:['umb'],    pts:1, line:'우산으로 짐을 가렸다. 우산은 뒤집어졌지만 짐은 남았다.'}
+     {need:['aid','shoe'], pts:5, line:'운동화 덕에 상처가 얕았고, 구급함으로 깔끔히 처치했다. 다음 날 걸어다녔다.'},
+     {need:['aid'],        pts:4, line:'소독약을 붓고 붕대를 감았다. 저녁이 되자 부기가 빠졌다.'},
+     {need:['shoe'],       pts:3, line:'운동화를 신고 있었다. 애초에 아무도 안 다쳤다. 15만원이 오늘의 MVP.'},
+     {need:['perf'],       pts:2, line:'향수를 상처에 부었다. 눈물이 찔끔 났지만 소독은 됐다.'},
+     {need:['knife'],      pts:1, line:'칼끝으로 박힌 산호 조각을 빼냈다. 피가 났지만 덜 아프다.'},
+     {need:['water'],      pts:1, line:'아까운 생수로 상처를 씻었다. 마실 물이 줄었다.'}
    ],
-   fail:{pts:-2, down:0, lose:1, line:'아침에 일어나 보니 짐이 하나 사라져 있었다.'} },
+   fail:{pts:-4, down:1, line:'모래를 털고 그냥 뒀다. 저녁이 되자 발이 두 배로 부었다. 걷지를 못한다.'} },
 
- { id:'e6', day:4, when:'넷째 날 · 새벽', em:'🚢',
+ { id:'e5', day:5, when:'다섯째 날 · 새벽', em:'🚢',
    title:'수평선에 배가 지나간다',
-   desc:'저 멀리 불빛이 보인다. 소리를 질러도 안 들린다.\n지금 못 알리면, 다음 배가 언제 올지 아무도 모른다.',
-   ask:'어떻게 알릴까?',
+   desc:'저 멀리 불빛이 보인다. 소리를 질러도 안 들린다.\n지금 못 알리면 다음 배가 언제 올지 모른다.',
+   ask:'어떻게 알릴까?', need:'멀리서 보이게 할 것',
    solves:[
-     {need:['mirror'], pts:5, line:'거울로 햇빛을 반사시켰다. 배가 방향을 틀었다. 1만원짜리가 셋을 살렸다.'},
-     {need:['fire'],   pts:4, line:'젖은 나뭇잎을 태워 검은 연기를 올렸다. 배에서 기적 소리가 울렸다.'},
-     {need:['cam'],    pts:2, line:'카메라 플래시를 미친 듯이 터뜨렸다. 배가 아주 살짝 방향을 틀었다.'},
-     {need:['spk'],    pts:2, line:'스피커 볼륨을 끝까지 올렸다. 파도 소리에 거의 묻혔지만 누군가 들었다.'},
-     {need:['watch'],  pts:1, line:'시계 유리로 빛을 반사시켜 봤다. 너무 작다. 그래도 해봤다.'}
+     {need:['mirror','fire'], pts:6, line:'거울로 빛을 쏘고 젖은 잎을 태워 연기까지 올렸다. 배가 뱃머리를 돌렸다.'},
+     {need:['mirror'],        pts:5, line:'거울로 햇빛을 반사시켰다. 배가 방향을 틀었다. 1만원짜리가 셋을 살렸다.'},
+     {need:['fire'],          pts:4, line:'젖은 잎을 태워 검은 연기를 올렸다. 배에서 기적이 울렸다.'},
+     {need:['cam'],           pts:2, line:'카메라 플래시를 미친 듯이 터뜨렸다. 배가 아주 살짝 방향을 틀었다.'},
+     {need:['spk'],           pts:2, line:'스피커 볼륨을 끝까지 올렸다. 파도에 거의 묻혔지만 누군가 들었다.'},
+     {need:['watch'],         pts:1, line:'시계 유리로 빛을 반사시켜 봤다. 너무 작다. 그래도 해봤다.'}
    ],
-   fail:{pts:-6, down:1, line:'셋이 팔이 빠지도록 흔들었다. 배는 그대로 지나갔다. 아무도 말을 안 했다.'} },
-
- { id:'e7', day:4, when:'넷째 날 · 아침', em:'🚁',
-   title:'구조 헬기가 온다',
-   desc:'어제 그 배가 신고를 했다. 헬기가 온다.\n그런데 무게 때문에 짐은 딱 하나만 들고 탈 수 있다.',
-   ask:'딱 하나. 뭘 들고 갈까?',
-   pickOne:true,
-   solves:[], fail:{pts:0, down:0, line:''} }
+   fail:{pts:-6, down:1, line:'셋이 팔이 빠지도록 흔들었다. 배는 그대로 지나갔다.'} }
 ];
 
-/* 물물교환 안내 */
-window.TRADE = {
-  title:'물물교환 3분',
-  desc:'다른 조를 찾아가서 직접 협상하세요.\n말로 합의한 다음, 화면에서 제안을 보내면 됩니다.'
-};
+/* 보급소에서 팔 수 있는 물건 (교사가 하나씩 경매에 올림) */
+window.SUPPLY = ['water','blank','fire','aid','noodle','mirror','rod','knife','umb','tube'];
 
-/* 마지막 편의점 장면 */
-window.STORE = {
-  em:'🏪',
-  head:'구조된 다음 날, 편의점',
-  price:'1,000원',
+/* 도착한 나라 설명 */
+window.PLACE = {
+  em:'🛬',
+  name:'이름을 못 들어본 나라',
   lines:[
-    '어제까지 목숨을 걸었던 그 물이다.',
-    '물은 하나도 안 변했다.',
-    '바뀐 건 <b>얼마나 부족했느냐</b>뿐이다.'
+    '엔진 하나가 멈춰서 가장 가까운 섬에 내렸다.',
+    '공항이라기엔 활주로 하나뿐이다.',
+    '',
+    '<b>카드가 안 된다.</b> 은행도, 편의점도, 마트도 없다.',
+    '통신도 안 터진다. 통장의 100억은 <b>숫자로만</b> 있다.',
+    '',
+    '쓸 수 있는 건 <b>캐리어에 들고 온 것</b>뿐이다.'
+  ]
+};
+window.EXCHANGE = {
+  em:'💱',
+  head:'환전소',
+  lines:[
+    '항구 옆에 낡은 환전소가 하나 있다.',
+    '주인은 <b>금과 보석, 현금</b>만 쳐준다.',
+    '명품 로고? 여기선 아무도 모른다.'
+  ]
+};
+window.MARKET = {
+  em:'🏪',
+  head:'보급소',
+  lines:[
+    '배가 들어올 때마다 물건을 <b>몇 개씩만</b> 내려놓는다.',
+    '가게가 아니라 <b>경매</b>다. 제일 높은 값을 부른 조가 가져간다.',
+    '값을 못 부른 조는 그냥 돌아선다.'
   ]
 };
 
-/* 판서 3줄 */
+/* 마지막 — 담백하게 */
+window.ENDING = {
+  em:'🏪',
+  head:'인천공항 편의점',
+  q:'뭐가 달라졌지?'
+};
+
 window.BOARD = [
-  {k:'희소성', v:'원하는 만큼 없는 상태. 다이아몬드는 <b>희귀</b>하지만 섬에선 <b>희소하지 않다</b>. 아무도 안 원하니까. 욕구가 있어야 희소하다.'},
+  {k:'희소성', v:'원하는 사람은 많은데 물건이 적을 때 생긴다. 다이아몬드는 <b>드물지만</b> 여기선 아무도 안 원했다. 원하는 사람이 없으면 희소하지도 않다.'},
   {k:'기회비용', v:'8칸을 채우느라 <b>포기한 것</b>. 그때 안 넣은 그 물건.'},
-  {k:'합리적 선택', v:'비싼 걸 고르는 게 아니라, <b>지금 이 상황에서 편익이 큰 것</b>을 고르는 것.'}
+  {k:'합리적 선택', v:'비싼 걸 고르는 게 아니라 <b>지금 여기서 편익이 큰 것</b>을 고르는 것.'}
 ];
 
 </script>
@@ -301,12 +350,12 @@ const FIREBASE_CONFIG={apiKey:"AIzaSyApUKeVhJ0EnOm_wu1vcT-14yeax7iQR7I",
  authDomain:"court-ae96f.firebaseapp.com",projectId:"court-ae96f",
  storageBucket:"court-ae96f.firebasestorage.app",messagingSenderId:"397308728790",
  appId:"1:397308728790:web:d6d10fac3865e547d24077"};
-const P='isl_', STATE=P+'state', TEAM=P+'team_', TR=P+'tr_';
+const P='bil_', STATE=P+'state', TEAM=P+'team_', TR=P+'tr_';
 const $=s=>document.querySelector(s), app=$('#app');
-if(!window.GOODS){ app.innerHTML='<div style="padding:40px">⚠️ isl_data.js 를 못 찾았습니다</div>'; throw 0; }
+if(!window.GOODS){ app.innerHTML='<div style="padding:40px">⚠️ 내용 파일을 못 찾았습니다</div>'; throw 0; }
 const C=window.CFG, EV=window.EVENTS;
 const GOODS=[...window.GOODS].sort((a,b)=>b.price-a.price);
-const G=id=>GOODS.find(g=>g.id===id)||{em:'❓',name:'?',price:0};
+const G=id=>GOODS.find(g=>g.id===id)||{em:'❓',name:'?',price:0,cash:0};
 const R=document.documentElement.style;
 R.setProperty('--font',`'${window.FONT||'Dongle'}','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif`);
 R.setProperty('--fs',String(window.FONT_SCALE||1));
@@ -315,17 +364,39 @@ function won(n){ n=Math.round(n||0);
   if(n>=100000000) return trim(n/100000000)+'억';
   if(n>=10000) return trim(n/10000)+'만';
   return n.toLocaleString('ko-KR')+'원'; }
+const eok=n=>Number(n||0).toLocaleString('ko-KR')+'억';
 
-let DB=null,api=null,online=false,busy=false,hide=false;
-let ST={phase:'lobby'}, TEAMS={}, TRDOCS={};
+let DB=null,api=null,online=false,busy=false,hide=false,lotSel='water';
+let ST={phase:'lobby',step:0}, TEAMS={}, TRDOCS={};
 const TN=()=>Array.from({length:C.teams},(_,i)=>(i+1)+'조');
-const evOf=id=>EV.find(e=>e.id===id);
-const curEv=()=>evOf(ST.evId)||EV[0];
 const inv=t=>(t&&t.inv)||[];
-const hpOf=t=>Math.max(0,(t&&t.hp)==null?C.hp:t.hp);
-function scoreOf(t){ let s=0; const r=(t&&t.res)||{}; for(const k in r) s+=r[k].p||0; return s; }
+const hpOf=t=>{const v=t&&t.hp; return Math.max(0,v==null?C.hp:v);};
+const moneyOf=t=>Math.max(0,(t&&t.money)||0);
+function scoreOf(t){let s=0;const r=(t&&t.res)||{};for(const k in r)s+=r[k].p||0;return s;}
 const packPrice=t=>((t&&t.pack)||[]).reduce((a,id)=>a+G(id).price,0);
-const retMoney=t=>{const id=t&&t.ret; return id?G(id).price:0;};
+const cashOf=t=>((t&&t.pack)||[]).reduce((a,id)=>a+G(id).cash,0);
+
+/* ══ 단계표 ══ */
+const STEPS=[
+ {ph:'lobby', nm:'대기실',        go:'🎰 로또 발표'},
+ {ph:'lotto', nm:'로또 1등 당첨',  go:'🥂 일등석 탑승'},
+ {ph:'first', nm:'일등석',        go:'🧳 짐 싸기 시작'},
+ {ph:'pack',  nm:'짐 싸기',       go:'🔒 짐 마감하고 이륙'},
+ {ph:'land',  nm:'비상 착륙',     go:'💱 환전소로'},
+ {ph:'money', nm:'환전소',        go:'🌑 첫째 날 사건'},
+];
+EV.forEach((e,i)=>{
+  STEPS.push({ph:'ev',   ev:e.id, nm:`${e.day}일차 · ${e.title}`, go:'📢 결과 공개'});
+  STEPS.push({ph:'evres',ev:e.id, nm:`${e.day}일차 · 결과`,
+    go: i<EV.length-1 ? `${EV[i+1].em} ${EV[i+1].day}일차 사건` : '📈 오늘 팔린 값'});
+});
+STEPS.push({ph:'price', nm:'오늘 팔린 값', go:'🏆 두 개의 순위'});
+STEPS.push({ph:'rank',  nm:'두 개의 순위', go:'🏪 인천공항 편의점'});
+STEPS.push({ph:'store', nm:'인천공항 편의점', go:'✍️ 정리 3줄'});
+STEPS.push({ph:'board', nm:'정리',        go:'🎬 최종 결과'});
+STEPS.push({ph:'result',nm:'최종 결과',   go:null});
+const stepIdx=()=>Math.max(0,Math.min(STEPS.length-1, ST.step||0));
+const stepNow=()=>STEPS[stepIdx()];
 
 let AC=null;
 function snd(k){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const t=AC.currentTime;
@@ -334,70 +405,107 @@ function snd(k){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)(
   g.gain.exponentialRampToValueAtTime(.001,t+(at||0)+d);o.connect(g).connect(AC.destination);
   o.start(t+(at||0));o.stop(t+(at||0)+d+.02);};
  if(k==='open')b(760,.14,'sine',.13);
- if(k==='buzz'){b(180,.4,'sawtooth',.13);}
+ if(k==='buzz')b(180,.4,'sawtooth',.13);
  if(k==='coin'){[988,1319].forEach((f,i)=>b(f,.12,'square',.1,i*.07));}
  if(k==='lotto'){[523,659,784,1047,1319].forEach((f,i)=>b(f,.3,'triangle',.15,i*.12));}
  if(k==='crash'){b(90,.9,'sawtooth',.16);b(60,1.2,'square',.1,.1);}
+ if(k==='gavel'){b(300,.1,'square',.2);b(200,.25,'square',.16,.12);}
 }catch(e){}}
 
 async function save(o){ if(!online) return;
-  try{ await api.setDoc(api.doc(DB,'live',STATE),o,{merge:true}); }catch(e){ alert('저장 실패: '+e.code); } }
+  try{ await api.setDoc(api.doc(DB,'live',STATE),o,{merge:true}); }catch(e){ alert('저장 실패 '+e.code); } }
 async function saveTeam(t,o){ try{ await api.setDoc(api.doc(DB,'live',TEAM+t),o,{merge:true}); }catch(e){} }
 
-/* ── 진행 ── */
-async function newGame(){
-  if(!confirm('모든 기록을 지우고 처음부터 시작합니다.')) return;
+/* ══ 다음 단계 ══ */
+async function next(){
+  if(busy) return;
+  const i=stepIdx(), cur=STEPS[i];
+  if(!cur.go) return;
   busy=true;
-  for(const t of TN()) await saveTeam(t,{team:t,pack:[],packLock:false,inv:[],ans:{},res:{},
-    hp:C.hp,ret:null,by:null,members:[]});
-  for(const id in TRDOCS){
-    try{ await api.setDoc(api.doc(DB,'live',id),{done:true,st:'no'},{merge:true}); }catch(e){}
-    try{ await api.deleteDoc(api.doc(DB,'live',id)); }catch(e){} }
-  await save({phase:'lobby',evId:null,evOpen:false,evShown:false,tradeEnd:0,log:[],at:Date.now()});
-  busy=false;
+  try{
+    if(cur.ph==='pack'){ // 짐 마감
+      for(const t of TN()){ const d=TEAMS[t]||{};
+        await saveTeam(t,{pack:d.pack||[],inv:[...(d.pack||[])],packLock:true}); }
+      snd('coin');
+    }
+    if(cur.ph==='land'){ // 환전
+      for(const t of TN()){ const d=TEAMS[t]||{}; const pk=d.pack||[];
+        await saveTeam(t,{money:cashOf(d), inv:pk.filter(id=>G(id).cash===0)}); }
+      snd('coin');
+    }
+    if(cur.ph==='ev'){ await judgeAll(evOf(cur.ev)); }
+    const nx=STEPS[i+1];
+    const o={step:i+1, phase:nx.ph, at:Date.now()};
+    if(nx.ev) o.evId=nx.ev;
+    if(nx.ph==='pack'&&C.packSec) o.packEnd=Date.now()+C.packSec*1000;
+    if(nx.ph==='ev') o.auc=null;
+    await save(o);
+    if(nx.ph==='lotto') snd('lotto');
+    else if(nx.ph==='land') snd('crash');
+    else snd('open');
+  }finally{ busy=false; }
 }
-const go=(ph,extra)=>save({phase:ph,at:Date.now(),...(extra||{})});
-async function lockPack(){
-  for(const t of TN()){ const d=TEAMS[t]; if(!d||d.packLock) continue;
-    await saveTeam(t,{inv:[...(d.pack||[])],packLock:true}); }
-  snd('coin');
-}
-function openEv(id){ snd('open'); save({phase:'ev',evId:id,evOpen:true,evShown:false,at:Date.now()}); }
+async function back(){ const i=stepIdx(); if(i<=0) return;
+  const nx=STEPS[i-1]; const o={step:i-1,phase:nx.ph,at:Date.now()};
+  if(nx.ev) o.evId=nx.ev; await save(o); }
+async function jump(i){ const nx=STEPS[i]; const o={step:i,phase:nx.ph,at:Date.now()};
+  if(nx.ev) o.evId=nx.ev; await save(o); }
 
-/* ── 판정 ── */
+const evOf=id=>EV.find(e=>e.id===id)||EV[0];
+const curEv=()=>evOf(ST.evId);
+
+/* ══ 판정 ══ */
 function judge(team,e){
-  const picked=((team.ans||{})[e.id])||[], own=inv(team);
+  const picked=((team.sel||{})[e.id])||[], own=inv(team);
   const valid=picked.filter(id=>own.includes(id));
   let best=null;
   (e.solves||[]).forEach(s=>{ if(s.need.every(n=>valid.includes(n))){ if(!best||s.pts>best.pts) best=s; }});
-  if(best) return {p:best.pts,line:best.line,down:0};
+  if(best) return {p:best.pts,line:best.line,down:0,used:valid};
   const f=e.fail||{pts:0,line:''};
-  const r={p:f.pts||0,line:f.line||'',down:f.down||0};
-  if(f.lose&&own.length) r.lost=own[Math.floor(Math.random()*own.length)];
-  return r;
+  return {p:f.pts||0,line:f.line||'',down:f.down||0,used:valid};
 }
-async function showEv(){
-  const e=curEv(); if(busy) return; busy=true;
-  await save({evOpen:false,evShown:true,at:Date.now()});
-  if(e.pickOne){ busy=false; snd('coin'); return; }
+async function judgeAll(e){
   for(const t of TN()){
-    const d=TEAMS[t]; if(!d||!d.packLock) continue;
+    const d=TEAMS[t]; if(!d) continue;
     if((d.res||{})[e.id]) continue;
     const hp0=hpOf(d), r=judge(d,e);
-    if(hp0<=1&&r.p>0) { r.p=Math.max(1,Math.round(r.p/2)); r.line+=' (조원이 둘이나 쓰러져 있어서 절반만 해냈다)'; }
+    if(hp0<=1&&r.p>0){ r.p=Math.max(1,Math.round(r.p/2)); r.line+=' (둘이나 쓰러져 있어서 절반만 해냈다)'; }
     const res={...(d.res||{})}; res[e.id]=r;
-    const o={res};
-    if(r.down) o.hp=Math.max(0,hp0-r.down);
-    if(r.lost) o.inv=inv(d).filter(x=>x!==r.lost);
+    const o={res}; if(r.down) o.hp=Math.max(0,hp0-r.down);
     await saveTeam(t,o);
   }
-  busy=false; snd('buzz');
+  snd('buzz');
 }
-function openTrade(){ snd('open');
-  save({phase:'trade',evOpen:false,evShown:false,tradeEnd:Date.now()+C.tradeSeconds*1000,at:Date.now()}); }
-function addTime(s){ save({tradeEnd:Math.max(Date.now(),ST.tradeEnd||0)+s*1000}); }
 
-/* ── 거래 자동 처리 (교사만 씀) ── */
+/* ══ 경매 ══ */
+async function openAuc(item){
+  const id='a'+Date.now();
+  await save({auc:{id,item,open:true,at:Date.now()}}); snd('open');
+}
+async function closeAuc(){
+  const a=ST.auc; if(!a||!a.open||busy) return; busy=true;
+  try{
+    let best=null;
+    TN().forEach(t=>{ const d=TEAMS[t]||{}; const b=(d.bids||{})[a.id];
+      if(b==null||b<=0) return;
+      const bt=((d.bidT||{})[a.id])||0;
+      if(!best||b>best.b||(b===best.b&&bt<best.bt)) best={t,b,bt};});
+    if(best){
+      const d=TEAMS[best.t]||{};
+      const pay=Math.min(best.b,moneyOf(d));
+      const ni=inv(d).includes(a.item)?inv(d):[...inv(d),a.item];
+      await saveTeam(best.t,{money:Math.max(0,moneyOf(d)-pay), inv:ni});
+      const log=[...(ST.aucLog||[]),{item:a.item,team:best.t,price:pay,at:Date.now()}].slice(-30);
+      await save({auc:{...a,open:false,winner:best.t,price:pay,doneAt:Date.now()},aucLog:log});
+    } else {
+      await save({auc:{...a,open:false,winner:null,price:0,doneAt:Date.now()}});
+    }
+    snd('gavel');
+  }finally{ busy=false; }
+}
+async function clearAuc(){ await save({auc:null}); }
+
+/* ══ 거래 처리 (교사만) ══ */
 let processing=false;
 async function processTrades(){
   if(processing||!online) return; processing=true;
@@ -405,16 +513,18 @@ async function processTrades(){
     for(const id in TRDOCS){ const x=TRDOCS[id];
       if(x.st!=='ok'||x.done) continue;
       const A=TEAMS[x.from], B=TEAMS[x.to];
-      if(!A||!B){ await api.setDoc(api.doc(DB,'live',id),{done:true,fail:'조없음'},{merge:true}); continue; }
-      const ia=inv(A), ib=inv(B);
-      const okA=x.give.every(g=>ia.includes(g)), okB=x.take.every(g=>ib.includes(g));
-      if(!okA||!okB){ await api.setDoc(api.doc(DB,'live',id),{done:true,fail:'물건없음'},{merge:true}); continue; }
-      const na=ia.filter(g=>!x.give.includes(g)).concat(x.take);
-      const nb=ib.filter(g=>!x.take.includes(g)).concat(x.give);
-      await saveTeam(x.from,{inv:na}); await saveTeam(x.to,{inv:nb});
-      const entry={f:x.from,t:x.to,g:x.give,k:x.take,
-        gp:x.give.reduce((a,i)=>a+G(i).price,0), kp:x.take.reduce((a,i)=>a+G(i).price,0), at:Date.now()};
-      const log=[...(ST.log||[]),entry].slice(-40);
+      if(!A||!B){ await api.setDoc(api.doc(DB,'live',id),{done:true},{merge:true}); continue; }
+      const ia=inv(A), ib=inv(B), cs=x.cash||0;
+      const ma=moneyOf(A), mb=moneyOf(B);
+      if(!x.give.every(g=>ia.includes(g))||!x.take.every(g=>ib.includes(g))
+         ||(cs>0&&ma<cs)||(cs<0&&mb< -cs)){
+        await api.setDoc(api.doc(DB,'live',id),{done:true,fail:1},{merge:true}); continue; }
+      const na=Array.from(new Set(ia.filter(g=>!x.give.includes(g)).concat(x.take)));
+      const nb=Array.from(new Set(ib.filter(g=>!x.take.includes(g)).concat(x.give)));
+      await saveTeam(x.from,{inv:na,money:Math.max(0,ma-cs)});
+      await saveTeam(x.to,{inv:nb,money:Math.max(0,mb+cs)});
+      const log=[...(ST.log||[]),{f:x.from,t:x.to,g:x.give,k:x.take,cash:cs,msg:x.msg||'',
+        gp:x.give.reduce((a,i)=>a+G(i).price,0),kp:x.take.reduce((a,i)=>a+G(i).price,0),at:Date.now()}].slice(-40);
       await save({log}); ST.log=log;
       await api.setDoc(api.doc(DB,'live',id),{done:true},{merge:true});
       snd('coin');
@@ -423,230 +533,280 @@ async function processTrades(){
   processing=false;
 }
 
-/* ── 그리기 ── */
-function draw(){
-  app.innerHTML = ctrl() + `<div class="stage">${stage()}</div>`;
-  bind();
+async function newGame(){
+  if(!confirm('모든 기록을 지우고 처음부터 시작합니다.')) return;
+  busy=true;
+  for(const t of TN()) await saveTeam(t,{team:t,pack:[],packLock:false,inv:[],sel:{},res:{},
+    bids:{},bidT:{},money:0,hp:C.hp,first:null,by:null,members:[]});
+  for(const id in TRDOCS){ try{ await api.setDoc(api.doc(DB,'live',id),{done:true},{merge:true}); }catch(e){}
+                           try{ await api.deleteDoc(api.doc(DB,'live',id)); }catch(e){} }
+  await save({step:0,phase:'lobby',evId:null,auc:null,aucLog:[],log:[],packEnd:0,at:Date.now()});
+  busy=false;
 }
-function ctrl(){
-  const evb=EV.map(e=>`<button data-ev="${e.id}" class="${ST.evId===e.id&&ST.phase==='ev'?'pri':''}">${e.em}${e.day}일 ${e.title.slice(0,6)}</button>`).join('');
-  const packed=TN().filter(t=>(TEAMS[t]||{}).packLock).length;
-  const ans=ST.phase==='ev'?TN().filter(t=>((TEAMS[t]||{}).ans||{})[ST.evId]!=null).length:0;
-  return `<div class="ctrl ${hide?'hide':''}">
-    <button class="dan" id="new">새 게임</button><span class="sep"></span>
-    <button id="p_lotto">🎰 로또</button>
-    <button id="p_pack">🧳 짐싸기</button>
-    <button class="ok" id="p_lock">🔒 짐 마감 (${packed}/${C.teams})</button>
-    <button id="p_crash">✈️ 추락</button><span class="sep"></span>
-    ${evb}
-    <button class="pri" id="show">📢 결과 공개 ${ST.phase==='ev'?`(${ans}/${C.teams})`:''}</button>
-    <span class="sep"></span>
-    <button id="p_trade">🤝 물물교환</button>
-    <button id="t30">+30초</button>
-    <span class="sep"></span>
-    <button id="p_price">📈 생수 값</button>
-    <button id="p_rank">🏆 두 순위</button>
-    <button id="p_store">🏪 편의점</button>
-    <button id="p_board">✍️ 판서</button>
-    <button id="p_result">🎬 최종</button>
-    <span class="sep"></span>
-    <span class="lb">H = 조작판 숨기기 · ${online?'연결됨':'연결 안 됨'}</span>
-  </div>`;
+
+/* ══ 그리기 ══ */
+function draw(){ app.innerHTML=pilot()+`<div class="stage">${stage()}</div>`; bind(); }
+function hintOf(){
+  const s=stepNow();
+  if(s.ph==='lobby'){const n=TN().reduce((a,t)=>a+(((TEAMS[t]||{}).members||[]).length),0);
+    return `학생들이 학번을 입력하는 중 · <b>${n}명</b> 들어옴`;}
+  if(s.ph==='pack'){const k=TN().filter(t=>(TEAMS[t]||{}).packLock).length;
+    const f=TN().filter(t=>((TEAMS[t]||{}).pack||[]).length>=C.slots).length;
+    return `8칸 다 채운 조 <b>${f}/${C.teams}</b> · 확정한 조 <b>${k}/${C.teams}</b>`;}
+  if(s.ph==='first'){const n=TN().filter(t=>(TEAMS[t]||{}).first!=null).length;
+    return `기내식 고른 조 <b>${n}/${C.teams}</b> · 그냥 즐기는 장면입니다`;}
+  if(s.ph==='ev'){const e=curEv();
+    const n=TN().filter(t=>(((TEAMS[t]||{}).sel||{})[e.id]||[]).length>0).length;
+    const a=ST.auc;
+    if(a&&a.open) return `🔨 <b>${G(a.item).name}</b> 경매 중 · 입찰한 조 <b>${TN().filter(t=>((TEAMS[t]||{}).bids||{})[a.id]!=null).length}</b>조 → 아래 <b>낙찰</b> 누르기`;
+    return `쓸 것을 고른 조 <b>${n}/${C.teams}</b> · 필요하면 아래에서 <b>경매</b>를 여세요`;}
+  if(s.ph==='evres') return `결과가 나왔습니다. 한 번 읽어주고 넘기세요`;
+  if(s.ph==='money') return `조마다 쓸 수 있는 돈이 정해졌습니다`;
+  if(s.ph==='rank') return `<b>순위가 뒤집힌 걸</b> 짚어주세요`;
+  if(s.ph==='store') return `설명하지 말고 <b>애들한테 물어보세요</b>`;
+  return '';
+}
+function pilot(){
+  const i=stepIdx(), s=stepNow(), a=ST.auc;
+  let ready=false;
+  if(s.ph==='ev'&&!(a&&a.open)) ready=TN().every(t=>(((TEAMS[t]||{}).sel||{})[s.ev]||[]).length>0);
+  if(s.ph==='pack') ready=TN().every(t=>((TEAMS[t]||{}).pack||[]).length>=C.slots);
+  return `<div class="pilot ${hide?'hide':''}">
+   <div class="row1">
+     <div class="nowbox"><div class="st">${i+1} / ${STEPS.length} 단계</div>
+       <div class="nm">${s.nm}</div><div class="hint">${hintOf()}</div></div>
+     <button class="nextbtn ${s.go?(ready?'ready':''):'end'}" id="next">
+       ${s.go?`<span class="k">👉 다음에 누를 것 (Enter)</span><span class="v">${s.go}</span>`
+             :`<span class="v">끝</span>`}</button>
+   </div>
+   <div class="row2">
+     <button id="back">◀ 뒤로</button>
+     <span class="sep"></span>
+     <span class="lb">🏪 보급소 경매</span>
+     <select id="lot">${window.SUPPLY.map(id=>`<option value="${id}" ${lotSel===id?'selected':''}>${G(id).em} ${G(id).name}</option>`).join('')}</select>
+     ${a&&a.open ? `<button class="hot" id="gavel">🔔 낙찰!</button>`
+       : `<button class="hot" id="auc">🔨 경매 시작</button>`}
+     ${a&&!a.open ? `<button id="aclr">경매판 치우기</button>`:''}
+     <span class="sep"></span>
+     <span class="lb">⏱ 짐싸기</span>
+     <button id="t120">2분</button><button id="t180">3분</button><button id="t0">제한없음</button>
+     <span class="sep"></span>
+     <select id="jump">${STEPS.map((x,k)=>`<option value="${k}" ${k===i?'selected':''}>${k+1}. ${x.nm}</option>`).join('')}</select>
+     <button class="dan" id="new">새 게임</button>
+     <span class="lb">H = 조종석 숨기기 · ${online?'연결됨':'연결 안 됨'}</span>
+   </div></div>`;
 }
 function bind(){
   const on=(id,fn)=>{const el=$('#'+id); if(el) el.onclick=fn;};
-  on('new',newGame);
-  on('p_lotto',()=>{snd('lotto');go('lotto');}); on('p_pack',()=>go('pack'));
-  on('p_lock',lockPack); on('p_crash',()=>{snd('crash');go('crash');});
-  on('show',showEv); on('p_trade',openTrade); on('t30',()=>addTime(30));
-  on('p_price',()=>go('price')); on('p_rank',()=>go('rank'));
-  on('p_store',()=>go('store')); on('p_board',()=>go('board')); on('p_result',()=>go('result'));
-  document.querySelectorAll('[data-ev]').forEach(b=>b.onclick=()=>openEv(b.dataset.ev));
+  on('next',next); on('back',back); on('new',newGame);
+  on('auc',()=>openAuc(lotSel)); on('gavel',closeAuc); on('aclr',clearAuc);
+  on('t120',()=>save({packEnd:Date.now()+120000})); on('t180',()=>save({packEnd:Date.now()+180000}));
+  on('t0',()=>save({packEnd:0}));
+  const l=$('#lot'); if(l) l.onchange=e=>{lotSel=e.target.value;};
+  const j=$('#jump'); if(j) j.onchange=e=>jump(+e.target.value);
 }
-document.addEventListener('keydown',e=>{ if(e.key==='h'||e.key==='H'){hide=!hide;draw();} });
+document.addEventListener('keydown',e=>{
+  if(e.key==='h'||e.key==='H'){hide=!hide;draw();}
+  if(e.key==='Enter'){e.preventDefault();next();}
+  if(e.key===' '&&ST.auc&&ST.auc.open){e.preventDefault();closeAuc();}
+});
 
 function stage(){
+  const a=ST.auc;
+  if(a&&(a.open||(a.doneAt&&Date.now()-a.doneAt<600000))&&ST.phase==='ev') return sAuc();
   switch(ST.phase){
-    case 'lotto':  return sLotto();
-    case 'pack':   return sPack();
-    case 'crash':  return sCrash();
-    case 'ev':     return ST.evShown? sEvResult() : sEvOpen();
-    case 'trade':  return sTrade();
-    case 'price':  return sPrice();
-    case 'rank':   return sRank();
-    case 'board':  return sBoard();
-    case 'store':  return sStore();
-    case 'result': return sResult();
-    default:       return sLobby();
+    case 'lotto': return sLotto();
+    case 'first': return sFirst();
+    case 'pack':  return sPack();
+    case 'land':  return sLand();
+    case 'money': return sMoney();
+    case 'ev':    return sEv();
+    case 'evres': return sEvRes();
+    case 'price': return sPrice();
+    case 'rank':  return sRank();
+    case 'store': return sStore();
+    case 'board': return sBoard();
+    case 'result':return sResult();
+    default:      return sLobby();
   }
 }
 function sLobby(){
-  const n=TN().map(t=>({t,m:((TEAMS[t]||{}).members||[]).length}));
-  const tot=n.reduce((a,x)=>a+x.m,0);
-  return `<h1>무인도 100억</h1><div class="sub">학생 화면에서 학번과 조를 입력하게 하세요</div>
+  const tot=TN().reduce((a,t)=>a+(((TEAMS[t]||{}).members||[]).length),0);
+  return `<h1>100억</h1><div class="sub">학생 화면에서 <b>학번과 조</b>를 입력하게 하세요</div>
    <div class="mid"><div class="big">🎫</div><h2>${tot}명 접속</h2>
-   <div class="grid8">${n.map(x=>`<div class="tc ${x.m?'':'wait'}">
-     <div class="h"><b>${x.t}</b><span class="n">${x.m}명</span></div>
-     <div class="chips">${(((TEAMS[x.t]||{}).members)||[]).map(m=>`<span>${m}</span>`).join('')||'<span style="opacity:.4">대기</span>'}</div>
-   </div>`).join('')}</div></div>`;
+   <div class="grid4">${TN().map(t=>{const m=((TEAMS[t]||{}).members)||[];
+     return `<div class="tc ${m.length?'':'wait'}"><div class="h"><b>${t}</b><span class="n">${m.length}명</span></div>
+       <div class="chips">${m.map(x=>`<span>${x}</span>`).join('')||'<span style="opacity:.4">대기</span>'}</div></div>`;}).join('')}
+   </div></div>`;
 }
 function sLotto(){
   return `<div class="mid" style="background:radial-gradient(circle at 50% 40%,#3a2c10,#17150f 70%)">
-   <div style="font-size:1.5em;color:var(--gold);letter-spacing:.2em">로 또 １ 등 당 첨</div>
-   <div style="font-size:7em;font-weight:700;color:var(--gold);line-height:1;
+   <div style="font-size:1.4em;color:var(--gold);letter-spacing:.2em">로 또 １ 등 당 첨</div>
+   <div style="font-size:6.6em;font-weight:700;color:var(--gold);line-height:1;
      text-shadow:0 0 50px rgba(232,171,69,.5);animation:pop .6s cubic-bezier(.2,1.4,.4,1)">100억</div>
    <p>여덟 조 전부 당첨됐다. 오늘부터 너희는 백만장자다.
 
-✈️ 하와이 5성급 리조트 5박 6일 — 내일 출발
-캐리어는 조에 하나. 칸은 여덟 개.</p></div>`;
+✈️ 인천 → 하와이 · <b>일등석</b> 예약 완료</p></div>`;
+}
+function sFirst(){
+  const F=window.FIRST, cnt={};
+  TN().forEach(t=>{const v=(TEAMS[t]||{}).first; if(v!=null) cnt[v]=(cnt[v]||0)+1;});
+  return `<h1>🥂 일등석</h1><div class="sub">좌석이 180도로 눕는다. 메뉴판이 왔다.</div>
+   <div class="mid"><div class="grid4">${F.menu.map((m,i)=>`<div class="tc" style="text-align:center">
+     <div style="font-size:3em">${m.em}</div><div style="font-size:1.5em;font-weight:700">${m.name}</div>
+     <div style="font-size:1.2em;color:var(--gold)">${cnt[i]||0}조</div></div>`).join('')}</div>
+   <p style="color:var(--dim);font-size:1.3em;margin-top:10px">${F.after}</p></div>`;
 }
 function sPack(){
-  return `<h1>🧳 짐 싸는 중</h1>
-   <div class="sub">돈은 100억이라 뭐든 살 수 있습니다. 못 넣는 이유는 <b style="color:var(--gold)">칸이 8개</b>라서입니다 — 그게 기회비용입니다.</div>
-   <div class="mid"><div class="grid8">${TN().map(t=>{const d=TEAMS[t]||{},p=d.pack||[];
+  const end=ST.packEnd||0, left=end?Math.max(0,Math.ceil((end-Date.now())/1000)):0;
+  return `<h1>🧳 짐 싸는 중 ${end?`<span style="color:${left<=15?'var(--red)':'var(--gold)'}">${left}초</span>`:''}</h1>
+   <div class="sub">돈은 100억이라 <b>뭐든 살 수 있습니다.</b> 못 넣는 이유는 <b>칸이 8개</b>라서입니다 — 그게 기회비용입니다.</div>
+   <div class="mid"><div class="grid4">${TN().map(t=>{const d=TEAMS[t]||{},p=d.pack||[];
      return `<div class="tc ${d.packLock?'done':(p.length?'':'wait')}">
        <div class="h"><b>${t}</b><span class="n">${d.packLock?'✅ 확정':p.length+'/'+C.slots}</span></div>
        <div class="chips">${p.map(id=>`<span>${G(id).em}</span>`).join('')||'<span style="opacity:.4">비어 있음</span>'}</div>
-       <div class="st" style="font-size:.95em;margin-top:3px">${p.length?won(packPrice(d)):''}</div>
+       <div style="font-size:1em;color:var(--dim);margin-top:3px">${p.length?'합계 '+won(packPrice(d)):''}</div>
      </div>`;}).join('')}</div></div>`;
 }
-function sCrash(){
-  return `<div class="mid"><div class="big">✈️💥</div><h2>추락</h2>
-   <p>비행기는 태평양 한가운데 떨어졌다.
-살아남은 건 각 조 세 명, 그리고 파도에 떠밀려온 캐리어 하나.
-
-그 안에는 <b style="color:var(--gold)">어제 너희가 직접 고른 8개</b>가 들어 있다.
-구조는 나흘 뒤에 올지도 모른다.</p></div>`;
+function sLand(){
+  const L=window.PLACE;
+  return `<div class="mid"><div class="big">${L.em}</div><h2>${L.name}</h2>
+   <p style="max-width:820px">${L.lines.join('\n')}</p></div>`;
 }
-function sEvOpen(){
-  const e=curEv(), done=TN().filter(t=>((TEAMS[t]||{}).ans||{})[e.id]!=null);
+function sMoney(){
+  const rows=TN().map(t=>({t,d:TEAMS[t]||{}})).sort((a,b)=>moneyOf(b.d)-moneyOf(a.d));
+  return `<h1>💱 환전소</h1>
+   <div class="sub">여기 사람들은 <b>금·보석·현금</b>만 쳐줍니다. 명품 로고는 아무도 모릅니다.</div>
+   <div class="rows">${rows.map((x,i)=>`<div class="rw ${moneyOf(x.d)?'':'b'}" style="animation-delay:${i*.08}s">
+     <span class="t">${x.t}</span>
+     <span class="u">${(x.d.pack||[]).filter(id=>G(id).cash>0).map(id=>`<span>${G(id).em} ${eok(G(id).cash)}</span>`).join('')||'<span style="opacity:.6">바꿀 게 없다</span>'}</span>
+     <span class="ln">남은 짐 ${inv(x.d).map(id=>G(id).em).join('')||'없음'}</span>
+     <span class="p" style="width:120px;color:var(--gold)">${eok(moneyOf(x.d))}</span></div>`).join('')}</div>
+   <div class="sub" style="margin-top:6px">👉 <b>안 쓰고 남긴 돈은 0점</b>입니다. 여기서 못 박아 주세요.</div>`;
+}
+function sEv(){
+  const e=curEv();
+  const done=TN().filter(t=>(((TEAMS[t]||{}).sel||{})[e.id]||[]).length>0);
+  const log=[...(ST.log||[])].reverse().slice(0,6);
   return `<div class="evhead"><div class="em">${e.em}</div>
     <div><div class="when">${e.when}</div><h2>${e.title}</h2><div class="ds">${e.desc}</div></div>
-    <div class="cnt"><b>${done.length}/${C.teams}</b><div class="sub">조 제출</div></div></div>
-   <div class="mid"><h2 style="font-size:2.2em">${e.ask}</h2>
-    <p class="pulse">조끼리 상의해서 고르는 중…</p>
-    <div class="grid8" style="grid-template-columns:repeat(8,1fr)">${TN().map(t=>
-      `<div class="tc ${done.includes(t)?'done':'wait'}" style="text-align:center;padding:9px 4px">
-        <b style="font-size:1.4em">${t}</b><div class="st" style="font-size:1em">${done.includes(t)?'✅':'…'}</div>
-      </div>`).join('')}</div></div>`;
+    <div class="cnt"><b>${done.length}/${C.teams}</b><div class="sub">조 선택함</div></div></div>
+   <div class="rows"><div class="grid8" style="margin-bottom:10px">${TN().map(t=>{const d=TEAMS[t]||{};
+     const s=((d.sel||{})[e.id])||[];
+     return `<div class="tc ${s.length?'done':'wait'}" style="text-align:center;padding:8px 4px">
+       <b style="font-size:1.3em">${t}</b>
+       <div style="font-size:1.5em;line-height:1.2;min-height:1.2em">${s.map(id=>G(id).em).join('')||'…'}</div>
+       <div style="font-size:.85em;color:var(--gold)">${eok(moneyOf(d))}</div></div>`;}).join('')}</div>
+     ${log.length?`<div class="sub" style="margin-bottom:4px">🤝 방금 성사된 거래</div>
+       ${log.map(x=>`<div class="lg"><span class="b">${x.f}</span><span class="ar">→</span><span class="b">${x.t}</span>
+         <span>${[...x.g.map(i=>G(i).em+G(i).name),...(x.cash>0?['💰'+eok(x.cash)]:[])].join(' ')||'—'}</span><span class="ar">↔</span>
+         <span style="color:var(--gold);font-weight:700">${[...x.k.map(i=>G(i).em+G(i).name),...(x.cash<0?['💰'+eok(-x.cash)]:[])].join(' ')||'—'}</span>
+         ${x.msg?`<span class="m">"${x.msg}"</span>`:''}</div>`).join('')}`:''}
+   </div>`;
 }
-function sEvResult(){
+function sAuc(){
+  const a=ST.auc, g=G(a.item);
+  const bids=TN().map(t=>({t,d:TEAMS[t]||{},b:((TEAMS[t]||{}).bids||{})[a.id]}))
+    .sort((x,y)=>(y.b==null?-1:y.b)-(x.b==null?-1:x.b));
+  return `<h1>🏪 보급소 경매</h1>
+   <div class="sub">${a.open?'제일 높은 값을 부른 조가 가져갑니다. 다 부르면 <b>🔔 낙찰</b> (스페이스)':'낙찰 끝'}</div>
+   <div class="aucw">
+     <div>${a.open?`<div class="lot"><div class="e">${g.em}</div><div class="n">${g.name}</div>
+        <div class="q">딱 <b>1개</b></div></div>`
+       :`<div class="winbig">${a.winner?`<div style="font-size:3em">${g.em}</div>
+          <div class="t">${a.winner} 낙찰</div><div class="p">${eok(a.price)}</div>
+          <div class="l">${g.name} 을(를) 가져갔습니다</div>`
+          :`<div style="font-size:3em">🚢</div><div class="t">유찰</div>
+            <div class="l">아무도 값을 못 불렀다.<br>물건은 다시 배에 실렸다.</div>`}</div>`}</div>
+     <div class="bids">${bids.map(x=>`<div class="bd ${x.b==null||x.b<=0?'no':''} ${(!a.open&&a.winner===x.t)?'win':''}">
+       <span class="t">${x.t}</span><span class="m">가진 돈 ${eok(moneyOf(x.d))}</span>
+       <span class="v">${x.b==null?'아직':(x.b<=0?'포기':eok(x.b))}</span></div>`).join('')}</div>
+   </div>`;
+}
+function sEvRes(){
   const e=curEv();
-  if(e.pickOne){
-    const rows=TN().map(t=>({t,d:TEAMS[t]||{}})).filter(x=>x.d.ret)
-      .sort((a,b)=>G(b.d.ret).price-G(a.d.ret).price);
-    return `<div class="evhead"><div class="em">🚁</div><div><div class="when">${e.when}</div>
-      <h2>헬기에 실은 단 하나</h2><div class="ds">이제 도시로 돌아간다. 상황이 바뀌면 답도 바뀐다.</div></div></div>
-      <div class="rows">${rows.map((x,i)=>`<div class="rw ${i===0?'g':''}" style="animation-delay:${i*.09}s">
-        <span class="t">${x.t}</span>
-        <span class="u"><span>${G(x.d.ret).em} ${G(x.d.ret).name}</span></span>
-        <span class="ln">${G(x.d.ret).price>=10000000?'도시에서는 이게 정답이다':'섬에서는 최고였지만, 도시에서는…'}</span>
-        <span class="p" style="width:120px">${won(G(x.d.ret).price)}</span></div>`).join('')}</div>`;
-  }
-  const rows=TN().map(t=>({t,d:TEAMS[t]||{}}))
-    .filter(x=>((x.d.res||{})[e.id]))
-    .sort((a,b)=>(b.d.res[e.id].p)-(a.d.res[e.id].p));
+  const rows=TN().map(t=>({t,d:TEAMS[t]||{}})).filter(x=>(x.d.res||{})[e.id])
+    .sort((a,b)=>b.d.res[e.id].p-a.d.res[e.id].p);
   return `<div class="evhead"><div class="em">${e.em}</div>
-    <div><div class="when">${e.when}</div><h2>${e.title}</h2></div>
-    <div class="cnt"><b>${rows.length}</b><div class="sub">조</div></div></div>
-   <div class="rows">${rows.map((x,i)=>{const r=x.d.res[e.id], a=((x.d.ans||{})[e.id])||[];
+    <div><div class="when">${e.when}</div><h2>${e.title}</h2></div></div>
+   <div class="rows">${rows.map((x,i)=>{const r=x.d.res[e.id];
      return `<div class="rw ${r.p>0?'g':(r.p<0?'b':'')}" style="animation-delay:${i*.08}s">
        <span class="t">${x.t}</span>
-       <span class="u">${a.map(id=>`<span>${G(id).em} ${G(id).name}</span>`).join('')||'<span style="opacity:.5">아무것도 안 씀</span>'}</span>
-       <span class="ln">${r.line}${r.lost?` 📦 ${G(r.lost).name} 소실`:''}${r.down?' 🧍 한 명 쓰러짐':''}</span>
+       <span class="u">${(r.used||[]).map(id=>`<span>${G(id).em} ${G(id).name}</span>`).join('')||'<span style="opacity:.5">아무것도 못 씀</span>'}</span>
+       <span class="ln">${r.line}${r.down?' 🧍 한 명 쓰러짐':''}</span>
        <span class="p">${r.p>=0?'+':''}${r.p}</span></div>`;}).join('')}</div>`;
 }
-function sTrade(){
-  const left=Math.max(0,Math.ceil(((ST.tradeEnd||0)-Date.now())/1000));
-  const log=[...(ST.log||[])].reverse();
-  return `<h1>🤝 ${window.TRADE.title}</h1>
-   <div class="sub">${window.TRADE.desc.replace(/\n/g,' · ')}</div>
-   <div class="trw" style="margin-top:8px">
-     <div class="log">${log.map(x=>`<div class="lg">
-       <span class="b">${x.f}</span><span class="ar">→</span><span class="b">${x.t}</span>
-       <span class="a">${x.g.map(i=>G(i).em+G(i).name).join(' ')}</span>
-       <span class="ar">↔</span>
-       <span style="color:var(--gold);font-weight:700">${x.k.map(i=>G(i).em+G(i).name).join(' ')}</span>
-       <span class="pr">${won(x.gp)} ↔ ${won(x.kp)}</span></div>`).join('')
-       ||`<div class="mid" style="color:var(--dim)"><p>아직 성사된 거래가 없습니다.
-조끼리 <b>말로</b> 합의한 뒤 화면에서 제안을 보내게 하세요.</p></div>`}</div>
-     <div style="display:flex;flex-direction:column;justify-content:center;gap:14px">
-       <div class="tmrbig ${left<=30?'hot':''}">${left}</div>
-       <div class="grid8" style="grid-template-columns:repeat(2,1fr)">${TN().map(t=>{const d=TEAMS[t]||{};
-         const w=inv(d).includes('water');
-         return `<div class="tc" style="padding:7px 9px">
-           <div class="h"><b style="font-size:1.2em">${t}</b>
-             <span class="n">${w?'💧 물 있음':''}</span></div>
-           <div class="chips">${inv(d).map(id=>`<span>${G(id).em}</span>`).join('')}</div></div>`;}).join('')}</div>
-     </div></div>`;
-}
-function waterPaid(){
-  const out=[];
-  (ST.log||[]).forEach(x=>{ if(x.k.includes('water')) out.push(x.gp);
-                            if(x.g.includes('water')) out.push(x.kp); });
-  return out;
+function waterTop(){
+  let top=0;
+  (ST.aucLog||[]).forEach(x=>{ if(x.item==='water') top=Math.max(top,x.price); });
+  (ST.log||[]).forEach(x=>{ const c=x.cash||0;
+    if(c>0&&(x.k||[]).includes('water')) top=Math.max(top,c);
+    if(c<0&&(x.g||[]).includes('water')) top=Math.max(top,-c); });
+  return top;
 }
 function sPrice(){
-  const paid=waterPaid(), top=paid.length?Math.max(...paid):0;
-  const base=6000/6; // 생수 1병
-  const isl=top? top/1 : 0;
-  const h=v=>Math.max(13,Math.round(Math.min(100,(Math.log10(Math.max(v,1000))-3)/(10-3)*100)));
-  return `<h1>📈 생수 한 병의 값</h1>
-   <div class="sub">아래 가운데 막대는 오늘 <b style="color:var(--gold)">너희가 실제로 주고받은 값</b>입니다.</div>
-   <div class="chart">
-     <div class="bar ok" style="height:${h(base)}%"><span>1,000원</span><em>출발 전 · 편의점</em></div>
-     <div class="bar" style="height:${isl?h(isl):8}%"><span>${isl?won(isl):'거래 없음'}</span><em>넷째 날 · 섬</em></div>
-     <div class="bar ok" style="height:${h(base)}%"><span>1,000원</span><em>구조된 뒤 · 편의점</em></div>
-   </div>
-   <div class="mid" style="flex:none"><p>${isl
-     ? '같은 생수 한 병입니다. 물건은 하나도 안 변했습니다.\n바뀐 건 <b style="color:var(--gold)">얼마나 부족했느냐</b>뿐입니다.'
-     : '생수를 내놓은 조가 하나도 없었습니다.\n<b style="color:var(--gold)">아무도 안 팔았다는 것</b>도 답입니다. 값을 매길 수조차 없었던 거죠.'}</p></div>`;
+  const best={};
+  (ST.aucLog||[]).forEach(x=>{ if(!best[x.item]||x.price>best[x.item].price) best[x.item]=x; });
+  (ST.log||[]).forEach(x=>{ const c=x.cash||0; if(!c) return;
+    const got=c>0?(x.k||[]):(x.g||[]), pr=Math.abs(c), who=c>0?x.f:x.t;
+    got.forEach(id=>{ if(!best[id]||pr>best[id].price) best[id]={item:id,team:who,price:pr}; }); });
+  const rows=Object.values(best).sort((a,b)=>b.price-a.price);
+  return `<h1>📈 오늘 이 교실에서 팔린 값</h1>
+   <div class="sub">왼쪽은 <b>한국 편의점 값</b>, 오른쪽은 <b>너희가 실제로 부른 값</b>입니다.</div>
+   <div class="pricelist" style="margin-top:10px">${rows.length?rows.map((x,i)=>{const g=G(x.item);
+     return `<div class="pr" style="animation-delay:${i*.1}s"><span class="e">${g.em}</span>
+       <span>${g.name}<div class="k">${x.team} 낙찰</div></span>
+       <span class="h"><span style="color:var(--dim)">${won(g.price)}</span>
+         <span class="ar" style="color:var(--dim2)"> → </span>
+         <span class="a">${eok(x.price)}</span>
+         <div class="b">${g.price?Math.round(x.price*100000000/g.price).toLocaleString('ko-KR')+'배':''}</div></span></div>`;}).join('')
+     :`<div class="mid"><p>경매가 한 번도 안 열렸습니다.\n조종석에서 <b>🔨 경매 시작</b>을 눌러 물건을 팔 수 있습니다.</p></div>`}</div>`;
 }
 function sRank(){
   const A=TN().map(t=>({t,d:TEAMS[t]||{}})).sort((a,b)=>packPrice(b.d)-packPrice(a.d));
   const B=TN().map(t=>({t,d:TEAMS[t]||{}})).sort((a,b)=>scoreOf(b.d)-scoreOf(a.d));
   const row=(x,i,v,x2)=>`<div class="rk ${i===0?'top':''}" style="animation-delay:${i*.07}s">
-    <span class="no">${i+1}</span><span class="t">${x.t}</span>
-    <span class="x">${x2||''}</span><span class="v">${v}</span></div>`;
-  return `<h1>🏆 두 개의 가격표</h1>
+    <span class="no">${i+1}</span><span class="t">${x.t}</span><span class="x">${x2||''}</span>
+    <span class="v">${v}</span></div>`;
+  return `<h1>🏆 두 개의 순위</h1>
    <div class="sub">같은 여덟 개를 두 번 계산했습니다. 순위가 뒤집혔는지 보세요.</div>
    <div class="two" style="margin-top:8px">
-     <div class="col"><h3>🏙️ 도시 가격 <small>섬에 가져간 짐의 값</small></h3>
+     <div class="col"><h3>🏙️ 짐 합계 <small>한국에서의 값</small></h3>
        <div class="list">${A.map((x,i)=>row(x,i,won(packPrice(x.d)))).join('')}</div></div>
-     <div class="col"><h3>🏝️ 생존 점수 <small>4일 동안 살아낸 결과</small></h3>
-       <div class="list">${B.map((x,i)=>row(x,i,scoreOf(x.d)+'점',
-         `조원 ${hpOf(x.d)}/3`)).join('')}</div></div>
+     <div class="col"><h3>🏝️ 생존 점수 <small>5일 동안 살아낸 결과</small></h3>
+       <div class="list">${B.map((x,i)=>row(x,i,scoreOf(x.d)+'점',`조원 ${hpOf(x.d)}/3 · 남은 돈 ${eok(moneyOf(x.d))}`)).join('')}</div></div>
    </div>`;
 }
-function sBoard(){
-  return `<h1>✍️ 오늘 배운 것</h1>
-   <div class="board" style="margin-top:14px">${window.BOARD.map((b,i)=>
-     `<div class="li" style="animation-delay:${i*.18}s"><b class="k">${b.k}</b><div class="v">${b.v}</div></div>`).join('')}
-   </div>
-   <div class="sub" style="margin-top:6px">마지막 질문 — <b style="color:var(--gold)">“다시 싼다면, 8칸에 뭘 넣을래?”</b></div>`;
-}
 function sStore(){
-  const T=window.STORE;
-  return `<div class="store"><div style="font-size:4em">${T.em}</div>
-   <h2 style="font-size:2.4em;margin:0">${T.head}</h2>
-   <div style="font-size:4em">💧</div>
-   <div class="p">${T.price}</div>
-   <div class="l" style="margin-top:12px">${T.lines.join('<br>')}</div></div>`;
+  const E=window.ENDING, top=waterTop();
+  return `<div class="store"><div style="font-size:3.4em">${E.em}</div>
+   <h2 style="font-size:2.4em;margin:0;font-weight:700">${E.head}</h2>
+   <div style="font-size:3em;margin-top:6px">💧</div>
+   <div class="two2">
+     <div class="cell a"><div class="k">어제</div><div class="v">${top?eok(top):'전 재산'}</div></div>
+     <div class="cell b"><div class="k">오늘</div><div class="v">1,000원</div></div>
+   </div>
+   <div class="q">${E.q}</div></div>`;
+}
+function sBoard(){
+  return `<h1>✍️ 정리</h1>
+   <div class="board" style="margin-top:12px">${window.BOARD.map((b,i)=>
+     `<div class="li" style="animation-delay:${i*.18}s"><b class="k">${b.k}</b><div class="v">${b.v}</div></div>`).join('')}</div>
+   <div class="sub" style="margin-top:4px">마지막 질문 — <b>“다시 싼다면, 8칸에 뭘 넣을래?”</b></div>`;
 }
 function sResult(){
-  const rows=TN().map(t=>({t,d:TEAMS[t]||{}})).sort((a,b)=>
-    (scoreOf(b.d)-scoreOf(a.d))||(retMoney(b.d)-retMoney(a.d)));
-  return `<h1>🎬 최종 결과</h1>
-   <div class="sub">생존 점수 순 · 같으면 들고 온 재산 순</div>
+  const rows=TN().map(t=>({t,d:TEAMS[t]||{}}))
+    .sort((a,b)=>(scoreOf(b.d)-scoreOf(a.d))||(hpOf(b.d)-hpOf(a.d)));
+  return `<h1>🎬 최종 결과</h1><div class="sub">생존 점수 순</div>
    <div class="rows" style="margin-top:8px">${rows.map((x,i)=>`
      <div class="rw ${i===0?'g':''}" style="animation-delay:${i*.09}s">
        <span class="t">${i+1}위 ${x.t}</span>
        <span class="u" style="width:300px">${inv(x.d).map(id=>`<span>${G(id).em}</span>`).join('')}</span>
-       <span class="ln">조원 ${hpOf(x.d)}/3 무사 · 들고 온 재산 ${won(retMoney(x.d))}</span>
+       <span class="ln">조원 ${hpOf(x.d)}/3 무사 · 짐 합계 ${won(packPrice(x.d))} · 남은 돈 ${eok(moneyOf(x.d))}</span>
        <span class="p">${scoreOf(x.d)}점</span></div>`).join('')}</div>`;
 }
 
-/* ── 부팅 ── */
+/* 부팅 */
 (async function boot(){try{
   const {initializeApp}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js');
   const m=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
@@ -660,7 +820,7 @@ function sResult(){
     draw(); processTrades();
   },e=>{ app.innerHTML='<div style="padding:40px">읽기 오류 '+e.code+'</div>'; });
 }catch(e){ draw(); }})();
-setInterval(()=>{ if(ST.phase==='trade') draw(); },1000);
+setInterval(()=>{ if(ST.phase==='pack'&&ST.packEnd) draw(); },1000);
 draw();
 </script>
 </body>
