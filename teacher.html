@@ -287,6 +287,9 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
 .varw{position:relative;overflow:hidden}
 .varw>.vv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.42}
 .varw>*:not(.vv){position:relative;z-index:1}
+
+.nextbtn.sending{opacity:.55;filter:saturate(.5)}
+.nextbtn.sending .k::after{content:' · 보내는 중…';color:#7a6a45}
 </style>
 </head>
 <body>
@@ -300,7 +303,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
    * 이 파일은 두 html 안에 이미 들어가 있습니다. (참고용)
    =================================================================== */
 
-window.VER = 'v8 · 2026-09-10';
+window.VER = 'v9 · 2026-09-10';
 
 /* 글씨체 — 게임 UI처럼 딱딱하고 평범한 고딕.
    'Noto Sans KR' / 'Black Han Sans'(더 두꺼움) / 'Do Hyeon' 중에 고르면 됩니다. */
@@ -780,9 +783,61 @@ function snd(k){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)(
  if(k==='rescue'){[523,659,784,1047,1319,1568].forEach((f,i)=>b(f,.35,'triangle',.15,i*.11));}
 }catch(e){}}
 
-async function save(o){ if(!online) return;
+/* ══════════════════════════════════════════════════════════════
+   저장 묶음 (batch)
+   전에는 「다음」 한 번에 1조…12조 + 화면전환을 13번 따로 보냈습니다.
+   와이파이 왕복이 13번이라 3~5초가 날아갔고, 그 사이 교사 화면만
+   (파이어스토어가 자기 글은 즉시 반영해서) 먼저 넘어가 버렸습니다.
+   이제 전부 한 번에 커밋합니다 — 왕복 1번, 그리고 「전부 되거나 전부 안 되거나」.
+   ══════════════════════════════════════════════════════════════ */
+let BUF=null;
+/* 이미 묶는 중이면 새로 열지 않는다 (스냅샷이 중간에 끼어들어도 안 엉키게) */
+function openBatch(){ if(BUF) return false; BUF={team:{},state:null,doc:{},del:[]}; return true; }
+/* 보내는 중에는 교사 화면을 그리지 않는다.
+   파이어스토어는 「자기가 쓴 글」을 서버 응답 전에 먼저 반영해 버려서,
+   그냥 두면 교사 화면만 먼저 넘어가고 아이들은 한 박자 뒤에 따라옵니다.
+   서버가 받았다고 답할 때까지 기다렸다가 같이 넘깁니다. */
+let sending=false;
+function mark(on){ try{ const el=document.getElementById('next');
+  if(el) el.classList.toggle('sending',!!on); }catch(e){} }
+async function closeBatch(mine){
+  if(mine===false) return;
+  const b=BUF; BUF=null;
+  if(!b||!online) return;
+  const teams=Object.keys(b.team), docs=Object.keys(b.doc);
+  if(!teams.length&&!docs.length&&!b.state&&!b.del.length) return;
+  sending=true; mark(true);
+  try{
+    if(api.writeBatch){
+      const w=api.writeBatch(DB);
+      teams.forEach(t=>w.set(api.doc(DB,'live',TEAM+t),b.team[t],{merge:true}));
+      docs.forEach(id=>w.set(api.doc(DB,'live',id),b.doc[id],{merge:true}));
+      b.del.forEach(id=>w.delete(api.doc(DB,'live',id)));
+      if(b.state) w.set(api.doc(DB,'live',STATE),b.state,{merge:true});
+      await w.commit();
+    } else {                                   /* 아주 옛날 SDK 대비 */
+      for(const t of teams) await api.setDoc(api.doc(DB,'live',TEAM+t),b.team[t],{merge:true});
+      for(const id of docs) await api.setDoc(api.doc(DB,'live',id),b.doc[id],{merge:true});
+      for(const id of b.del) await api.deleteDoc(api.doc(DB,'live',id));
+      if(b.state) await api.setDoc(api.doc(DB,'live',STATE),b.state,{merge:true});
+    }
+  }catch(e){ alert('저장 실패 '+(e.code||e.message||e)); }
+  finally{ sending=false; mark(false); }
+}
+async function save(o){
+  if(BUF){ BUF.state=Object.assign(BUF.state||{},o); Object.assign(ST,o); return; }
+  if(!online) return;
   try{ await api.setDoc(api.doc(DB,'live',STATE),o,{merge:true}); }catch(e){ alert('저장 실패 '+e.code); } }
-async function saveTeam(t,o){ try{ await api.setDoc(api.doc(DB,'live',TEAM+t),o,{merge:true}); }catch(e){} }
+async function saveTeam(t,o){
+  if(BUF){ BUF.team[t]=Object.assign(BUF.team[t]||{},o);
+           TEAMS[t]=Object.assign(TEAMS[t]||{},o); return; }
+  if(!online) return;
+  try{ await api.setDoc(api.doc(DB,'live',TEAM+t),o,{merge:true}); }catch(e){} }
+async function saveDoc(id,o){
+  if(BUF){ BUF.doc[id]=Object.assign(BUF.doc[id]||{},o); return; }
+  if(!online) return;
+  try{ await api.setDoc(api.doc(DB,'live',id),o,{merge:true}); }catch(e){} }
+function delDoc(id){ if(BUF) BUF.del.push(id); }
 
 /* ══ 다음 단계 ══ */
 const QPz=window.QUIZ_PRIZE;
@@ -807,6 +862,7 @@ async function next(){
   const i=stepIdx(), cur=STEPS[i], nx=STEPS[i+1];
   if(!nx) return;
   busy=true;
+  const B0=openBatch();          /* ← 여기서부터 끝까지 한 덩어리 */
   try{
     if(cur.ph==='pack'){
       for(const t of TN()){ const d=TEAMS[t]||{};
@@ -840,7 +896,7 @@ async function next(){
     else if(nx.ph==='land'||nx.ph==='turb') snd('crash');
     else if(nx.ph==='var') snd('var');
     else if(!['quiz','quizres','auc','aucres'].includes(nx.ph)) snd('open');
-  }finally{ busy=false; }
+  }finally{ await closeBatch(B0); busy=false; draw(); }
 }
 async function back(){ const i=stepIdx(); if(i<=0) return;
   const nx=STEPS[i-1];
@@ -940,7 +996,7 @@ async function applyVar(id){
 /* ══ 강탈 처리 ══ */
 let raiding=false;
 async function processRaids(){
-  if(raiding||!online) return; raiding=true;
+  if(raiding||busy||!online) return; raiding=true;
   try{
     /* 같은 물건을 여러 조가 노렸으면 «답을 먼저 낸 조»가 가져간다 */
     const q=TN().map(t=>({t,d:TEAMS[t]}))
@@ -949,8 +1005,9 @@ async function processRaids(){
     for(const it of q){
       const t=it.t, d=TEAMS[t];
       const r=d.raid;
+      const Bx=openBatch();
       const B=TEAMS[r.target];
-      if(!B){ await saveTeam(t,{raid:{...r,done:true}}); continue; }
+      if(!B){ await saveTeam(t,{raid:{...r,done:true}}); await closeBatch(Bx); continue; }
       let line='';
       if(r.ok){
         const ib=inv(B);
@@ -971,6 +1028,7 @@ async function processRaids(){
       const log=[...(ST.raidLog||[]),{f:t,t:r.target,item:r.item,ok:!!r.ok,back:r.back||null,at:Date.now()}].slice(-30);
       await save({raidLog:log}); ST.raidLog=log;
       await saveTeam(t,{raid:{...r,done:true,line}});
+      await closeBatch(Bx);
       snd(r.ok?'steal':'lose');
     }
   }catch(e){}
@@ -980,17 +1038,18 @@ async function processRaids(){
 /* ══ 거래 처리 (교사만) ══ */
 let processing=false;
 async function processTrades(){
-  if(processing||!online) return; processing=true;
+  if(processing||busy||!online) return; processing=true;
   try{
     for(const id in TRDOCS){ const x=TRDOCS[id];
       if(x.st!=='ok'||x.done) continue;
+      const Bx=openBatch();
       const A=TEAMS[x.from], B=TEAMS[x.to];
-      if(!A||!B){ await api.setDoc(api.doc(DB,'live',id),{done:true},{merge:true}); continue; }
+      if(!A||!B){ await saveDoc(id,{done:true}); await closeBatch(Bx); continue; }
       const ia=inv(A), ib=inv(B), cs=x.cash||0;
       const ma=moneyOf(A), mb=moneyOf(B);
       if(!x.give.every(g=>ia.includes(g))||!x.take.every(g=>ib.includes(g))
          ||(cs>0&&ma<cs)||(cs<0&&mb< -cs)){
-        await api.setDoc(api.doc(DB,'live',id),{done:true,fail:1},{merge:true}); continue; }
+        await saveDoc(id,{done:true,fail:1}); await closeBatch(Bx); continue; }
       const na=Array.from(new Set(ia.filter(g=>!x.give.includes(g)).concat(x.take)));
       const nb=Array.from(new Set(ib.filter(g=>!x.take.includes(g)).concat(x.give)));
       const clean=(sel,keep)=>{const o={};for(const k in (sel||{})) o[k]=(sel[k]||[]).filter(v=>keep.includes(v));return o;};
@@ -999,7 +1058,8 @@ async function processTrades(){
       const log=[...(ST.log||[]),{f:x.from,t:x.to,g:x.give,k:x.take,cash:cs,msg:x.msg||'',
         gp:x.give.reduce((a,i)=>a+G(i).price,0),kp:x.take.reduce((a,i)=>a+G(i).price,0),at:Date.now()}].slice(-40);
       await save({log}); ST.log=log;
-      await api.setDoc(api.doc(DB,'live',id),{done:true},{merge:true});
+      await saveDoc(id,{done:true});
+      await closeBatch(Bx);
       snd('coin');
     }
   }catch(e){}
@@ -1008,16 +1068,15 @@ async function processTrades(){
 
 async function newGame(){
   if(!confirm('모든 기록을 지우고 처음부터 시작합니다.')) return;
-  busy=true;
-  for(const t of TN()) await saveTeam(t,{team:t,pack:[],packLock:false,inv:[],sel:{},res:{},
+  busy=true; const B0=openBatch();
+  for(const t of TN()) await saveTeam(t,{team:t,pack:[],packLock:false,inv:[],sel:{},res:{},repack:[],
     bids:{},bidT:{},quizAns:{},raid:null,bonus:0,money:0,hp:C.hp,first:null,by:null,members:[]});
-  for(const id in TRDOCS){ try{ await api.setDoc(api.doc(DB,'live',id),{done:true},{merge:true}); }catch(e){}
-                           try{ await api.deleteDoc(api.doc(DB,'live',id)); }catch(e){} }
+  for(const id in TRDOCS) delDoc(id);
   const pool=QB.map((_,i)=>i);
   for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
   await save({step:0,phase:'lobby',evId:null,auc:null,quiz:null,quizSet:pool.slice(0,EV.length),
     varCard:null,raidLog:[],aucLog:[],log:[],packEnd:0,varId:null,at:Date.now()});
-  busy=false;
+  await closeBatch(B0); busy=false; draw();
 }
 
 /* ══ 그리기 ══ */
@@ -1442,6 +1501,7 @@ function sResult(){
       if(id===STATE) ST=v;
       else if(id.startsWith(TEAM)) TEAMS[id.slice(TEAM.length)]=v;
       else if(id.startsWith(TR)&&v.kind==='tr') TRDOCS[id]=v;});
+    if(sending) return;                  /* 보내는 중 — 서버 응답 뒤에 한 번에 그린다 */
     draw(); processTrades(); processRaids();
   },e=>{ app.innerHTML='<div style="padding:40px">읽기 오류 '+e.code+'</div>'; });
 }catch(e){ draw(); }})();
