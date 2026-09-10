@@ -6,11 +6,11 @@
 <title>100억</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300;400;700&family=Jua&family=Gaegu:wght@400;700&family=Do+Hyeon&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Black+Han+Sans&family=Do+Hyeon&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#f4efe4;--dim:#a89e8f;--dim2:#6d6558;--line:#3a352d;--bg:#17150f;--card:#221f18;
  --gold:#e8ab45;--green:#55b981;--red:#e8593c;--blue:#5d9fd6;--fs:1;
- --font:'Dongle','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif}
+ --font:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);overflow:hidden;
  font-family:var(--font);word-break:keep-all}
@@ -88,7 +88,10 @@ input{font-family:inherit}
 .menu button .e{font-size:2.4em;line-height:1.05}
 .menu button .n{font-size:1.15em;font-weight:700;line-height:1.15}
 .menu button.on{border-color:var(--gold);background:#332a15}
-.fcline{font-size:1.35em;color:var(--gold);min-height:1.5em;text-align:center}
+.fcline{font-size:1.2em;color:var(--gold);min-height:1.4em;text-align:center}
+.mealshot{width:min(620px,86vw);aspect-ratio:16/9;border-radius:16px;overflow:hidden;
+ border:2px solid var(--gold);animation:pop .45s cubic-bezier(.2,1.3,.4,1)}
+.mealshot img{width:100%;height:100%;object-fit:cover;display:block}
 
 /* 퀴즈 */
 .qw{flex:1;display:flex;flex-direction:column;justify-content:center;gap:11px;padding:10px 26px;min-height:0}
@@ -117,6 +120,126 @@ input{font-family:inherit}
 .qres.o{color:var(--green)} .qres.x{color:var(--red)}
 .qwhy{background:#2b2416;border:1px solid #5f4c22;border-radius:14px;padding:10px 16px;
  font-size:1.2em;line-height:1.45;text-align:center;animation:sl .4s}
+
+/* ══ 사건 새 레이아웃 ══ */
+.evbar{flex:none;display:flex;align-items:center;gap:12px;padding:7px 16px;background:#100e09;
+ border-bottom:1px solid var(--line);font-size:.95em}
+.evbar .bem{font-size:1.5em;line-height:1}
+.evbar b{font-size:1.15em;font-weight:900;letter-spacing:-.02em}
+.evbar .nd{color:var(--dim)} .evbar .nd b{color:var(--gold);font-size:1em}
+.evbar .sel{margin-left:auto;padding:3px 12px;border-radius:8px;background:#2d2820;color:var(--dim2)}
+.evbar .sel.on{background:#2b2416;color:var(--gold);font-weight:700}
+.one{flex:1;display:flex;flex-direction:column;min-height:0;padding:12px 22px;gap:9px;
+ background-size:cover;background-position:center}
+.one.center{align-items:center;justify-content:center;text-align:center}
+.one .big{font-size:3.4em;line-height:1}
+.one h2{font-size:2em;margin:0;font-weight:900}
+.one p{color:var(--dim);font-size:1.1em;margin:0;line-height:1.5}
+.ph{font-size:1.3em;font-weight:900;letter-spacing:-.02em}
+.ph span{font-size:.68em;font-weight:400;color:var(--dim);margin-left:8px}
+.ph2{font-size:1.02em;color:var(--dim);margin:2px 0}
+.empty{color:var(--dim2);text-align:center;padding:20px;font-size:1.05em;line-height:1.5}
+.empty.big{flex:1;display:flex;align-items:center;justify-content:center;font-size:1.15em}
+.bigg{flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:11px;align-content:center;
+ overflow:auto;min-height:0;grid-auto-rows:minmax(0,148px)}
+.bigg.s3{grid-template-columns:repeat(3,1fr);gap:6px;align-content:start;grid-auto-rows:minmax(0,74px)}
+.bg{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:10px 6px;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.bg .e{font-size:2.9em;line-height:1.05}
+.bg .n{font-size:1.18em;font-weight:700;line-height:1.15;text-align:center}
+.bg .once{font-size:.68em;color:#c98a6a;background:#2f1f18;border-radius:6px;padding:0 5px}
+.bg.on{border-color:var(--gold);background:#332a15}
+.bigg.s3 .bg{min-height:62px;padding:6px 3px}
+.bigg.s3 .bg .e{font-size:1.5em}
+.bigg.s3 .bg .n{font-size:.92em}
+
+/* 상황 제시 */
+.sit{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ text-align:center;gap:8px;padding:26px;background-size:cover;background-position:center}
+.sit .when{font-size:1.05em;color:var(--gold);letter-spacing:.24em;font-weight:700}
+.sit h1{font-size:3.6em;margin:0;font-weight:900;letter-spacing:-.03em;line-height:1.1;
+ text-shadow:0 4px 24px rgba(0,0,0,.8)}
+.sit p{font-size:1.35em;color:#d9d0c2;margin:0;line-height:1.6;white-space:pre-line;
+ text-shadow:0 2px 10px rgba(0,0,0,.8)}
+.sit .need{margin-top:14px;background:#2b2416;border:2px solid #5f4c22;border-radius:14px;
+ padding:9px 26px;font-size:1.25em}
+.sit .need b{color:var(--gold);font-weight:900}
+
+/* 보급소·경매 */
+.lotbig{display:flex;flex-direction:column;align-items:center;gap:1px;background:var(--card);
+ border:3px solid var(--gold);border-radius:20px;padding:12px 30px;animation:pop .4s}
+.lotbig .e{font-size:3.4em;line-height:1}
+.lotbig .n{font-size:1.9em;font-weight:900}
+.lotbig .q{font-size:.95em;color:var(--dim)}
+.lotbig .warn{margin-top:4px;background:#2f1f18;border:1px solid #6b4230;border-radius:9px;
+ padding:2px 10px;font-size:.9em;color:#e9a184}
+.aucw{align-items:center;justify-content:center}
+.aucw .qk,.aucw .bidgo,.aucw .bidamt,.aucw .cap{width:min(560px,92%)}
+.wbig{font-size:2.6em;font-weight:900;color:var(--gold)}
+.wbig.me{color:var(--green)}
+.cap{font-size:.92em;color:var(--dim);text-align:center}
+
+/* 거래 */
+.trw2{gap:7px}
+.tteams.big{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.tteams.big button{padding:9px 0;border:2px solid var(--line);border-radius:11px;background:#221f18;
+ font-weight:700;font-size:1.02em}
+.tteams.big button.on{background:var(--gold);color:#17150f;border-color:var(--gold)}
+.two2{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;min-height:0}
+.two2 .box{display:flex;flex-direction:column;min-height:0;border:2px solid var(--line);
+ border-radius:14px;padding:8px 10px}
+.two2 .box.giv{border-color:#7a3a2a;background:#241a16}
+.two2 .box.get{border-color:#2f6b4a;background:#16241d}
+.two2 .bh{font-size:1.08em;font-weight:900;margin-bottom:5px}
+.two2 .box.giv .bh{color:#f0a68c} .two2 .box.get .bh{color:#8fe6b6}
+.two2 .bh i{font-style:normal;font-size:.78em;color:var(--dim2);font-weight:400;margin-left:6px}
+.cashrow{display:flex;align-items:center;gap:5px;margin-top:6px}
+.cashrow button{flex:none;width:46px;padding:7px 0;border-radius:9px;background:#2d2820;font-weight:700}
+.cashrow button:active{background:var(--gold);color:#17150f}
+.cashrow .cv{flex:1;text-align:center;font-size:1.25em;font-weight:900;color:var(--gold)}
+.sendrow{display:flex;gap:8px}
+.sendrow .trmsg{flex:1;padding:10px 13px;border:2px solid var(--line);border-radius:12px;
+ background:#221f18;color:var(--ink);font-size:1.02em}
+.sendrow .trmsg:focus{outline:none;border-color:var(--gold)}
+.sendrow .send2{flex:none;width:240px;padding:10px;border-radius:12px;background:var(--gold);
+ color:#17150f;font-weight:900;font-size:1.1em}
+.sendrow .send2.off{background:#2d2820;color:#5f5849}
+.pendrow{flex:none;max-height:26%;overflow:auto;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.prop{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:7px 10px;font-size:.98em}
+.prop .ph2{font-size:1em;color:var(--ink);margin:0}
+.prop .ph2 i{color:var(--gold);font-style:normal}
+.prop .pline{margin-top:2px;padding:2px 6px;border-radius:7px}
+.prop .pline.get{background:#16241d;color:#8fe6b6}
+.prop .pline.giv{background:#241a16;color:#f0a68c}
+.prop .btns{display:flex;gap:5px;margin-top:4px}
+.prop .btns button{flex:1;padding:6px 0;border-radius:9px;font-weight:700}
+.prop .btns .y{background:var(--green);color:#0d1f16}
+.prop .btns .n{background:#2d2820;color:var(--dim)}
+
+/* 강탈 */
+.raidw{gap:7px}
+.raidgo{flex:none;padding:13px;border-radius:13px;background:var(--red);color:#fff;
+ font-weight:900;font-size:1.25em;width:100%}
+.raidgo.off{background:#2d2820;color:#5f5849}
+.raiddone{display:flex;flex-direction:column;align-items:center;gap:5px;border-radius:16px;padding:20px 40px;animation:pop .4s}
+.raiddone.g{background:#1c3527;border:2px solid var(--green)}
+.raiddone.b{background:#331d18;border:2px solid #68372a}
+.raiddone .e{font-size:3.4em;line-height:1}
+.raiddone .t{font-size:2em;font-weight:900}
+.raiddone .l{font-size:1.15em;line-height:1.4}
+.raiddone .l2{font-size:.92em;color:var(--dim2);margin-top:4px}
+
+/* 난기류 */
+.turb{flex:1;position:relative;overflow:hidden;background:#000}
+.turb .tv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.turb .tovl{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+ justify-content:center;gap:8px;text-align:center;
+ background:linear-gradient(rgba(23,21,15,.25),rgba(23,21,15,.7));animation:shk2 .5s infinite}
+@keyframes shk2{0%,100%{transform:translate(0,0)}25%{transform:translate(-3px,2px)}
+ 50%{transform:translate(2px,-3px)}75%{transform:translate(-2px,-1px)}}
+.turb h1{font-size:3.4em;margin:0;font-weight:900;color:var(--red);letter-spacing:-.03em;
+ text-shadow:0 4px 20px #000}
+.turb p{font-size:1.3em;color:#e8e0d2;margin:0;line-height:1.6;text-shadow:0 2px 10px #000}
 
 /* 돌발 변수 */
 .varw{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
@@ -346,8 +469,10 @@ input{font-family:inherit}
    * 이 파일은 두 html 안에 이미 들어가 있습니다. (참고용)
    =================================================================== */
 
-window.FONT = 'Dongle';
-window.FONT_SCALE = 1.42;
+/* 글씨체 — 게임 UI처럼 딱딱하고 평범한 고딕.
+   'Noto Sans KR' / 'Black Han Sans'(더 두꺼움) / 'Do Hyeon' 중에 고르면 됩니다. */
+window.FONT = 'Noto Sans KR';
+window.FONT_SCALE = 0.94;
 
 window.CFG = {
   teams: 8,
@@ -393,19 +518,20 @@ window.GOODS = [
    * 인터넷이 막히거나 링크가 죽어도 앱은 그대로 돌아갑니다.
      이미지가 안 뜨면 원래의 어두운 배경만 보입니다.
    * 다른 그림으로 바꾸려면 주소만 갈아 끼우면 됩니다.
+   * _min.webp = 가벼운 버전. 훨씬 빨리 뜹니다. 앱이 시작할 때 미리 다 받아둡니다.
    ───────────────────────────────────────────── */
 window.IMG = {
-  'lotto': 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050731_c097e498-5268-4bb0-b50c-4b61ba262c15.png',
-  'first': 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_022a16d4-e0fe-41b3-b03d-4bdfb41af3be.png',
-  'land' : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050731_2521ab3c-f162-4c91-b198-00e9ce2c0a00.png',
-  'money': 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_baf8d1b8-168b-4c75-a0f4-99db8aab0d05.png',
-  'shop' : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_44196e1b-f1fe-40de-911a-f3849b90ff15.png',
-  'e1'   : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_342c7361-27f9-4989-bfc6-7721bc379b85.png',
-  'e2'   : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_d2f65c59-69e9-4c87-9088-1c87d5aa5af1.png',
-  'e3'   : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_eae3bc07-1f49-4797-ba0c-5d054c474801.png',
-  'e4'   : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_b0854969-7c8d-4d2d-8890-e2fe0de68985.png',
-  'e5'   : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_afde0141-090e-4344-83a2-a47991d60cc3.png',
-  'store': 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050731_0a6d2dfe-ebfa-4191-8b3c-76adca9bf27f.png'
+  'lotto': 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050731_c097e498-5268-4bb0-b50c-4b61ba262c15_min.webp',
+  'first': 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_022a16d4-e0fe-41b3-b03d-4bdfb41af3be_min.webp',
+  'land' : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050731_2521ab3c-f162-4c91-b198-00e9ce2c0a00_min.webp',
+  'money': 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_baf8d1b8-168b-4c75-a0f4-99db8aab0d05_min.webp',
+  'shop' : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_44196e1b-f1fe-40de-911a-f3849b90ff15_min.webp',
+  'e1'   : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_342c7361-27f9-4989-bfc6-7721bc379b85_min.webp',
+  'e2'   : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_d2f65c59-69e9-4c87-9088-1c87d5aa5af1_min.webp',
+  'e3'   : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_eae3bc07-1f49-4797-ba0c-5d054c474801_min.webp',
+  'e4'   : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_b0854969-7c8d-4d2d-8890-e2fe0de68985_min.webp',
+  'e5'   : 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050854_afde0141-090e-4344-83a2-a47991d60cc3_min.webp',
+  'store': 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_050731_0a6d2dfe-ebfa-4191-8b3c-76adca9bf27f_min.webp'
 };
 
 /* 일등석 — 그냥 즐기는 장면 (점수 없음) */
@@ -414,12 +540,19 @@ window.FIRST = {
   head:'일등석',
   desc:'짐은 부쳤다. 좌석이 180도로 눕고, 승무원이 이름을 불러준다.\n메뉴판이 왔다. 오늘 기내식을 고르세요.',
   menu:[
-    {em:'🦞', name:'랍스터 테르미도르', line:'승무원이 "탁월한 선택이십니다" 라고 했다.'},
-    {em:'🥩', name:'한우 안심 스테이크', line:'칼이 스르륵 들어간다. 이런 건 처음이다.'},
-    {em:'🍣', name:'오마카세 12피스',   line:'초밥이 한 점씩 나온다. 열두 번 감탄했다.'},
-    {em:'🍚', name:'그냥 비빔밥',       line:'승무원이 살짝 웃었다. 맛있으면 됐지.'}
+    {em:'🦞', name:'랍스터 테르미도르', img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_053445_7ab1a9f0-8507-4990-bd0b-25bba3885788_min.webp', line:'승무원이 "탁월한 선택이십니다" 라고 했다.'},
+    {em:'🥩', name:'한우 안심 스테이크', img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_053445_3c1e7415-1742-4f27-afcd-6f5d6769d188_min.webp', line:'칼이 스르륵 들어간다. 이런 건 처음이다.'},
+    {em:'🍣', name:'오마카세 12피스',   img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_053445_ab27b83c-dbd3-4204-82c3-35606a84db30_min.webp', line:'초밥이 한 점씩 나온다. 열두 번 감탄했다.'},
+    {em:'🍚', name:'그냥 비빔밥',       img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_053445_1aa9f69f-115f-4789-9071-1925cc386a3a_min.webp', line:'승무원이 살짝 웃었다. 맛있으면 됐지.'}
   ],
   after:'창밖은 구름뿐이다. 인생 최고의 순간이다.\n…여기까지가 좋았다.'
+};
+
+/* 난기류 — 일등석 다음, 비상착륙 직전에 나오는 5초 영상 */
+window.TURB = {
+  video:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_053806_55e4f58b-87da-4910-99a3-f78c152fffa7.mp4',
+  head:'기체가 흔들린다',
+  lines:['안전벨트 표시등이 켜졌다.','승무원이 뛰어간다.','산소마스크가 떨어졌다.']
 };
 
 /* ─────────────────────────────────────────────
@@ -680,7 +813,7 @@ const C=window.CFG, EV=window.EVENTS, QB=window.QUIZ, QP=window.QUIZ_PRIZE, VARS
 const GOODS=[...window.GOODS].sort((a,b)=>b.price-a.price);
 const G=id=>GOODS.find(g=>g.id===id)||{em:'❓',name:'?',price:0,cash:0};
 const R=document.documentElement.style;
-R.setProperty('--font',`'${window.FONT||'Dongle'}','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif`);
+R.setProperty('--font',`'${window.FONT||'Noto Sans KR'}','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif`);
 R.setProperty('--fs',String(window.FONT_SCALE||1));
 const trim=x=>(Math.round(x*10)/10).toLocaleString('ko-KR');
 function won(n){ n=Math.round(n||0);
@@ -690,6 +823,10 @@ function won(n){ n=Math.round(n||0);
 const eok=n=>Number(n||0).toLocaleString('ko-KR')+'억';
 
 const IMG=window.IMG||{};
+/* 앱 켜질 때 이미지를 미리 다 받아둡니다 — 화면 넘어갈 때 바로 뜨게 */
+try{ Object.values(IMG).forEach(u=>{const i=new Image(); i.src=u;});
+  (window.FIRST&&window.FIRST.menu||[]).forEach(m=>{if(m.img){const i=new Image(); i.src=m.img;}});
+}catch(e){}
 /* 배경 이미지 — 링크가 죽어도 원래 배경으로 자연스럽게 돌아갑니다 */
 function bgs(k,top,bot){
   if(!IMG[k]) return '';
@@ -763,11 +900,11 @@ function rkey(){
   if(ph==='pack')  return [...base,(me.pack||[]).join(),me.packLock,me.by,ST.packEnd].join('|');
   if(ph==='first') return [...base,me.first].join('|');
   if(ph==='money') return [...base,moneyOf(me),(me.inv||[]).join()].join('|');
-  if(ph==='ev'||ph==='shop'||ph==='evres'){
+  if(ph==='ev'||ph==='pick'||ph==='evres'){
     const others=Object.keys(TEAMS).sort().map(t=>t+':'+inv(TEAMS[t]).join(',')).join(';');
     return [...base,ST.evId,ST.evShown,selOf(curEv()).join(),(me.inv||[]).join(),moneyOf(me),
       JSON.stringify(me.res||{}),hpOf(me),a.id,a.open,a.doneAt,myBid(),S.bid,S.tab,S.target,
-      (ST.quiz||{}).id,(ST.quiz||{}).revealed,myQuiz(),S.qPick,
+      (ST.quiz||{}).id,(ST.quiz||{}).revealed,myQuiz(),S.qPick,ST.open,
       S.give.join(),S.take.join(),S.gcash,S.tcash,S.rTarget,S.rItem,
       JSON.stringify(me.raid||{}),
       Object.keys(TRS).map(k=>k+TRS[k].st).join(),others].join('|');
@@ -786,8 +923,8 @@ function render(f){
   if(ph==='money')  return moneyView();
   if(ST.varCard) return varView();
   if(me.raid&&!me.raid.done&&me.raid.pick==null) return raidQuizView();
-  if(ph==='shop'&&ST.quiz&&ST.quiz.evId===ST.evId&&!(ST.auc&&ST.auc.evId===ST.evId)) return quizView();
-  if(ph==='ev'||ph==='shop'||ph==='evres') return evView();
+  if(ph==='turb')  return turbView();
+  if(ph==='ev'||ph==='pick'||ph==='evres') return evView();
   if(ph==='store')  return storeView();
   if(ph==='result') return resultView();
   if(ph==='rank'||ph==='board') return waitView();
@@ -802,7 +939,7 @@ function shell(h){
     try{el.setSelectionRange(el.value.length,el.value.length);}catch(e){}} }
 }
 const PHN={lobby:'대기 중',lotto:'로또 발표',first:'일등석',pack:'짐 싸는 중',land:'비상 착륙',
- money:'환전소',shop:'보급소',ev:'생존',evres:'결과',rank:'결과 발표',board:'정리',store:'귀국',result:'끝'};
+ money:'환전소',turb:'난기류',ev:'상황',pick:'선택',evres:'결과',rank:'결과 발표',board:'정리',store:'귀국',result:'끝'};
 function topbar(){
   const hp=hpOf(me);
   return `<div class="top"><span class="tm">${S.team}</span>
@@ -859,6 +996,7 @@ function firstView(){
   const F=window.FIRST, pick=me.first;
   shell(`<div class="fc"${bgA('first',.5,.86)}><div style="font-size:3.2em">${F.em}</div>
     <h2>${F.head}</h2><p>${F.desc}</p>
+    ${pick!=null&&F.menu[pick].img?`<div class="mealshot"><img src="${F.menu[pick].img}" alt=""></div>`:''}
     <div class="menu">${F.menu.map((m,i)=>`<button data-m="${i}" class="${pick===i?'on':''}">
       <div class="e">${m.em}</div><div class="n">${m.name}</div></button>`).join('')}</div>
     <div class="fcline">${pick!=null?F.menu[pick].line:''}</div>
@@ -909,6 +1047,14 @@ function quizView(){
   document.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{S.qPick=+b.dataset.q;snd('tap');render(true);});
   const qs=$('#qs'); if(qs) qs.onclick=()=>{ if(S.qPick<0) return; snd('send');
     const a={...(me.quizAns||{})}; a[q.id]=S.qPick; me.quizAns=a; put({quizAns:a}); render(true);};
+}
+
+/* 난기류 */
+function turbView(){
+  const T=window.TURB;
+  shell(`<div class="turb">
+    ${T.video?`<video class="tv" src="${T.video}" autoplay muted loop playsinline></video>`:''}
+    <div class="tovl"><h1>${T.head}</h1><p>${T.lines.join('<br>')}</p></div></div>`);
 }
 
 /* 짐싸기 */
@@ -985,150 +1131,137 @@ function moneyView(){
   </div>`);
 }
 
-/* ── 사건 ── */
+/* ══════ 사건 — 화면 하나에 한 가지 일만 ══════ */
+const selNow=e=>selOf(e).filter(id=>inv(me).includes(id));
 function evView(){
   const e=curEv(), r=(me.res||{})[e.id];
   if(ST.phase==='evres'&&r) return evResult(e,r);
-  const sel=selOf(e).filter(id=>inv(me).includes(id)), a=ST.auc||{};
-  if(a.open&&a.id&&S.seenAuc!==a.id){ S.seenAuc=a.id; S.tab='shop'; S.bid=0; snd('bell'); }
-  shell(`<div class="ev3">
-    <div class="cx"${bgA(e.id,.66,.92)}><div class="evc">
-      <div class="when">${e.when}</div><div class="em">${e.em}</div>
-      <h2>${e.title}</h2><div class="ds">${e.desc}</div>
-      <div class="nd">지금 필요한 건 <b>${e.need}</b></div>
-    </div></div>
+  if(ST.phase==='ev') return situationView(e);
+  const open=ST.open||'';
+  if(open==='shop')  return shopView(e);
+  if(open==='trade') return tradeView(e);
+  if(open==='raid')  return raidView(e);
+  return pickView(e);
+}
+function evbar(e){
+  const s=selNow(e);
+  return `<div class="evbar"><span class="bem">${e.em}</span><b>${e.title}</b>
+    <span class="nd">필요한 건 <b>${e.need}</b></span>
+    <span class="sel ${s.length?'on':''}">우리 선택 · ${s.map(id=>G(id).em+' '+G(id).name).join(' + ')||'아직 없음'}</span></div>`;
+}
 
-    <div class="cx"><h3>🎒 우리가 쓸 것<span class="n">최대 2개</span></h3>
-      <div class="cap">가진 짐에서 고르면 <b>바로 저장</b>돼요. 언제든 바꿀 수 있어요.</div>
-      <div class="scroll"><div class="mini">${inv(me).map(id=>{const g=G(id);
-        return `<button class="mn ${sel.includes(id)?'on':''}" data-s="${id}">
-          <div class="e">${g.em}</div>${g.name}${g.once?'<div class="once">1회</div>':''}</button>`;}).join('')
-        ||'<div style="color:var(--dim);padding:16px;grid-column:span 2;text-align:center">가진 짐이 없다.<br>보급소나 다른 조에서 구해야 한다.</div>'}</div></div>
-      <div class="selbox ${sel.length?'':'none'}">
-        <span class="lb">우리 선택</span>
-        <span>${sel.map(id=>G(id).em+' '+G(id).name).join(' + ')||'아직 아무것도 안 골랐어요'}</span></div>
-    </div>
+/* ① 상황 제시 */
+function situationView(e){
+  shell(`<div class="sit"${bgA(e.id,.42,.86)}>
+    <div class="when">${e.when}</div>
+    <h1>${e.title}</h1>
+    <p>${e.desc}</p>
+    <div class="need">지금 필요한 건 <b>${e.need}</b></div>
+  </div>`);
+}
 
-    <div class="cx">
-      <div class="tabs t3">
-        <button data-tab="shop" class="${S.tab==='shop'?'on':''}">🏪 보급소${a.open?'<span class="dot"></span>':''}</button>
-        <button data-tab="trade" class="${S.tab==='trade'?'on':''}">🤝 거래${
-          Object.values(TRS).some(x=>x.to===S.team&&x.st==='wait')?'<span class="dot"></span>':''}</button>
-        <button data-tab="raid" class="${S.tab==='raid'?'on':''}">⚔️ 강탈</button>
-      </div>
-      ${S.tab==='shop'?shopPane():(S.tab==='trade'?tradePane():raidPane())}
-    </div></div>`);
-
+/* ② 우리 조가 쓸 것 고르기 */
+function pickView(e){
+  const sel=selNow(e), iv=inv(me);
+  shell(evbar(e)+`<div class="one pickw">
+    <div class="ph">🎒 우리가 쓸 것 <span>최대 2개 · 누르면 바로 저장</span></div>
+    <div class="bigg">${iv.map(id=>{const g=G(id);
+      return `<button class="bg ${sel.includes(id)?'on':''}" data-s="${id}">
+        <span class="e">${g.em}</span><span class="n">${g.name}</span>
+        ${g.once?'<span class="once">한 번 쓰면 끝</span>':''}</button>`;}).join('')
+      ||`<div class="empty">가진 짐이 없다.<br>보급소나 다른 조에서 구해야 한다.</div>`}</div>
+  </div>`);
   document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{
     const id=b.dataset.s; let s=[...sel];
     if(s.includes(id)) s=s.filter(x=>x!==id);
     else { if(s.length>=2) s=[s[1],id]; else s.push(id); }
     snd('tap'); const o={...(me.sel||{})}; o[e.id]=s; me.sel=o; put({sel:o}); render(true);});
-  document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{S.tab=b.dataset.tab;snd('tap');render(true);});
-  bindShop(); bindTrade(); bindRaid();
 }
 
-function shopPane(){
-  const a=ST.auc||{}, M=window.MARKET;
-  if(!a.id) return `<div class="scroll" style="display:flex;flex-direction:column;align-items:center;
-    justify-content:center;text-align:center;color:var(--dim);gap:6px;padding:10px;${bgs('shop',.72,.94)}">
-    <div style="font-size:2.6em">${M.em}</div><div style="font-size:1.3em;color:var(--ink);font-weight:700">${M.head}</div>
-    <div style="font-size:1em;line-height:1.5">${M.lines.join('<br>')}</div>
-    <div class="pulse" style="margin-top:6px">배가 들어오면 여기에 뜹니다</div></div>`;
-  const g=G(a.item), mine=myBid(), max=moneyOf(me);
+/* ③-1 보급소 (퀴즈 → 경매) */
+function shopView(e){
+  const q=ST.quiz, a=ST.auc;
+  if(q&&q.evId===ST.evId&&!(a&&a.evId===ST.evId)) return quizView();
+  if(a&&a.evId===ST.evId) return aucView(e);
+  const M=window.MARKET, g=G(e.lot);
+  shell(evbar(e)+`<div class="one center"${bgA('shop',.6,.9)}>
+    <div class="big">${M.em}</div><h2>${M.head}</h2>
+    <div class="lotbig"><span class="e">${g.em}</span><span class="n">${g.name}</span>
+      <span class="q">오늘 들어온 건 이거 <b>1개</b>${g.once?' · 한 번 쓰면 끝':''}</span></div>
+    <p class="pulse">선생님이 경매를 열 때까지 기다려요</p></div>`);
+}
+function aucView(e){
+  const a=ST.auc, g=G(a.item), mine=myBid(), max=moneyOf(me), have=inv(me).includes(a.item);
   if(!a.open){
     const w=a.winner;
-    return `<div class="auc"><div class="auclot"><div class="e">${g.em}</div><div class="n">${g.name}</div></div>
-      <div class="aucres">${w?`<div class="w">${w} 낙찰</div>
-        <div class="l" style="font-size:1.5em;color:var(--ink)">${eok(a.price)}</div>
-        <div class="l">${w===S.team?'우리가 가져왔다!':'우리는 못 샀다.'}</div>`
-        :`<div class="l">아무도 값을 못 불렀다.<br>물건은 다시 배에 실렸다.</div>`}</div></div>`;
+    shell(evbar(e)+`<div class="one center">
+      <div class="lotbig"><span class="e">${g.em}</span><span class="n">${g.name}</span></div>
+      ${w?`<div class="wbig ${w===S.team?'me':''}">${w} 낙찰 · ${eok(a.price)}</div>
+           <p>${w===S.team?'우리가 가져왔다.':'우리는 못 샀다.'}</p>`
+        :`<div class="wbig">유찰</div><p>아무도 값을 못 불렀다.</p>`}</div>`);
+    return;
   }
-  const have=inv(me).includes(a.item);
-  return `<div class="auc">
-    <div class="auclot"><div class="e">${g.em}</div><div class="n">${g.name}</div>
-      <div class="q">딱 <b style="color:var(--red)">1개</b>${g.once?' · 한 번 쓰면 없어진다':''}</div>
-      ${have?'<div class="warn">우리 이미 있음 — 굳이 살 필요 없다</div>':''}</div>
+  shell(evbar(e)+`<div class="one aucw">
+    <div class="lotbig big2"><span class="e">${g.em}</span><span class="n">${g.name}</span>
+      <span class="q">딱 <b>1개</b>. 제일 높은 값을 부른 조가 가져간다.</span>
+      ${have?'<span class="warn">우리 이미 있음</span>':''}</div>
     <div class="bidamt ${S.bid?'':'zero'}">${eok(S.bid)}</div>
     <div class="qk">
       <button data-b="0">0</button><button data-b="1">+1</button><button data-b="5">+5</button>
       <button data-b="20">+20</button><button data-b="max">전부</button></div>
     <button class="bidgo ${mine!=null?'done':(max<=0?'off':'')}" id="bg">${
       mine!=null?`✅ ${eok(mine)} 부름 (바꾸려면 다시)`:(max<=0?'부를 돈이 없다':'이 값으로 부르기')}</button>
-    ${max<=0?`<div class="nomoney">💡 돈이 없어도 방법은 있다.<br>
-      <b>가진 짐을 다른 조에 팔면</b> 돈이 생긴다.
-      <button class="togo" id="tg">🤝 거래하러 가기</button></div>`
-     :`<div class="cap" style="margin-top:5px;text-align:center">가진 돈 ${eok(max)} · 지면 돈은 안 나간다</div>`}
-  </div>`;
-}
-function bindShop(){
-  const tg=$('#tg'); if(tg) tg.onclick=()=>{S.tab='trade';snd('tap');render(true);};
-  const a=ST.auc||{}; if(!a.open) return;
-  const max=moneyOf(me);
+    <div class="cap">가진 돈 ${eok(max)} · 지면 돈은 안 나간다${max<=0?' · 물건을 팔아 돈을 만들 수 있다':''}</div>
+  </div>`);
   document.querySelectorAll('[data-b]').forEach(b=>b.onclick=()=>{
     const v=b.dataset.b; snd('tap');
-    S.bid = v==='0'?0 : v==='max'?max : Math.min(max,S.bid+ +v);
-    render(true);});
+    S.bid = v==='0'?0 : v==='max'?max : Math.min(max,S.bid+ +v); render(true);});
   const bg=$('#bg'); if(bg) bg.onclick=()=>{ if(max<=0) return; snd('send');
     const bs={...(me.bids||{})}; bs[a.id]=S.bid;
     const bt={...(me.bidT||{})}; bt[a.id]=Date.now();
     me.bids=bs; put({bids:bs,bidT:bt}); render(true);};
 }
 
-function trOk(){
-  if(!S.target) return false;
-  const mine=S.give.length||S.gcash>0, theirs=S.take.length||S.tcash>0;
-  return !!(mine&&theirs);
-}
-function tradePane(){
+/* ③-2 거래 */
+function trOk(){ if(!S.target) return false;
+  return !!((S.give.length||S.gcash>0)&&(S.take.length||S.tcash>0)); }
+function tradeView(e){
   const others=Object.keys(TEAMS).filter(t=>t!==S.team).sort();
   const tgt=TEAMS[S.target];
   const pend=Object.values(TRS).filter(x=>x.to===S.team&&x.st==='wait');
   const sent=Object.values(TRS).filter(x=>x.from===S.team&&x.st==='wait');
-  const sumG=[...S.give.map(i=>G(i).em+G(i).name),...(S.gcash?['💰'+eok(S.gcash)]:[])].join(' ')||'없음';
-  const sumT=[...S.take.map(i=>G(i).em+G(i).name),...(S.tcash?['💰'+eok(S.tcash)]:[])].join(' ')||'없음';
-  return `<div class="tr">
-    ${pend.length?`<div class="pendwrap">${pend.map(x=>`
-      <div class="prop"><div class="ph"><b>${x.from}</b> 이(가) 보낸 제안</div>
-        ${x.msg?`<div class="m">"${x.msg}"</div>`:''}
-        <div class="pline get">⬅ 우리가 <b>받는다</b> · ${
-          [...x.give.map(i=>G(i).em+G(i).name),...(x.cash>0?[eok(x.cash)]:[])].join(', ')||'없음'}</div>
-        <div class="pline giv">➡ 우리가 <b>준다</b> · ${
-          [...x.take.map(i=>G(i).em+G(i).name),...(x.cash<0?[eok(-x.cash)]:[])].join(', ')||'없음'}</div>
-        <div class="btns"><button class="y" data-ok="${x._id}">수락</button>
-        <button class="n" data-no="${x._id}">거절</button></div></div>`).join('')}</div>`:''}
-    <div class="cap">누구랑 바꿀까요?</div>
-    <div class="tteams">${others.map(t=>`<button data-t2="${t}" class="${S.target===t?'on':''}">${t.replace('조','')}</button>`).join('')}</div>
-    ${S.target?`
-      <div class="scroll">
-        <div class="box giv">
-          <div class="bh">➡ <b>우리(${S.team})가 준다</b></div>
-          <div class="mini m3">${inv(me).map(id=>{const g=G(id);
-            return `<button class="mn ${S.give.includes(id)?'on':''}" data-gv="${id}"><div class="e">${g.em}</div>${g.name}</button>`;}).join('')||'<div class="none">줄 짐이 없음</div>'}</div>
-          <div class="cashrow"><span class="cl">우리 돈</span>
-            <button data-gc="-10">−10</button><button data-gc="-1">−1</button>
-            <span class="cv">${eok(S.gcash)}</span>
-            <button data-gc="1">+1</button><button data-gc="10">+10</button></div>
-        </div>
-        <div class="box get">
-          <div class="bh">⬅ <b>${S.target}에서 받는다</b> <span class="mm">${S.target} 돈 ${eok(moneyOf(tgt))}</span></div>
-          <div class="mini m3">${inv(tgt).map(id=>{const g=G(id);
-            return `<button class="mn ${S.take.includes(id)?'on':''}" data-tk="${id}"><div class="e">${g.em}</div>${g.name}</button>`;}).join('')||'<div class="none">받을 짐이 없음</div>'}</div>
-          <div class="cashrow"><span class="cl">${S.target} 돈</span>
-            <button data-tc="-10">−10</button><button data-tc="-1">−1</button>
-            <span class="cv">${eok(S.tcash)}</span>
-            <button data-tc="1">+1</button><button data-tc="10">+10</button></div>
-        </div>
+  shell(evbar(e)+`<div class="one trw2">
+    <div class="ph">🤝 거래 <span>물건도 돈도 바꿀 수 있어요</span></div>
+    <div class="tteams big">${others.map(t=>`<button data-t2="${t}" class="${S.target===t?'on':''}">${t}</button>`).join('')}</div>
+    ${pend.length?`<div class="pendrow">${pend.map(x=>`
+      <div class="prop"><div class="ph2"><b>${x.from}</b> 이(가) 보냄 ${x.msg?`<i>"${x.msg}"</i>`:''}</div>
+        <div class="pline get">⬅ 우리가 <b>받는다</b> · ${[...x.give.map(i=>G(i).em+G(i).name),...(x.cash>0?[eok(x.cash)]:[])].join(', ')||'없음'}</div>
+        <div class="pline giv">➡ 우리가 <b>준다</b> · ${[...x.take.map(i=>G(i).em+G(i).name),...(x.cash<0?[eok(-x.cash)]:[])].join(', ')||'없음'}</div>
+        <div class="btns"><button class="y" data-ok="${x._id}">수락</button><button class="n" data-no="${x._id}">거절</button></div>
+      </div>`).join('')}</div>`:''}
+    ${S.target?`<div class="two2">
+      <div class="box giv">
+        <div class="bh">➡ 우리(${S.team})가 준다</div>
+        <div class="bigg s3">${inv(me).map(id=>{const g=G(id);
+          return `<button class="bg ${S.give.includes(id)?'on':''}" data-gv="${id}"><span class="e">${g.em}</span><span class="n">${g.name}</span></button>`;}).join('')||'<div class="empty">줄 짐 없음</div>'}</div>
+        <div class="cashrow"><button data-gc="-10">−10</button><button data-gc="-1">−1</button>
+          <span class="cv">${eok(S.gcash)}</span>
+          <button data-gc="1">+1</button><button data-gc="10">+10</button></div>
       </div>
-      <div class="sumline"><span class="g">➡ ${sumG}</span><span class="t">⬅ ${sumT}</span></div>
-      <input class="trmsg" id="tm" maxlength="40" placeholder="한마디 (예: 물 하나만…)" value="${(S.msg||'').replace(/"/g,'&quot;')}">
-      <button class="send2 ${trOk()?'':'off'}" id="sp">📨 ${S.target}에 보내기</button>
-      ${sent.length?`<div class="cap" style="text-align:center">보낸 제안 ${sent.length}건 · 답 기다리는 중</div>`:''}
-    `:`<div class="scroll" style="display:flex;align-items:center;justify-content:center;text-align:center;
-        color:var(--dim);line-height:1.5">위에서 <b style="color:var(--gold)">조 번호</b>를 누르면<br>그 조가 가진 짐과 돈이 다 보입니다.</div>`}
-  </div>`;
-}
-function bindTrade(){
+      <div class="box get">
+        <div class="bh">⬅ ${S.target}에서 받는다 <i>${S.target} 돈 ${eok(moneyOf(tgt))}</i></div>
+        <div class="bigg s3">${inv(tgt).map(id=>{const g=G(id);
+          return `<button class="bg ${S.take.includes(id)?'on':''}" data-tk="${id}"><span class="e">${g.em}</span><span class="n">${g.name}</span></button>`;}).join('')||'<div class="empty">받을 짐 없음</div>'}</div>
+        <div class="cashrow"><button data-tc="-10">−10</button><button data-tc="-1">−1</button>
+          <span class="cv">${eok(S.tcash)}</span>
+          <button data-tc="1">+1</button><button data-tc="10">+10</button></div>
+      </div></div>
+      <div class="sendrow">
+        <input class="trmsg" id="tm" maxlength="40" placeholder="한마디 (예: 물 하나만…)" value="${(S.msg||'').replace(/"/g,'&quot;')}">
+        <button class="send2 ${trOk()?'':'off'}" id="sp">📨 ${S.target}에 보내기</button></div>
+      ${sent.length?`<div class="cap">보낸 제안 ${sent.length}건 · 답 기다리는 중</div>`:''}
+    `:`<div class="empty big">위에서 <b>조</b>를 누르면 그 조가 가진 짐과 돈이 다 보입니다.</div>`}
+  </div>`);
   document.querySelectorAll('[data-t2]').forEach(b=>b.onclick=()=>{
     S.target=b.dataset.t2; S.take=[]; S.gcash=0; S.tcash=0; snd('tap'); render(true);});
   document.querySelectorAll('[data-gv]').forEach(b=>b.onclick=()=>{const id=b.dataset.gv;
@@ -1139,46 +1272,41 @@ function bindTrade(){
     S.gcash=Math.max(0,Math.min(moneyOf(me),S.gcash+ +b.dataset.gc)); snd('tap'); render(true);});
   document.querySelectorAll('[data-tc]').forEach(b=>b.onclick=()=>{
     S.tcash=Math.max(0,Math.min(moneyOf(TEAMS[S.target]),S.tcash+ +b.dataset.tc)); snd('tap'); render(true);});
-  const tm=$('#tm'); if(tm){ tm.oninput=e=>{S.msg=e.target.value;};
+  const tm=$('#tm'); if(tm){ tm.oninput=ev=>{S.msg=ev.target.value;};
     tm.onfocus=()=>{focusId='tm';}; tm.onblur=()=>{focusId='';}; }
-  const sp=$('#sp'); if(sp) sp.onclick=async()=>{
-    if(!trOk()) return; snd('send');
+  const sp=$('#sp'); if(sp) sp.onclick=async()=>{ if(!trOk()) return; snd('send');
     const id=TR+Date.now()+'_'+Math.floor(Math.random()*900+100);
     try{ await api.setDoc(api.doc(DB,'live',id),{kind:'tr',from:S.team,to:S.target,
-      give:[...S.give],take:[...S.take],cash:S.gcash-S.tcash,msg:S.msg||'',st:'wait',at:Date.now()}); }catch(e){}
+      give:[...S.give],take:[...S.take],cash:S.gcash-S.tcash,msg:S.msg||'',st:'wait',at:Date.now()}); }catch(err){}
     S.give=[];S.take=[];S.gcash=0;S.tcash=0;S.msg='';focusId=''; render(true);};
   document.querySelectorAll('[data-ok]').forEach(b=>b.onclick=async()=>{snd('coin');
-    try{ await api.setDoc(api.doc(DB,'live',b.dataset.ok),{st:'ok'},{merge:true}); }catch(e){}});
+    try{ await api.setDoc(api.doc(DB,'live',b.dataset.ok),{st:'ok'},{merge:true}); }catch(err){}});
   document.querySelectorAll('[data-no]').forEach(b=>b.onclick=async()=>{snd('lose');
-    try{ await api.setDoc(api.doc(DB,'live',b.dataset.no),{st:'no'},{merge:true}); }catch(e){}});
+    try{ await api.setDoc(api.doc(DB,'live',b.dataset.no),{st:'no'},{merge:true}); }catch(err){}});
 }
 
-/* ── 강탈 ── */
-function raidPane(){
+/* ③-3 강탈 */
+function raidView(e){
   const R=window.RAID, d=dayIdx(), r=me.raid;
-  const usedToday = r && r.day===d;
   const others=Object.keys(TEAMS).filter(t=>t!==S.team).sort();
   const tgt=TEAMS[S.rTarget];
-  if(usedToday&&r.done){
-    return `<div class="tr"><div class="raiddone ${r.ok?'g':'b'}">
-      <div class="e">${r.ok?'⚔️':'💀'}</div>
-      <div class="t">${r.ok?'강탈 성공':'실패'}</div>
+  if(r&&r.day===d&&r.done){
+    shell(evbar(e)+`<div class="one center"><div class="raiddone ${r.ok?'g':'b'}">
+      <div class="e">${r.ok?'⚔️':'💀'}</div><div class="t">${r.ok?'강탈 성공':'실패'}</div>
       <div class="l">${r.ok?`${r.target}의 ${G(r.item).name} 을(를) 가져왔다.`
-        :`${r.line&&r.line.indexOf('뺏김')>=0?r.line.split('·')[1]+' 을(를) '+r.target+'에 뺏겼다.':'아무것도 못 뺏었다.'}`}</div>
-      <div class="l2">오늘 강탈은 끝. 내일 다시.</div></div></div>`;
+        :(r.line&&r.line.indexOf('뺏김')>=0?r.line.split('·')[1]+' 을(를) '+r.target+'에 뺏겼다.':'아무것도 못 뺏었다.')}</div>
+      <div class="l2">오늘 강탈은 끝. 내일 다시.</div></div></div>`);
+    return;
   }
-  return `<div class="tr">
-    <div class="raidhead"><span class="e">${R.em}</span><b>${R.head}</b></div>
-    <div class="cap">${R.lines.join('<br>')}</div>
-    <div class="tteams">${others.map(t=>`<button data-r2="${t}" class="${S.rTarget===t?'on':''}">${t.replace('조','')}</button>`).join('')}</div>
-    ${S.rTarget?`<div class="cap" style="margin:4px 0 2px">${S.rTarget}에서 <b style="color:var(--red)">하나</b>만 뺏을 수 있음</div>
-      <div class="scroll"><div class="mini m3" style="max-height:none">${inv(tgt).map(id=>{const g=G(id);
-        return `<button class="mn ${S.rItem===id?'on':''}" data-ri="${id}"><div class="e">${g.em}</div>${g.name}</button>`;}).join('')||'<div class="none">뺏을 게 없음</div>'}</div></div>`
-      :`<div class="scroll" style="display:flex;align-items:center;justify-content:center;color:var(--dim);text-align:center">조를 먼저 고르세요</div>`}
+  shell(evbar(e)+`<div class="one raidw">
+    <div class="ph">⚔️ 강탈 <span>${R.lines.join(' ').replace(/<\/?b>/g,'')}</span></div>
+    <div class="tteams big">${others.map(t=>`<button data-r2="${t}" class="${S.rTarget===t?'on':''}">${t}</button>`).join('')}</div>
+    ${S.rTarget?`<div class="ph2">${S.rTarget}에서 <b style="color:var(--red)">하나</b>만 뺏을 수 있음</div>
+      <div class="bigg">${inv(tgt).map(id=>{const g=G(id);
+        return `<button class="bg ${S.rItem===id?'on':''}" data-ri="${id}"><span class="e">${g.em}</span><span class="n">${g.name}</span></button>`;}).join('')||'<div class="empty">뺏을 게 없음</div>'}</div>`
+      :`<div class="empty big">뺏을 조를 고르세요</div>`}
     <button class="raidgo ${S.rItem?'':'off'}" id="rg">⚔️ 도전한다</button>
-  </div>`;
-}
-function bindRaid(){
+  </div>`);
   document.querySelectorAll('[data-r2]').forEach(b=>b.onclick=()=>{
     S.rTarget=b.dataset.r2; S.rItem=''; snd('tap'); render(true);});
   document.querySelectorAll('[data-ri]').forEach(b=>b.onclick=()=>{
@@ -1188,10 +1316,11 @@ function bindRaid(){
     const used=(me.rq||[]);
     let pool=QB.map((_,i)=>i).filter(i=>!used.includes(i)); if(!pool.length) pool=QB.map((_,i)=>i);
     const qi=pool[Math.floor(Math.random()*pool.length)];
-    const r={id:'r'+Date.now(),day:dayIdx(),target:S.rTarget,item:S.rItem,qi,
+    const rr={id:'r'+Date.now(),day:dayIdx(),target:S.rTarget,item:S.rItem,qi,
       pick:null,ok:null,done:false,at:Date.now()};
-    me.raid=r; S.rPick=-1; put({raid:r,rq:[...used,qi]}); render(true);};
+    me.raid=rr; S.rPick=-1; put({raid:rr,rq:[...used,qi]}); render(true);};
 }
+
 let raidTick=null;
 function raidQuizView(){
   const r=me.raid, Q=QB[r.qi];
