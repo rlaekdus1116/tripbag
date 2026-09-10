@@ -272,6 +272,8 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
    * 이 파일은 두 html 안에 이미 들어가 있습니다. (참고용)
    =================================================================== */
 
+window.VER = 'v7 · 2026-09-10';
+
 /* 글씨체 — 게임 UI처럼 딱딱하고 평범한 고딕.
    'Noto Sans KR' / 'Black Han Sans'(더 두꺼움) / 'Do Hyeon' 중에 고르면 됩니다. */
 window.FONT = 'Noto Sans KR';
@@ -551,9 +553,6 @@ window.VARS = [
  { id:'v2', em:'🏝️', title:'오아시스 발견',
    line:'섬 안쪽에서 샘이 터졌다. 이제 물은 누구나 마실 수 있다.\n어제 물을 비싸게 산 조는… 안됐다.',
    rule:{kind:'all', pts:2} },
- { id:'v3', em:'💸', title:'환율 폭락',
-   line:'항구에 소문이 돌았다. 환전소 주인이 값을 반으로 깎았다.',
-   rule:{kind:'money', mul:0.5} },
  { id:'v4', em:'📦', title:'밀수선 도착',
    line:'한밤중에 배 한 척이 들어와 물건을 팔고 갔다. 다들 주머니가 두둑해졌다.',
    rule:{kind:'money', add:15} },
@@ -575,6 +574,20 @@ window.VARS = [
  { id:'v10', em:'🥷', title:'도둑',
    line:'제일 부자라고 소문난 조가 밤사이 털렸다.',
    rule:{kind:'moneyTop', sub:20} }
+];
+
+/* ─────────────────────────────────────────────
+   하루 대본 — 선생님은 「다음」만 누르면 됩니다.
+   pre   : 그날 시작 전에 터지는 돌발 변수 (VARS 의 id)
+   extra : 경매 다음에 오는 활동 'trade'(거래) / 'raid'(강탈)
+   순서는 항상  상황 → 퀴즈 → 정답 → 경매 → 낙찰 → [활동] → 선택 → 결과
+   ───────────────────────────────────────────── */
+window.DAYPLAN = [
+  { extra:null    },                 // 1일차 — 몸풀기
+  { extra:'trade' },                 // 2일차 — 생수 경매 뒤 거래
+  { pre:'v2', extra:'raid'  },       // 3일차 — 오아시스 발견(물값 폭락) 뒤 강탈
+  { pre:'v1', extra:'trade' },       // 4일차 — 폭풍우 뒤 거래
+  { pre:'v6', extra:'raid'  }        // 5일차 — 원숭이 습격 뒤 강탈
 ];
 
 /* 강탈 — 다른 조 물건을 퀴즈로 뺏기 */
@@ -636,7 +649,7 @@ function bgs(k,top,bot){
 }
 const bgA=(k,t,b)=>{const v=bgs(k,t,b); return v?` style="${v}"`:'';};
 
-let DB=null,api=null,online=false,busy=false,hide=false,lotSel='water';
+let DB=null,api=null,online=false,busy=false,hide=false;
 let ST={phase:'lobby',step:0}, TEAMS={}, TRDOCS={};
 const TN=()=>Array.from({length:C.teams},(_,i)=>(i+1)+'조');
 const inv=t=>(t&&t.inv)||[];
@@ -650,26 +663,44 @@ const packPrice=t=>((t&&t.pack)||[]).reduce((a,id)=>a+G(id).price,0);
 const cashOf=t=>((t&&t.pack)||[]).reduce((a,id)=>a+G(id).cash,0);
 
 /* ══ 단계표 ══ */
-const STEPS=[
- {ph:'lobby', nm:'대기실',        go:'🎰 로또 발표'},
- {ph:'lotto', nm:'로또 1등 당첨',  go:'🧳 짐 싸기 시작'},
- {ph:'pack',  nm:'짐 싸기',       go:'🔒 짐 마감하고 공항으로'},
- {ph:'first', nm:'일등석',        go:'✈️ 난기류'},
- {ph:'turb',  nm:'난기류',        go:'🛬 비상 착륙'},
- {ph:'land',  nm:'비상 착륙',     go:'💱 환전소로'},
- {ph:'money', nm:'환전소',        go:'🌑 첫째 날 상황'},
-];
+const PLAN=window.DAYPLAN||[];
+const NM={lobby:'대기실',lotto:'로또 1등 당첨',pack:'짐 싸기',first:'일등석',turb:'난기류',
+ land:'비상 착륙',money:'환전소',price:'오늘 팔린 값',rank:'두 개의 순위',
+ store:'인천공항 편의점',board:'정리',result:'최종 결과'};
+const STEPS=[{ph:'lobby'},{ph:'lotto'},{ph:'pack'},{ph:'first'},{ph:'turb'},{ph:'land'},{ph:'money'}];
 EV.forEach((e,i)=>{
-  STEPS.push({ph:'ev',   ev:e.id, nm:`${e.day}일차 · 상황`, go:'🎒 챙길 것 고르기'});
-  STEPS.push({ph:'pick', ev:e.id, nm:`${e.day}일차 · 선택`, go:'📢 결과 공개'});
-  STEPS.push({ph:'evres',ev:e.id, nm:`${e.day}일차 · 결과`,
-    go: i<EV.length-1 ? `${EV[i+1].em} ${EV[i+1].day}일차 상황` : '📈 오늘 팔린 값'});
+  const p=PLAN[i]||{};
+  if(p.pre) STEPS.push({ph:'var', ev:e.id, varId:p.pre});
+  STEPS.push({ph:'ev',     ev:e.id});
+  STEPS.push({ph:'quiz',   ev:e.id});
+  STEPS.push({ph:'quizres',ev:e.id});
+  STEPS.push({ph:'auc',    ev:e.id});
+  STEPS.push({ph:'aucres', ev:e.id});
+  if(p.extra) STEPS.push({ph:p.extra, ev:e.id});
+  STEPS.push({ph:'pick',   ev:e.id});
+  STEPS.push({ph:'evres',  ev:e.id});
 });
-STEPS.push({ph:'price', nm:'오늘 팔린 값', go:'🏆 두 개의 순위'});
-STEPS.push({ph:'rank',  nm:'두 개의 순위', go:'🏪 인천공항 편의점'});
-STEPS.push({ph:'store', nm:'인천공항 편의점', go:'✍️ 정리 3줄'});
-STEPS.push({ph:'board', nm:'정리',        go:'🎬 최종 결과'});
-STEPS.push({ph:'result',nm:'최종 결과',   go:null});
+['price','rank','store','board','result'].forEach(ph=>STEPS.push({ph}));
+const VARS=window.VARS||[];
+const QP=window.QUIZ_PRIZE, QB=window.QUIZ;
+const dayOf=st=>Math.max(0,EV.findIndex(e=>e.id===st.ev));
+function stepName(st){
+  if(NM[st.ph]) return NM[st.ph];
+  const d=dayOf(st)+1, e=EV[d-1]||EV[0];
+  const t={var:'돌발 변수',ev:'상황',quiz:'퀴즈',quizres:'정답 공개',auc:'보급소 경매',
+    aucres:'낙찰',trade:'거래',raid:'강탈',pick:'우리가 쓸 것',evres:'결과'}[st.ph]||st.ph;
+  return `${d}일차 · ${t}`;
+}
+function goLabel(){ return stepGo(stepIdx()); }
+function stepGo(i){
+  const nx=STEPS[i+1]; if(!nx) return null;
+  const ic={var:'🎲',ev:'🎬',quiz:'📝',quizres:'✅',auc:'🔨',aucres:'🔔',trade:'🤝',raid:'⚔️',
+    pick:'🎒',evres:'📢',price:'📈',rank:'🏆',store:'🏪',board:'✍️',result:'🎬',
+    lotto:'🎰',pack:'🧳',first:'🥂',turb:'✈️',land:'🛬',money:'💱'}[nx.ph]||'▶';
+  if(nx.ph==='quiz') return `📝 오늘의 문제 (${QP[dayOf(nx)]||0}억)`;
+  if(nx.ph==='auc')  return `🔨 ${G(EV[dayOf(nx)].lot).name} 경매`;
+  return `${ic} ${stepName(nx)}`;
+}
 const stepIdx=()=>Math.max(0,Math.min(STEPS.length-1, ST.step||0));
 const stepNow=()=>STEPS[stepIdx()];
 
@@ -699,51 +730,28 @@ async function save(o){ if(!online) return;
 async function saveTeam(t,o){ try{ await api.setDoc(api.doc(DB,'live',TEAM+t),o,{merge:true}); }catch(e){} }
 
 /* ══ 다음 단계 ══ */
-/* 보급소 서브단계
-   0 아직 · 1 퀴즈 중 · 2 정답공개 · 3 경매 중 · 4 낙찰 끝 */
-function shopStage(){
-  const a=ST.auc, q=ST.quiz;
-  if(a&&a.evId===ST.evId) return a.open?3:4;
-  if(q&&q.evId===ST.evId) return q.revealed?2:1;
-  return 0;
-}
-const QP=window.QUIZ_PRIZE, QB=window.QUIZ;
-const dayIdx=()=>Math.max(0,EV.findIndex(e=>e.id===ST.evId));
+const QPz=window.QUIZ_PRIZE;
 function quizOf(){ const q=ST.quiz; return q?QB[q.qi]:null; }
+const dayIdx=()=>Math.max(0,EV.findIndex(e=>e.id===ST.evId));
 async function openQuiz(){
   const d=dayIdx();
   const set=(ST.quizSet&&ST.quizSet.length)?ST.quizSet:QB.map((_,i)=>i);
   const qi=set[d%set.length];
-  await save({quiz:{id:'q'+Date.now(),qi,evId:ST.evId,prize:QP[d]||QP[QP.length-1],
+  await save({quiz:{id:'q'+Date.now(),qi,evId:ST.evId,prize:QPz[d]||QPz[QPz.length-1],
     open:true,revealed:false,at:Date.now()}});
   snd('quiz');
 }
 async function revealQuiz(){
-  const q=ST.quiz; if(!q||q.revealed||busy) return; busy=true;
-  try{
-    const Q=QB[q.qi];
-    for(const t of TN()){ const d=TEAMS[t]; if(!d) continue;
-      const pick=((d.quizAns||{})[q.id]);
-      if(pick===Q.a) await saveTeam(t,{money:moneyOf(d)+q.prize});
-    }
-    await save({quiz:{...q,open:false,revealed:true}});
-    snd('cash');
-  }finally{ busy=false; }
+  const q=ST.quiz; if(!q||q.revealed) return;
+  const Q=QB[q.qi];
+  for(const t of TN()){ const d=TEAMS[t]; if(!d) continue;
+    if(((d.quizAns||{})[q.id])===Q.a) await saveTeam(t,{money:moneyOf(d)+q.prize}); }
+  await save({quiz:{...q,open:false,revealed:true}}); snd('cash');
 }
 async function next(){
   if(busy) return;
-  const i=stepIdx(), cur=STEPS[i];
-  if(!cur.go) return;
-  // ── 보급소 단계는 제자리에서 3번 눌린다 ──
-  if(ST.open==='shop'){
-    const st=shopStage();
-    if(st===0){ await openQuiz(); return; }
-    if(st===1){ await revealQuiz(); return; }
-    if(st===2){ await openAuc(evOf(ST.evId).lot); return; }
-    if(st===3){ await closeAuc(); return; }
-    await closeOpen(); return;
-  }
-  if(ST.open==='trade'||ST.open==='raid'){ await closeOpen(); return; }
+  const i=stepIdx(), cur=STEPS[i], nx=STEPS[i+1];
+  if(!nx) return;
   busy=true;
   try{
     if(cur.ph==='pack'){
@@ -751,31 +759,33 @@ async function next(){
         await saveTeam(t,{pack:d.pack||[],inv:[...(d.pack||[])],packLock:true}); }
       snd('coin');
     }
-    if(cur.ph==='first'){        // 환전은 착륙 다음이지만 미리 계산해두지 않는다
-    }
     if(cur.ph==='land'){
       for(const t of TN()){ const d=TEAMS[t]||{}; const pk=d.pack||[];
         await saveTeam(t,{money:cashOf(d), inv:pk.filter(id=>G(id).cash===0)}); }
-      snd('coin');
+      snd('cash');
     }
-    if(cur.ph==='pick'){ await judgeAll(evOf(cur.ev)); }
-    const nx=STEPS[i+1];
-    const o={step:i+1, phase:nx.ph, at:Date.now()};
-    if(nx.ev) o.evId=nx.ev;
+    if(nx.ph==='evres') await judgeAll(evOf(nx.ev));
+    if(nx.ph==='var')   await applyVar(nx.varId);
+    const o={step:i+1, phase:nx.ph, at:Date.now(), evId:nx.ev||null, varId:nx.varId||null};
     if(nx.ph==='pack'&&C.packSec) o.packEnd=Date.now()+C.packSec*1000;
-    if(nx.ph==='ev'){ o.auc=null; o.quiz=null; o.open=null; }
+    if(nx.ph==='trade') o.tradeEnd=Date.now()+180000;
+    if(nx.ph==='ev'||nx.ph==='var'){ o.auc=null; o.quiz=null; }
     await save(o);
+    if(nx.ph==='quiz')    await openQuiz();
+    if(nx.ph==='quizres') await revealQuiz();
+    if(nx.ph==='auc')     await openAuc(EV[dayOf(nx)].lot);
+    if(nx.ph==='aucres')  await closeAuc();
     if(nx.ph==='lotto') snd('lotto');
-    else if(nx.ph==='land') snd('crash');
-    else snd('open');
+    else if(nx.ph==='land'||nx.ph==='turb') snd('crash');
+    else if(nx.ph==='var') snd('var');
+    else if(!['quiz','quizres','auc','aucres'].includes(nx.ph)) snd('open');
   }finally{ busy=false; }
 }
 async function back(){ const i=stepIdx(); if(i<=0) return;
-  const nx=STEPS[i-1]; const o={step:i-1,phase:nx.ph,at:Date.now()};
-  if(nx.ev) o.evId=nx.ev; await save(o); }
-async function jump(i){ const nx=STEPS[i]; const o={step:i,phase:nx.ph,at:Date.now()};
-  if(nx.ev) o.evId=nx.ev; await save(o); }
-
+  const nx=STEPS[i-1];
+  await save({step:i-1,phase:nx.ph,at:Date.now(),evId:nx.ev||null,varId:nx.varId||null}); }
+async function jump(i){ const nx=STEPS[i];
+  await save({step:i,phase:nx.ph,at:Date.now(),evId:nx.ev||null,varId:nx.varId||null}); }
 const evOf=id=>EV.find(e=>e.id===id)||EV[0];
 const curEv=()=>evOf(ST.evId);
 
@@ -834,62 +844,42 @@ async function closeAuc(){
   }finally{ busy=false; }
 }
 async function clearAuc(){ await save({auc:null}); }
-async function openMode(m){
-  if(m==='shop'){ await save({open:'shop',auc:null,quiz:null,at:Date.now()}); await openQuiz(); }
-  else if(m==='trade'){ await save({open:'trade',tradeEnd:Date.now()+180000,at:Date.now()}); snd('open'); }
-  else { await save({open:'raid',at:Date.now()}); snd('open'); }
-}
-async function closeOpen(){ await save({open:null,auc:null,quiz:null,at:Date.now()}); snd('open'); }
 
-/* ══ 돌발 변수 ══ */
-const VARS=window.VARS||[];
-async function throwVar(){
-  if(busy) return; busy=true;
-  try{
-    const used=ST.varUsed||[];
-    let pool=VARS.filter(v=>!used.includes(v.id)); if(!pool.length) pool=VARS;
-    const card=pool[Math.floor(Math.random()*pool.length)];
-    const r=card.rule, hits={};
-    if(r.kind==='need'){
-      for(const t of TN()){ const d=TEAMS[t]||{}; const iv=inv(d);
-        const has = r.any ? r.ids.some(x=>iv.includes(x)) : r.ids.every(x=>iv.includes(x));
-        const p = has?(r.hit||0):(r.miss||0);
-        if(p){ await saveTeam(t,{bonus:((d.bonus)||0)+p}); }
-        hits[t]={p,tag:has?'있음':'없음'}; }
-    }
-    if(r.kind==='all'){
-      for(const t of TN()){ const d=TEAMS[t]||{};
-        await saveTeam(t,{bonus:((d.bonus)||0)+r.pts}); hits[t]={p:r.pts}; }
-    }
-    if(r.kind==='money'){
-      for(const t of TN()){ const d=TEAMS[t]||{};
-        const before=moneyOf(d);
-        const after=r.mul!=null?Math.floor(before*r.mul):Math.max(0,before+(r.add||0));
-        await saveTeam(t,{money:after}); hits[t]={m:after-before}; }
-    }
-    if(r.kind==='needDown'){
-      for(const t of TN()){ const d=TEAMS[t]||{}; const iv=inv(d);
-        const has=r.ids.every(x=>iv.includes(x));
-        if(!has){ await saveTeam(t,{hp:Math.max(1,hpOf(d)-(r.miss||1))}); hits[t]={down:1,tag:'없음'}; }
-        else hits[t]={tag:'있음'}; }
-    }
-    if(r.kind==='steal'){
-      const pool2=TN().filter(t=>inv(TEAMS[t]).length);
-      for(let i=pool2.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool2[i],pool2[j]]=[pool2[j],pool2[i]];}
-      for(const t of pool2.slice(0,r.n||3)){ const d=TEAMS[t]||{}; const iv=inv(d);
-        const gone=iv[Math.floor(Math.random()*iv.length)];
-        await saveTeam(t,{inv:iv.filter(x=>x!==gone)}); hits[t]={lost:gone}; }
-    }
-    if(r.kind==='moneyTop'){
-      let top=null; TN().forEach(t=>{const m=moneyOf(TEAMS[t]); if(!top||m>top.m) top={t,m};});
-      if(top&&top.m>0){ await saveTeam(top.t,{money:Math.max(0,top.m-(r.sub||10))});
-        hits[top.t]={m:-Math.min(top.m,r.sub||10)}; }
-    }
-    await save({varCard:{id:card.id,at:Date.now(),hits},varUsed:[...used,card.id]});
-    snd('var');
-  }finally{ busy=false; }
+/* ══ 돌발 변수 (대본에 정해진 카드) ══ */
+async function applyVar(id){
+  const card=VARS.find(v=>v.id===id)||VARS[0]; if(!card) return;
+  const r=card.rule, hits={};
+  if(r.kind==='need'){
+    for(const t of TN()){ const d=TEAMS[t]||{}; const iv=inv(d);
+      const has = r.any ? r.ids.some(x=>iv.includes(x)) : r.ids.every(x=>iv.includes(x));
+      const pt = has?(r.hit||0):(r.miss||0);
+      if(pt) await saveTeam(t,{bonus:((d.bonus)||0)+pt});
+      hits[t]={p:pt,tag:has?'있음':'없음'}; }
+  } else if(r.kind==='all'){
+    for(const t of TN()){ const d=TEAMS[t]||{};
+      await saveTeam(t,{bonus:((d.bonus)||0)+r.pts}); hits[t]={p:r.pts}; }
+  } else if(r.kind==='money'){
+    for(const t of TN()){ const d=TEAMS[t]||{}; const b=moneyOf(d);
+      const a2=r.mul!=null?Math.floor(b*r.mul):Math.max(0,b+(r.add||0));
+      await saveTeam(t,{money:a2}); hits[t]={m:a2-b}; }
+  } else if(r.kind==='needDown'){
+    for(const t of TN()){ const d=TEAMS[t]||{}; const iv=inv(d);
+      const has=r.ids.every(x=>iv.includes(x));
+      if(!has){ await saveTeam(t,{hp:Math.max(1,hpOf(d)-(r.miss||1))}); hits[t]={down:1,tag:'없음'}; }
+      else hits[t]={tag:'있음'}; }
+  } else if(r.kind==='steal'){
+    const pool=TN().filter(t=>inv(TEAMS[t]).length);
+    for(let k=pool.length-1;k>0;k--){const j2=Math.floor(Math.random()*(k+1));[pool[k],pool[j2]]=[pool[j2],pool[k]];}
+    for(const t of pool.slice(0,r.n||3)){ const d=TEAMS[t]||{}; const iv=inv(d);
+      const gone=iv[Math.floor(Math.random()*iv.length)];
+      await saveTeam(t,{inv:iv.filter(x=>x!==gone)}); hits[t]={lost:gone}; }
+  } else if(r.kind==='moneyTop'){
+    let top=null; TN().forEach(t=>{const m=moneyOf(TEAMS[t]); if(!top||m>top.m) top={t,m};});
+    if(top&&top.m>0){ await saveTeam(top.t,{money:Math.max(0,top.m-(r.sub||10))});
+      hits[top.t]={m:-Math.min(top.m,r.sub||10)}; }
+  }
+  await save({varCard:{id:card.id,at:Date.now(),hits}});
 }
-async function closeVar(){ await save({varCard:null}); }
 
 /* ══ 강탈 처리 ══ */
 let raiding=false;
@@ -966,7 +956,7 @@ async function newGame(){
   const pool=QB.map((_,i)=>i);
   for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
   await save({step:0,phase:'lobby',evId:null,auc:null,quiz:null,quizSet:pool.slice(0,EV.length),
-    varCard:null,varUsed:[],raidLog:[],aucLog:[],log:[],open:null,packEnd:0,at:Date.now()});
+    varCard:null,raidLog:[],aucLog:[],log:[],packEnd:0,varId:null,at:Date.now()});
   busy=false;
 }
 
@@ -978,121 +968,97 @@ function hintOf(){
     return `학생들이 학번을 입력하는 중 · <b>${n}명</b> 들어옴`;}
   if(s.ph==='pack'){const k=TN().filter(t=>(TEAMS[t]||{}).packLock).length;
     const f=TN().filter(t=>((TEAMS[t]||{}).pack||[]).length>=C.slots).length;
-    return `8칸 다 채운 조 <b>${f}/${C.teams}</b> · 확정한 조 <b>${k}/${C.teams}</b>`;}
+    return `8칸 다 채운 조 <b>${f}/${C.teams}</b> · 확정 <b>${k}/${C.teams}</b>`;}
   if(s.ph==='first'){const n=TN().filter(t=>(TEAMS[t]||{}).first!=null).length;
-    return `기내식 고른 조 <b>${n}/${C.teams}</b> · 그냥 즐기는 장면입니다`;}
-  if(ST.open==='trade') return `🤝 조끼리 거래 중 · 성사 <b>${(ST.log||[]).length}</b>건`;
-  if(ST.open==='raid')  return `⚔️ 강탈 중 · 시도 <b>${(ST.raidLog||[]).length}</b>건`;
-  if(ST.open==='shop'){ const e=evOf(ST.evId), a=ST.auc, q=ST.quiz, st=shopStage(), d=dayIdx();
-    if(st===0) return `문제를 맞히면 <b>${QP[d]}억</b> · 그 돈으로 <b>${G(e.lot).name}</b>을 살 수 있습니다`;
-    if(st===1) return `📝 답한 조 <b>${TN().filter(t=>((TEAMS[t]||{}).quizAns||{})[q.id]!=null).length}/${C.teams}</b>`;
-    if(st===2){ const n=TN().filter(t=>((TEAMS[t]||{}).quizAns||{})[q.id]===QB[q.qi].a).length;
-      return `<b>${n}조</b>가 맞혀서 ${eok(q.prize)}씩 받았습니다`; }
-    if(st===3) return `🔨 <b>${G(a.item).name}</b> 경매 중 · 부른 조 <b>${TN().filter(t=>((TEAMS[t]||{}).bids||{})[a.id]!=null).length}</b>조`;
-    return `${a.winner?`<b>${a.winner}</b>가 ${eok(a.price)}에 가져갔습니다`:'아무도 못 샀습니다'}`;}
+    return `기내식 고른 조 <b>${n}/${C.teams}</b>`;}
+  if(s.ph==='turb') return `영상이 돌아갑니다. 그냥 보여주세요`;
+  if(s.ph==='land') return `여기서 교실이 뒤집힙니다`;
+  if(s.ph==='money') return `조마다 쓸 수 있는 돈이 정해졌습니다 · <b>남긴 돈은 10억당 1점</b>`;
+  if(s.ph==='var') return `돌발 변수가 터졌습니다. 읽어주고 넘기세요`;
   if(s.ph==='ev') return `상황을 읽어주세요. 애들은 읽기만 합니다`;
+  if(s.ph==='quiz'){const q=ST.quiz||{};
+    return `📝 답한 조 <b>${TN().filter(t=>((TEAMS[t]||{}).quizAns||{})[q.id]!=null).length}/${C.teams}</b>`;}
+  if(s.ph==='quizres'){const q=ST.quiz||{};
+    const n=TN().filter(t=>((TEAMS[t]||{}).quizAns||{})[q.id]===(QB[q.qi]||{}).a).length;
+    return `<b>${n}조</b>가 맞혀서 ${eok(q.prize||0)}씩 받았습니다`;}
+  if(s.ph==='auc'){const a=ST.auc||{};
+    return `🔨 <b>${G(a.item).name}</b> 경매 중 · 부른 조 <b>${TN().filter(t=>((TEAMS[t]||{}).bids||{})[a.id]!=null).length}</b>조`;}
+  if(s.ph==='aucres'){const a=ST.auc||{};
+    return a.winner?`<b>${a.winner}</b>가 ${eok(a.price)}에 가져갔습니다`:'아무도 못 샀습니다';}
+  if(s.ph==='trade') return `🤝 조끼리 거래 중 · 성사 <b>${(ST.log||[]).length}</b>건`;
+  if(s.ph==='raid')  return `⚔️ 강탈 중 · 시도 <b>${(ST.raidLog||[]).length}</b>건`;
   if(s.ph==='pick'){const e=curEv();
     const n=TN().filter(t=>(((TEAMS[t]||{}).sel||{})[e.id]||[]).length>0).length;
-    return `쓸 것을 고른 조 <b>${n}/${C.teams}</b> · 필요하면 아래에서 <b>보급소·거래·강탈</b>을 여세요`;}
+    return `쓸 것을 고른 조 <b>${n}/${C.teams}</b>`;}
   if(s.ph==='evres') return `쓴 소모품은 <b>없어졌습니다</b>. 읽어주고 넘기세요`;
-  if(s.ph==='money') return `조마다 쓸 수 있는 돈이 정해졌습니다`;
   if(s.ph==='rank') return `<b>순위가 뒤집힌 걸</b> 짚어주세요`;
   if(s.ph==='store') return `설명하지 말고 <b>애들한테 물어보세요</b>`;
   return '';
 }
-function goLabel(){
-  const s=stepNow();
-  if(ST.open==='shop'){ const st=shopStage(), d=dayIdx();
-    return st===0?`📝 오늘의 문제 (${QP[d]||0}억)`
-        : st===1?'✅ 정답 공개 + 상금'
-        : st===2?`🔨 ${G(evOf(ST.evId).lot).name} 경매 시작`
-        : st===3?'🔔 낙찰!' : '✖ 보급소 닫기'; }
-  if(ST.open==='trade') return '✖ 거래 끝내기';
-  if(ST.open==='raid')  return '✖ 강탈 끝내기';
-  return s.go;
-}
 function pilot(){
   const i=stepIdx(), s=stepNow(), a=ST.auc;
   let ready=false;
+  if(s.ph==='quiz') ready=TN().every(t=>((TEAMS[t]||{}).quizAns||{})[(ST.quiz||{}).id]!=null);
+  if(s.ph==='auc')  ready=TN().filter(t=>moneyOf(TEAMS[t])>0).every(t=>((TEAMS[t]||{}).bids||{})[(a||{}).id]!=null);
+  if(s.ph==='pick') ready=TN().every(t=>(((TEAMS[t]||{}).sel||{})[s.ev]||[]).length>0);
   if(s.ph==='pack') ready=TN().every(t=>((TEAMS[t]||{}).pack||[]).length>=C.slots);
   if(s.ph==='first') ready=TN().every(t=>(TEAMS[t]||{}).first!=null);
-  if(ST.open==='shop'){ const st=shopStage();
-    if(st===1) ready=TN().every(t=>((TEAMS[t]||{}).quizAns||{})[(ST.quiz||{}).id]!=null);
-    if(st===3) ready=TN().filter(t=>moneyOf(TEAMS[t])>0).every(t=>((TEAMS[t]||{}).bids||{})[(a||{}).id]!=null);
-  }
-  if(s.ph==='pick'&&!ST.open) ready=TN().every(t=>(((TEAMS[t]||{}).sel||{})[s.ev]||[]).length>0);
   return `<div class="pilot ${hide?'hide':''}">
    <div class="row1">
      <div class="nowbox"><div class="st">${i+1} / ${STEPS.length} 단계</div>
-       <div class="nm">${s.nm}</div><div class="hint">${hintOf()}</div></div>
-     <button class="nextbtn ${s.go?(ready?'ready':''):'end'}" id="next">
-       ${s.go?`<span class="k">👉 다음에 누를 것 (Enter)</span><span class="v">${goLabel()}</span>`
+       <div class="nm">${stepName(s)}</div><div class="hint">${hintOf()}</div></div>
+     <button class="nextbtn ${goLabel()?(ready?'ready':''):'end'}" id="next">
+       ${goLabel()?`<span class="k">👉 다음 (Enter / Space)</span><span class="v">${goLabel()}</span>`
              :`<span class="v">끝</span>`}</button>
    </div>
    <div class="row2">
      <button id="back">◀ 뒤로</button>
      <span class="sep"></span>
-     ${(stepNow().ph==='pick')?(ST.open
-        ? `<button class="hot" id="oc">✖ ${ST.open==='shop'?'보급소':(ST.open==='trade'?'거래':'강탈')} 닫기</button>`
-        : `<button class="op" id="o1">🏪 보급소</button>
-           <button class="op" id="o2">🤝 거래</button>
-           <button class="op" id="o3">⚔️ 강탈</button>`):''}
      <span class="sep"></span>
-     <button class="hot" id="vr">🎲 돌발 변수</button>
-     ${ST.varCard?`<button id="vc">변수 닫기</button>`:''}
-     <span class="sep"></span>
-     <span class="lb">보급품·퀴즈는 자동</span>
+     <span class="lb">모든 순서는 자동입니다. <b style="color:var(--gold)">다음</b>만 누르세요</span>
      <span class="sep"></span>
      <span class="lb">⏱ 짐싸기</span>
      <button id="t120">2분</button><button id="t180">3분</button><button id="t0">제한없음</button>
      <span class="sep"></span>
-     <select id="jump">${STEPS.map((x,k)=>`<option value="${k}" ${k===i?'selected':''}>${k+1}. ${x.nm}</option>`).join('')}</select>
+     <select id="jump">${STEPS.map((x,k)=>`<option value="${k}" ${k===i?'selected':''}>${k+1}. ${stepName(x)}</option>`).join('')}</select>
      <button class="dan" id="new">새 게임</button>
-     <span class="lb">H = 조종석 숨기기 · ${online?'연결됨':'연결 안 됨'}</span>
+     <span class="lb">H = 조종석 숨기기 · ${online?'연결됨':'연결 안 됨'} · <b>${window.VER||''}</b></span>
    </div></div>`;
 }
 function bind(){
   const on=(id,fn)=>{const el=$('#'+id); if(el) el.onclick=fn;};
   on('next',next); on('back',back); on('new',newGame);
-  on('vr',throwVar); on('vc',closeVar);
-  on('o1',()=>openMode('shop')); on('o2',()=>openMode('trade')); on('o3',()=>openMode('raid'));
-  on('oc',closeOpen);
   on('t120',()=>save({packEnd:Date.now()+120000})); on('t180',()=>save({packEnd:Date.now()+180000}));
   on('t0',()=>save({packEnd:0}));
   const j=$('#jump'); if(j) j.onchange=e=>jump(+e.target.value);
 }
 document.addEventListener('keydown',e=>{
   if(e.key==='h'||e.key==='H'){hide=!hide;draw();}
-  if(e.key==='Enter'){e.preventDefault();next();}
-  if(e.key===' '&&ST.auc&&ST.auc.open){e.preventDefault();closeAuc();}
+  if(e.key==='Enter'||e.key===' '){e.preventDefault();next();}
 });
 
 function stage(){
-  const a=ST.auc, q=ST.quiz;
-  if(ST.varCard) return sVar();
-  if(ST.open==='shop'){
-    if(a&&a.evId===ST.evId) return sAuc();
-    if(q&&q.evId===ST.evId) return sQuiz();
-    return sShop();
-  }
-  if(ST.open==='trade') return sTradeBoard();
-  if(ST.open==='raid')  return sRaidBoard();
   switch(ST.phase){
-    case 'lotto': return sLotto();
-    case 'first': return sFirst();
-    case 'pack':  return sPack();
-    case 'land':  return sLand();
-    case 'money': return sMoney();
-    case 'turb':  return sTurb();
-    case 'ev':    return sSituation();
-    case 'pick':  return sEv();
-    case 'evres': return sEvRes();
-    case 'price': return sPrice();
-    case 'rank':  return sRank();
-    case 'store': return sStore();
-    case 'board': return sBoard();
-    case 'result':return sResult();
-    default:      return sLobby();
+    case 'lotto':   return sLotto();
+    case 'first':   return sFirst();
+    case 'pack':    return sPack();
+    case 'turb':    return sTurb();
+    case 'land':    return sLand();
+    case 'money':   return sMoney();
+    case 'var':     return sVar();
+    case 'ev':      return sSituation();
+    case 'quiz':    case 'quizres': return sQuiz();
+    case 'auc':     case 'aucres':  return sAuc();
+    case 'trade':   return sTradeBoard();
+    case 'raid':    return sRaidBoard();
+    case 'pick':    return sEv();
+    case 'evres':   return sEvRes();
+    case 'price':   return sPrice();
+    case 'rank':    return sRank();
+    case 'store':   return sStore();
+    case 'board':   return sBoard();
+    case 'result':  return sResult();
+    default:        return sLobby();
   }
 }
 function sLobby(){
@@ -1177,7 +1143,7 @@ function sEv(){
    </div>`;
 }
 function sVar(){
-  const v=VARS.find(x=>x.id===ST.varCard.id)||VARS[0], hits=ST.varCard.hits||{};
+  const vc=ST.varCard||{}; const v=VARS.find(x=>x.id===vc.id)||VARS[0], hits=vc.hits||{};
   return `<div class="varw">
     <div class="vem">${v.em}</div>
     <div class="vt">${v.title}</div>
@@ -1258,7 +1224,7 @@ function sRaidBoard(){
        <span class="p">${x.ok?'⚔️':'💀'}</span></div>`).join('')
      ||`<div class="mid"><p>아직 시도한 조가 없습니다.\n학생 화면에 <b>강탈</b> 판이 열려 있습니다.</p></div>`}</div>`;
 }
-function sShop(){
+function sShopUnused(){
   const e=curEv(), g=G(e.lot);
   return `<div class="evhead"><div class="em">${e.em}</div>
     <div><div class="when">${e.when}</div><h2>${e.title}</h2><div class="ds">${e.desc}</div></div></div>

@@ -33,6 +33,7 @@ input{font-family:inherit}
 .rf{margin-left:12px;padding:5px 12px;border-radius:10px;background:#2d2820;border:1px solid #443d31;
  font-size:.95em;font-weight:700;color:var(--dim);flex:none}
 .rf:active{background:var(--gold);color:#17150f}
+.ver{font-size:.68em;color:#3f3a31;margin-left:6px}
 
 /* 공통 */
 .center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -469,6 +470,8 @@ input{font-family:inherit}
    * 이 파일은 두 html 안에 이미 들어가 있습니다. (참고용)
    =================================================================== */
 
+window.VER = 'v7 · 2026-09-10';
+
 /* 글씨체 — 게임 UI처럼 딱딱하고 평범한 고딕.
    'Noto Sans KR' / 'Black Han Sans'(더 두꺼움) / 'Do Hyeon' 중에 고르면 됩니다. */
 window.FONT = 'Noto Sans KR';
@@ -748,9 +751,6 @@ window.VARS = [
  { id:'v2', em:'🏝️', title:'오아시스 발견',
    line:'섬 안쪽에서 샘이 터졌다. 이제 물은 누구나 마실 수 있다.\n어제 물을 비싸게 산 조는… 안됐다.',
    rule:{kind:'all', pts:2} },
- { id:'v3', em:'💸', title:'환율 폭락',
-   line:'항구에 소문이 돌았다. 환전소 주인이 값을 반으로 깎았다.',
-   rule:{kind:'money', mul:0.5} },
  { id:'v4', em:'📦', title:'밀수선 도착',
    line:'한밤중에 배 한 척이 들어와 물건을 팔고 갔다. 다들 주머니가 두둑해졌다.',
    rule:{kind:'money', add:15} },
@@ -772,6 +772,20 @@ window.VARS = [
  { id:'v10', em:'🥷', title:'도둑',
    line:'제일 부자라고 소문난 조가 밤사이 털렸다.',
    rule:{kind:'moneyTop', sub:20} }
+];
+
+/* ─────────────────────────────────────────────
+   하루 대본 — 선생님은 「다음」만 누르면 됩니다.
+   pre   : 그날 시작 전에 터지는 돌발 변수 (VARS 의 id)
+   extra : 경매 다음에 오는 활동 'trade'(거래) / 'raid'(강탈)
+   순서는 항상  상황 → 퀴즈 → 정답 → 경매 → 낙찰 → [활동] → 선택 → 결과
+   ───────────────────────────────────────────── */
+window.DAYPLAN = [
+  { extra:null    },                 // 1일차 — 몸풀기
+  { extra:'trade' },                 // 2일차 — 생수 경매 뒤 거래
+  { pre:'v2', extra:'raid'  },       // 3일차 — 오아시스 발견(물값 폭락) 뒤 강탈
+  { pre:'v1', extra:'trade' },       // 4일차 — 폭풍우 뒤 거래
+  { pre:'v6', extra:'raid'  }        // 5일차 — 원숭이 습격 뒤 강탈
 ];
 
 /* 강탈 — 다른 조 물건을 퀴즈로 뺏기 */
@@ -836,7 +850,7 @@ const bgA=(k,t,b)=>{const v=bgs(k,t,b); return v?` style="${v}"`:'';};
 
 let DB=null,api=null,online=false,DIAG='';
 const S={ id:localStorage.getItem('bil_id')||'', team:localStorage.getItem('bil_team')||'',
-          tab:'shop', target:'', give:[], take:[], gcash:0, tcash:0, msg:'', bid:0, seenAuc:'', qPick:-1,
+          target:'', give:[], take:[], gcash:0, tcash:0, msg:'', bid:0, seenAuc:'', qPick:-1,
           rTarget:'', rItem:'', rPick:-1 };
 let ST={phase:'lobby'}, TEAMS={}, TRS={}, me={};
 
@@ -895,16 +909,16 @@ let k0='', focusId='';
 function rkey(){
   const ph=ST.phase, a=ST.auc||{};
   const base=[S.id,S.team,ph,online];
-  if(ST.varCard) return [...base,'var',ST.varCard.at].join('|');
+  if(ph==='var') return [...base,'var',(ST.varCard||{}).at].join('|');
   if(me.raid&&!me.raid.done&&me.raid.pick==null) return [...base,'raidq',me.raid.id,S.rPick].join('|');
   if(ph==='pack')  return [...base,(me.pack||[]).join(),me.packLock,me.by,ST.packEnd].join('|');
   if(ph==='first') return [...base,me.first].join('|');
   if(ph==='money') return [...base,moneyOf(me),(me.inv||[]).join()].join('|');
-  if(ph==='ev'||ph==='pick'||ph==='evres'){
+  if(['ev','quiz','quizres','auc','aucres','trade','raid','pick','evres'].includes(ph)){
     const others=Object.keys(TEAMS).sort().map(t=>t+':'+inv(TEAMS[t]).join(',')).join(';');
     return [...base,ST.evId,ST.evShown,selOf(curEv()).join(),(me.inv||[]).join(),moneyOf(me),
-      JSON.stringify(me.res||{}),hpOf(me),a.id,a.open,a.doneAt,myBid(),S.bid,S.tab,S.target,
-      (ST.quiz||{}).id,(ST.quiz||{}).revealed,myQuiz(),S.qPick,ST.open,
+      JSON.stringify(me.res||{}),hpOf(me),a.id,a.open,a.doneAt,myBid(),S.bid,S.target,
+      (ST.quiz||{}).id,(ST.quiz||{}).revealed,myQuiz(),S.qPick,
       S.give.join(),S.take.join(),S.gcash,S.tcash,S.rTarget,S.rItem,
       JSON.stringify(me.raid||{}),
       Object.keys(TRS).map(k=>k+TRS[k].st).join(),others].join('|');
@@ -921,14 +935,16 @@ function render(f){
   if(ph==='pack')   return packView();
   if(ph==='land')   return landView();
   if(ph==='money')  return moneyView();
-  if(ST.varCard) return varView();
   if(me.raid&&!me.raid.done&&me.raid.pick==null) return raidQuizView();
-  if(ph==='turb')  return turbView();
-  if(ph==='ev'||ph==='pick'||ph==='evres') return evView();
+  if(ph==='turb')   return turbView();
+  if(ph==='var')    return varView();
   if(ph==='store')  return storeView();
   if(ph==='result') return resultView();
-  if(ph==='rank'||ph==='board') return waitView();
-  return lobbyView();
+  if(ph==='rank'||ph==='board'||ph==='price') return waitView();
+  if(['ev','quiz','quizres','auc','aucres','trade','raid','pick','evres'].includes(ph)) return evView();
+  if(ph==='lobby')  return lobbyView();
+  // 모르는 단계가 와도 멈추지 않게 — 사건이 잡혀 있으면 그 화면으로
+  return ST.evId?evView():lobbyView();
 }
 function shell(h){
   app.innerHTML=topbar()+h;
@@ -939,7 +955,8 @@ function shell(h){
     try{el.setSelectionRange(el.value.length,el.value.length);}catch(e){}} }
 }
 const PHN={lobby:'대기 중',lotto:'로또 발표',first:'일등석',pack:'짐 싸는 중',land:'비상 착륙',
- money:'환전소',turb:'난기류',ev:'상황',pick:'선택',evres:'결과',rank:'결과 발표',board:'정리',store:'귀국',result:'끝'};
+ money:'환전소',turb:'난기류',var:'돌발 변수',ev:'상황',quiz:'퀴즈',quizres:'정답',
+ auc:'보급소',aucres:'낙찰',trade:'거래',raid:'강탈',pick:'선택',evres:'결과',rank:'결과 발표',board:'정리',store:'귀국',result:'끝'};
 function topbar(){
   const hp=hpOf(me);
   return `<div class="top"><span class="tm">${S.team}</span>
@@ -947,6 +964,7 @@ function topbar(){
     <span class="me">${S.id}</span>
     <button class="rf" id="rf">🔄 새로고침</button>
     <button class="rf" id="sw">조 바꾸기</button>
+    <span class="ver">${window.VER||''}</span>
     <span class="sp">
       <span class="hp"><span class="lb">조원</span><br>${
         [0,1,2].map(i=>`<i class="${i<hp?'':'d'}">🧍</i>`).join('')}</span>
@@ -964,7 +982,7 @@ function gate(){
     <div class="teams">${Array.from({length:C.teams},(_,i)=>
       `<button data-t="${i+1}조" class="${S.team===(i+1)+'조'?'on':''}">${i+1}조</button>`).join('')}</div>
     <div class="err" id="er"></div><button class="go" id="go">들어가기</button>
-    <div class="diag">${online?'':'서버 연결 중…'} ${DIAG}</div></div>`;
+    <div class="diag">${window.VER||''} · ${online?'':'서버 연결 중…'} ${DIAG}</div></div>`;
   document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{S.team=b.dataset.t;render(true);});
   $('#go').onclick=()=>{const v=$('#sid').value.trim().replace(/\s+/g,' ');
     if(!/^\d{5}\s\S{2,}$/.test(v)) return $('#er').textContent='20111 김OO 이렇게 적어주세요';
@@ -1008,14 +1026,15 @@ function firstView(){
 /* 돌발 변수 */
 let lastVar='';
 function varView(){
-  const v=VARS.find(x=>x.id===ST.varCard.id)||VARS[0];
-  const h=(ST.varCard.hits||{})[S.team]||{};
+  const vc=ST.varCard||{};
+  const v=VARS.find(x=>x.id===vc.id)||VARS.find(x=>x.id===ST.varId)||VARS[0];
+  const h=(vc.hits||{})[S.team]||{};
   let txt='우리 조는 무사', cls='';
   if(h.p){ txt=(h.p>0?'+':'')+h.p+'점'; cls=h.p>0?'g':'b'; }
   if(h.m){ txt=(h.m>0?'+':'')+h.m+'억'; cls=h.m>0?'g':'b'; }
   if(h.down){ txt='🧍 조원 한 명이 쓰러졌다'; cls='b'; }
   if(h.lost){ txt=G(h.lost).em+' '+G(h.lost).name+' 을(를) 잃었다'; cls='b'; }
-  if(lastVar!==ST.varCard.at){ lastVar=ST.varCard.at; snd('var'); }
+  if(vc.at&&lastVar!==vc.at){ lastVar=vc.at; snd('var'); }
   shell(`<div class="varw">
     <div class="vem">${v.em}</div><div class="vt">${v.title}</div>
     <div class="vl">${v.line.replace(/\n/g,'<br>')}</div>
@@ -1134,13 +1153,13 @@ function moneyView(){
 /* ══════ 사건 — 화면 하나에 한 가지 일만 ══════ */
 const selNow=e=>selOf(e).filter(id=>inv(me).includes(id));
 function evView(){
-  const e=curEv(), r=(me.res||{})[e.id];
-  if(ST.phase==='evres'&&r) return evResult(e,r);
-  if(ST.phase==='ev') return situationView(e);
-  const open=ST.open||'';
-  if(open==='shop')  return shopView(e);
-  if(open==='trade') return tradeView(e);
-  if(open==='raid')  return raidView(e);
+  const e=curEv(), ph=ST.phase, r=(me.res||{})[e.id];
+  if(ph==='ev')      return situationView(e);
+  if(ph==='quiz'||ph==='quizres') return (ST.quiz?quizView():situationView(e));
+  if(ph==='auc'||ph==='aucres')   return (ST.auc?aucView(e):shopView(e));
+  if(ph==='trade')   return tradeView(e);
+  if(ph==='raid')    return raidView(e);
+  if(ph==='evres')   return r?evResult(e,r):pickView(e);
   return pickView(e);
 }
 function evbar(e){
@@ -1180,9 +1199,6 @@ function pickView(e){
 
 /* ③-1 보급소 (퀴즈 → 경매) */
 function shopView(e){
-  const q=ST.quiz, a=ST.auc;
-  if(q&&q.evId===ST.evId&&!(a&&a.evId===ST.evId)) return quizView();
-  if(a&&a.evId===ST.evId) return aucView(e);
   const M=window.MARKET, g=G(e.lot);
   shell(evbar(e)+`<div class="one center"${bgA('shop',.6,.9)}>
     <div class="big">${M.em}</div><h2>${M.head}</h2>
