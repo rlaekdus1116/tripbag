@@ -61,7 +61,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
 .pulse{animation:pl 1.6s ease-in-out infinite}
 
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%}
-.grid8{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;width:100%}
+.grid8{display:grid;grid-template-columns:repeat(var(--tcols,8),1fr);gap:8px;width:100%}
 .tc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:9px 11px;animation:sl .3s}
 .tc .h{display:flex;align-items:baseline;gap:7px}
 .tc .h b{font-size:1.4em}
@@ -129,7 +129,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
  35%{transform:rotate(10deg) scale(1.12)}55%{transform:rotate(-7deg)}75%{transform:rotate(5deg)}}
 .vt{font-size:3.2em;font-weight:700;color:var(--red);line-height:1.1}
 .vl{font-size:1.5em;color:var(--dim);text-align:center;line-height:1.5;max-width:900px}
-.vgrid{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;width:100%;margin-top:12px;padding:0 20px}
+.vgrid{display:grid;grid-template-columns:repeat(var(--tcols,8),1fr);gap:7px;width:100%;margin-top:12px;padding:0 20px}
 .vc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:7px 3px;text-align:center;
  font-size:1.1em;animation:sl .4s both}
 .vc b{display:block;font-size:1.15em}
@@ -156,7 +156,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
 .qo.no{opacity:.35}
 .qwhy{background:#2b2416;border:1px solid #5f4c22;border-radius:13px;padding:9px 16px;
  font-size:1.3em;line-height:1.4;animation:sl .35s}
-.qteams{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:auto}
+.qteams{display:grid;grid-template-columns:repeat(var(--tcols,8),1fr);gap:6px;margin-top:auto}
 .qt{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:6px 3px;
  text-align:center;font-size:1.05em}
 .qt b{display:block;font-size:1.15em}
@@ -191,6 +191,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
 .rk .x{font-size:.72em;color:var(--dim2)}
 .rk .v{margin-left:auto;font-weight:700;font-variant-numeric:tabular-nums}
 .rk.top{background:#2b2416;border:1px solid #5f4c22} .rk.top .v{color:var(--gold)}
+.rk.tight{font-size:1.12em;padding:4px 12px;margin-bottom:3px}
 
 .board .li{background:var(--card);border-left:4px solid var(--gold);border-radius:0 14px 14px 0;
  padding:11px 20px;margin-bottom:11px;animation:sl .4s both}
@@ -252,13 +253,40 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
  35%{transform:rotate(10deg) scale(1.12)}55%{transform:rotate(-7deg)}75%{transform:rotate(5deg)}}
 .vt{font-size:3em;font-weight:900;color:var(--red);line-height:1.1;letter-spacing:-.03em}
 .vl{font-size:1.45em;color:var(--dim);text-align:center;line-height:1.5;max-width:900px}
-.vgrid{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;width:100%;margin-top:12px;padding:0 20px}
+.vgrid{display:grid;grid-template-columns:repeat(var(--tcols,8),1fr);gap:7px;width:100%;margin-top:12px;padding:0 20px}
 .vc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:7px 3px;text-align:center;
  font-size:1.05em;animation:sl .4s both}
 .vc b{display:block;font-size:1.15em}
 .vc em{display:block;font-style:normal;font-size:.78em;color:var(--dim2)}
 .vc.g{background:#1c3527;border-color:var(--green);color:#c9f0da}
 .vc.b{background:#331d18;border-color:#68372a;color:#ffcdbf}
+
+/* 다시 싼다면 */
+.rpk{width:100%;height:100%;display:flex;flex-direction:column;padding:14px 22px;gap:8px}
+.rphead{display:flex;align-items:center;gap:14px;flex:none}
+.rphead .e{font-size:2.4em}
+.rphead h2{margin:0;font-size:1.9em;color:var(--gold)}
+.rphead p{margin:2px 0 0;color:var(--dim);font-size:1.05em}
+.rphead .cnt2{margin-left:auto;font-size:1.5em;font-weight:800;color:var(--green)}
+.rplegend{display:flex;gap:14px;align-items:center;color:var(--dim2);font-size:.95em;flex:none}
+.rplegend span{width:22px;height:9px;border-radius:4px;display:inline-block}
+.rplegend .a{background:#4a4335}.rplegend .b{background:var(--gold)}
+.rpgrid{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;
+  grid-auto-rows:1fr;gap:2px 28px;align-content:stretch;overflow:hidden}
+.rpr{display:flex;align-items:center;gap:10px;padding:2px 0;font-size:1.24em;min-height:0}
+.rpr .nm{width:190px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rpr .bars{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.rpr .bars i{display:block;height:11px;border-radius:5px;min-width:2px;transition:width .35s}
+.rpr .bars .a{background:#4a4335}
+.rpr .bars .b{background:var(--gold)}
+.rpr .num{width:68px;text-align:right;flex:none;color:var(--dim);white-space:nowrap}
+.rpr .num .g{color:var(--gold)}
+.rpr.up .nm{color:var(--green);font-weight:700}
+.rpr.dn .nm{color:#8c7f6a}
+
+.varw{position:relative;overflow:hidden}
+.varw>.vv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.42}
+.varw>*:not(.vv){position:relative;z-index:1}
 </style>
 </head>
 <body>
@@ -272,7 +300,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
    * 이 파일은 두 html 안에 이미 들어가 있습니다. (참고용)
    =================================================================== */
 
-window.VER = 'v7 · 2026-09-10';
+window.VER = 'v8 · 2026-09-10';
 
 /* 글씨체 — 게임 UI처럼 딱딱하고 평범한 고딕.
    'Noto Sans KR' / 'Black Han Sans'(더 두꺼움) / 'Do Hyeon' 중에 고르면 됩니다. */
@@ -280,7 +308,7 @@ window.FONT = 'Noto Sans KR';
 window.FONT_SCALE = 0.94;
 
 window.CFG = {
-  teams: 8,
+  teams: 12,
   slots: 8,        // 캐리어 칸수
   hp: 3,           // 조원 수
   packSec: 0,      // 짐싸기 제한시간(초). 0이면 무제한. 교사 화면에서 바꿀 수 있음
@@ -370,68 +398,68 @@ window.EVENTS = [
    desc:'낮엔 그렇게 덥더니 해가 지자 얼음장이다.\n마을은 멀고, 오늘 밤은 여기서 자야 한다.',
    ask:'이 밤을 뭘로 버틸까?', need:'따뜻하게 할 것',
    solves:[
-     {need:['blank','fire'], pts:4, line:'담요를 덮고 앞에 불을 피웠다. 도착하고 처음으로 제대로 잤다.'},
-     {need:['fire','coat'],  pts:4, line:'800만원짜리 코트를 찢어 불을 붙였다. 인생에서 제일 따뜻한 800만원.'},
-     {need:['blank'],        pts:3, line:'담요 하나를 셋이 억지로 나눠 덮었다. 그래도 잤다.'},
-     {need:['fire'],         pts:2, line:'나뭇가지를 모아 불을 피웠다. 셋이 불 앞에 딱 붙어 앉았다.'},
-     {need:['perf'],         pts:2, line:'향수를 뿌리고 불씨를 붙였다. 알코올이라 확 붙었다. 30만원이 5분 탔다.'},
-     {need:['coat'],         pts:1, line:'코트를 셋이 덮었다. 발이 나온다. 없는 것보단 낫다.'}
+     {need:['blank','fire'], pts:8, line:'담요를 덮고 앞에 불을 피웠다. 도착하고 처음으로 제대로 잤다.'},
+     {need:['fire','coat'],  pts:8, line:'800만원짜리 코트를 찢어 불을 붙였다. 인생에서 제일 따뜻한 800만원.'},
+     {need:['blank'],        pts:6, line:'담요 하나를 셋이 억지로 나눠 덮었다. 그래도 잤다.'},
+     {need:['fire'],         pts:4, line:'나뭇가지를 모아 불을 피웠다. 셋이 불 앞에 딱 붙어 앉았다.'},
+     {need:['perf'],         pts:3, line:'향수를 뿌리고 불씨를 붙였다. 알코올이라 확 붙었다. 30만원이 5분 탔다.'},
+     {need:['coat'],         pts:2, line:'코트를 셋이 덮었다. 발이 나온다. 없는 것보단 낫다.'}
    ],
-   fail:{pts:-3, down:1, line:'아무것도 없었다. 셋이 끌어안고 덜덜 떨다 새벽을 맞았다. 한 명이 열이 났다.'} },
+   fail:{pts:-8, down:1, line:'아무것도 없었다. 셋이 끌어안고 덜덜 떨다 새벽을 맞았다. 한 명이 열이 났다.'} },
 
  { id:'e2', lot:'water', day:2, when:'둘째 날 · 낮', em:'💧',
    title:'목이 탄다',
    desc:'어제부터 한 모금도 못 마셨다. 눈앞이 노랗다.\n수도는 없고, 바닷물은 마실수록 더 목이 마르다.',
    ask:'물을 어떻게 구할까?', need:'마실 물',
    solves:[
-     {need:['water','umb'], pts:5, line:'생수는 아껴 마시고 우산으로 빗물까지 받았다. 이틀은 버틴다.'},
-     {need:['water'],       pts:4, line:'뚜껑을 열자마자 셋이 돌려 마셨다. 6,000원이 이렇게 맛있을 줄 몰랐다.'},
-     {need:['umb'],         pts:3, line:'우산을 뒤집어 밤새 빗물을 받았다. 반 컵쯤 고였다.'},
-     {need:['tube'],        pts:2, line:'튜브를 펴서 빗물을 받았다. 고무 맛이 나지만 마셨다.'},
-     {need:['knife'],       pts:2, line:'칼로 야자열매를 쪼갰다. 안에 물이 있었다. 셋이 소리를 질렀다.'}
+     {need:['water','umb'], pts:10, line:'생수는 아껴 마시고 우산으로 빗물까지 받았다. 이틀은 버틴다.'},
+     {need:['water'],       pts:8, line:'뚜껑을 열자마자 셋이 돌려 마셨다. 6,000원이 이렇게 맛있을 줄 몰랐다.'},
+     {need:['umb'],         pts:6, line:'우산을 뒤집어 밤새 빗물을 받았다. 반 컵쯤 고였다.'},
+     {need:['tube'],        pts:4, line:'튜브를 펴서 빗물을 받았다. 고무 맛이 나지만 마셨다.'},
+     {need:['knife'],       pts:4, line:'칼로 야자열매를 쪼갰다. 안에 물이 있었다. 셋이 소리를 질렀다.'}
    ],
-   fail:{pts:-5, down:1, line:'결국 바닷물을 마셨다. 30분 뒤 다 토했다. 한 명이 주저앉았다.'} },
+   fail:{pts:-11, down:1, line:'결국 바닷물을 마셨다. 30분 뒤 다 토했다. 한 명이 주저앉았다.'} },
 
  { id:'e3', lot:'rod', day:3, when:'셋째 날 · 낮', em:'🍽️',
    title:'사흘째 아무것도 못 먹었다',
    desc:'배에서 소리가 난다. 손이 떨려서 물건을 못 잡겠다.\n눈앞에 바다는 있는데 잡을 방법이 없다.',
    ask:'뭘 먹을까?', need:'먹을 것',
    solves:[
-     {need:['rod','fire'],    pts:5, line:'물고기를 낚아 불에 구웠다. 셋이 손가락까지 빨았다.'},
-     {need:['rod'],           pts:3, line:'두 시간 만에 물고기를 낚았다. 날로 먹었다. 그래도 먹었다.'},
-     {need:['noodle','fire'], pts:3, line:'불을 피워 라면을 끓였다. 국물이 넘어가는 동안 아무도 말을 안 했다.'},
-     {need:['knife'],         pts:2, line:'칼로 바위에 붙은 조개를 땄다. 날것이지만 먹었다.'},
-     {need:['noodle'],        pts:1, line:'생라면을 부숴 먹었다. 짜다. 더 목이 마르다.'}
+     {need:['rod','fire'],    pts:10, line:'물고기를 낚아 불에 구웠다. 셋이 손가락까지 빨았다.'},
+     {need:['rod'],           pts:7, line:'두 시간 만에 물고기를 낚았다. 날로 먹었다. 그래도 먹었다.'},
+     {need:['noodle','fire'], pts:7, line:'불을 피워 라면을 끓였다. 국물이 넘어가는 동안 아무도 말을 안 했다.'},
+     {need:['knife'],         pts:4, line:'칼로 바위에 붙은 조개를 땄다. 날것이지만 먹었다.'},
+     {need:['noodle'],        pts:2, line:'생라면을 부숴 먹었다. 짜다. 더 목이 마르다.'}
    ],
-   fail:{pts:-4, down:1, line:'풀을 뜯어 씹었다. 30분 뒤 셋 다 배를 잡고 굴렀다.'} },
+   fail:{pts:-10, down:1, line:'풀을 뜯어 씹었다. 30분 뒤 셋 다 배를 잡고 굴렀다.'} },
 
  { id:'e4', lot:'aid', day:4, when:'넷째 날 · 아침', em:'🩸',
    title:'발을 산호에 베였다',
    desc:'물을 뜨러 가다 미끄러졌다. 발바닥이 길게 갈라졌다.\n모래가 들어갔고, 벌써 붓기 시작한다.',
    ask:'상처를 어떻게 할까?', need:'소독하거나 감쌀 것',
    solves:[
-     {need:['aid','shoe'], pts:5, line:'운동화 덕에 상처가 얕았고, 구급함으로 깔끔히 처치했다. 다음 날 걸어다녔다.'},
-     {need:['aid'],        pts:4, line:'소독약을 붓고 붕대를 감았다. 저녁이 되자 부기가 빠졌다.'},
-     {need:['shoe'],       pts:3, line:'운동화를 신고 있었다. 애초에 아무도 안 다쳤다. 15만원이 오늘의 MVP.'},
-     {need:['perf'],       pts:2, line:'향수를 상처에 부었다. 눈물이 찔끔 났지만 소독은 됐다.'},
-     {need:['knife'],      pts:1, line:'칼끝으로 박힌 산호 조각을 빼냈다. 피가 났지만 덜 아프다.'},
-     {need:['water'],      pts:1, line:'아까운 생수로 상처를 씻었다. 마실 물이 줄었다.'}
+     {need:['aid','shoe'], pts:10, line:'운동화 덕에 상처가 얕았고, 구급함으로 깔끔히 처치했다. 다음 날 걸어다녔다.'},
+     {need:['aid'],        pts:8, line:'소독약을 붓고 붕대를 감았다. 저녁이 되자 부기가 빠졌다.'},
+     {need:['shoe'],       pts:6, line:'운동화를 신고 있었다. 애초에 아무도 안 다쳤다. 15만원이 오늘의 MVP.'},
+     {need:['perf'],       pts:4, line:'향수를 상처에 부었다. 눈물이 찔끔 났지만 소독은 됐다.'},
+     {need:['knife'],      pts:2, line:'칼끝으로 박힌 산호 조각을 빼냈다. 피가 났지만 덜 아프다.'},
+     {need:['water'],      pts:2, line:'아까운 생수로 상처를 씻었다. 마실 물이 줄었다.'}
    ],
-   fail:{pts:-4, down:1, line:'모래를 털고 그냥 뒀다. 저녁이 되자 발이 두 배로 부었다. 걷지를 못한다.'} },
+   fail:{pts:-10, down:1, line:'모래를 털고 그냥 뒀다. 저녁이 되자 발이 두 배로 부었다. 걷지를 못한다.'} },
 
  { id:'e5', lot:'mirror', day:5, when:'다섯째 날 · 새벽', em:'🚢',
    title:'구조선이 수평선에 나타났다',
    desc:'약속대로 왔다. 그런데 이쪽을 못 보고 지나간다.\n지금 알리면 오늘 탄다. 못 알리면 하루를 더 굶는다.',
    ask:'어떻게 알릴까?', need:'멀리서 보이게 할 것',
    solves:[
-     {need:['mirror','fire'], pts:6, line:'거울로 빛을 쏘고 젖은 잎을 태워 연기까지 올렸다. 배가 뱃머리를 돌렸다.'},
-     {need:['mirror'],        pts:5, line:'거울로 햇빛을 반사시켰다. 배가 방향을 틀었다. 1만원짜리가 셋을 살렸다.'},
-     {need:['fire'],          pts:4, line:'젖은 잎을 태워 검은 연기를 올렸다. 배에서 기적이 울렸다.'},
-     {need:['cam'],           pts:2, line:'카메라 플래시를 미친 듯이 터뜨렸다. 배가 아주 살짝 방향을 틀었다.'},
-     {need:['spk'],           pts:2, line:'스피커 볼륨을 끝까지 올렸다. 파도에 거의 묻혔지만 누군가 들었다.'},
-     {need:['watch'],         pts:1, line:'시계 유리로 빛을 반사시켜 봤다. 너무 작다. 그래도 해봤다.'}
+     {need:['mirror','fire'], pts:12, line:'거울로 빛을 쏘고 젖은 잎을 태워 연기까지 올렸다. 배가 뱃머리를 돌렸다.'},
+     {need:['mirror'],        pts:10, line:'거울로 햇빛을 반사시켰다. 배가 방향을 틀었다. 1만원짜리가 셋을 살렸다.'},
+     {need:['fire'],          pts:8, line:'젖은 잎을 태워 검은 연기를 올렸다. 배에서 기적이 울렸다.'},
+     {need:['cam'],           pts:4, line:'카메라 플래시를 미친 듯이 터뜨렸다. 배가 아주 살짝 방향을 틀었다.'},
+     {need:['spk'],           pts:4, line:'스피커 볼륨을 끝까지 올렸다. 파도에 거의 묻혔지만 누군가 들었다.'},
+     {need:['watch'],         pts:2, line:'시계 유리로 빛을 반사시켜 봤다. 너무 작다. 그래도 해봤다.'}
    ],
-   fail:{pts:-6, down:1, line:'셋이 팔이 빠지도록 흔들었다. 배는 그냥 지나갔다. 하루를 더 굶고 다음 배를 탔다.'} }
+   fail:{pts:-13, down:1, line:'셋이 팔이 빠지도록 흔들었다. 배는 그냥 지나갔다. 하루를 더 굶고 다음 배를 탔다.'} }
 ];
 
 /* 그날 보급소에 들어오는 물건은 사건마다 정해져 있습니다 (위 EVENTS 의 lot).
@@ -549,10 +577,10 @@ window.MARKET = {
 window.VARS = [
  { id:'v1', em:'⛈️', title:'폭풍우',
    line:'밤새 비바람. 불씨를 지킨 조만 아침에 몸이 말라 있었다.',
-   rule:{kind:'need', ids:['fire'], hit:1, miss:-3} },
+   rule:{kind:'need', ids:['fire'], hit:2, miss:-6} },
  { id:'v2', em:'🏝️', title:'오아시스 발견',
    line:'섬 안쪽에서 샘이 터졌다. 이제 물은 누구나 마실 수 있다.\n어제 물을 비싸게 산 조는… 안됐다.',
-   rule:{kind:'all', pts:2} },
+   rule:{kind:'all', pts:4} },
  { id:'v4', em:'📦', title:'밀수선 도착',
    line:'한밤중에 배 한 척이 들어와 물건을 팔고 갔다. 다들 주머니가 두둑해졌다.',
    rule:{kind:'money', add:15} },
@@ -564,13 +592,13 @@ window.VARS = [
    rule:{kind:'steal', n:3} },
  { id:'v7', em:'🌊', title:'만조',
    line:'밤사이 물이 올라왔다. 띄우거나 덮을 게 없던 조는 홀딱 젖었다.',
-   rule:{kind:'need', ids:['tube','blank'], any:true, hit:0, miss:-2} },
+   rule:{kind:'need', ids:['tube','blank'], any:true, hit:0, miss:-4} },
  { id:'v8', em:'📻', title:'구조대 무전',
    line:'"이틀 뒤 도착합니다." 목소리가 들렸다. 다들 힘이 났다.',
-   rule:{kind:'all', pts:3} },
+   rule:{kind:'all', pts:5} },
  { id:'v9', em:'🧊', title:'한파',
    line:'새벽 기온이 뚝 떨어졌다. 덮을 게 없는 조는 밤을 꼬박 새웠다.',
-   rule:{kind:'need', ids:['blank'], hit:1, miss:-3} },
+   rule:{kind:'need', ids:['blank'], hit:2, miss:-6} },
  { id:'v10', em:'🥷', title:'도둑',
    line:'제일 부자라고 소문난 조가 밤사이 털렸다.',
    rule:{kind:'moneyTop', sub:20} }
@@ -608,6 +636,21 @@ window.ENDING = {
   q:'뭐가 달라졌지?'
 };
 
+/* 돌발 변수 영상 — 있으면 카드 뒤에 영상이 깔립니다. 없으면(주소가 비면) 그냥 카드만 뜹니다. */
+window.VARVID = {
+  v1: 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_072049_683aff74-67f4-4b4c-ae97-4a63157fb72c.mp4',
+  v2: 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_072050_e02e1386-048d-437e-80f4-67471158d5d3.mp4',
+  v6: 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_072512_bbc7e65c-e091-40ac-9437-70ace67bebdf.mp4'
+};
+
+/* 마지막 되돌아보기 — 「다시 싼다면 8칸에 뭘 넣을래?」 */
+window.REPACK = {
+  em:'🧳',
+  head:'다시 싼다면?',
+  q:'그때로 돌아간다면, 8칸에 뭘 넣을래?',
+  sub:'점수는 안 붙습니다. 지금 아는 걸 다 알고 다시 고르는 겁니다.'
+};
+
 window.BOARD = [
   {k:'희소성', v:'원하는 사람은 많은데 물건이 적을 때 생긴다. 다이아몬드는 <b>드물지만</b> 여기선 아무도 안 원했다. 원하는 사람이 없으면 희소하지도 않다.'},
   {k:'기회비용', v:'8칸을 채우느라 <b>포기한 것</b>. 그때 안 넣은 그 물건.'},
@@ -631,6 +674,18 @@ const G=id=>GOODS.find(g=>g.id===id)||{em:'❓',name:'?',price:0,cash:0};
 const R=document.documentElement.style;
 R.setProperty('--font',`'${window.FONT||'Noto Sans KR'}','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif`);
 R.setProperty('--fs',String(window.FONT_SCALE||1));
+R.setProperty('--tcols', String((window.CFG.teams||8)<=8?(window.CFG.teams||8):Math.ceil((window.CFG.teams||8)/2)));
+/* 영상·이미지 미리 받아두기 — 수업 중에 로딩으로 끊기지 않게 */
+(function preload(){ try{
+  const vids=[]; if(window.TURB&&window.TURB.video) vids.push(window.TURB.video);
+  Object.values(window.VARVID||{}).forEach(u=>{if(u) vids.push(u);});
+  const box=document.createElement('div');
+  box.style.cssText='position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;pointer-events:none';
+  vids.forEach(u=>{const v=document.createElement('video');
+    v.src=u; v.preload='auto'; v.muted=true; v.playsInline=true; v.setAttribute('playsinline','');
+    box.appendChild(v); try{v.load();}catch(e){}});
+  document.body.appendChild(box);
+}catch(e){} })();
 const trim=x=>(Math.round(x*10)/10).toLocaleString('ko-KR');
 function won(n){ n=Math.round(n||0);
   if(n>=100000000) return trim(n/100000000)+'억';
@@ -666,7 +721,7 @@ const cashOf=t=>((t&&t.pack)||[]).reduce((a,id)=>a+G(id).cash,0);
 const PLAN=window.DAYPLAN||[];
 const NM={lobby:'대기실',lotto:'로또 1등 당첨',pack:'짐 싸기',first:'일등석',turb:'난기류',
  land:'비상 착륙',money:'환전소',price:'오늘 팔린 값',rank:'두 개의 순위',
- store:'인천공항 편의점',board:'정리',result:'최종 결과'};
+ store:'인천공항 편의점',repack:'다시 싼다면?',board:'정리',result:'최종 결과'};
 const STEPS=[{ph:'lobby'},{ph:'lotto'},{ph:'pack'},{ph:'first'},{ph:'turb'},{ph:'land'},{ph:'money'}];
 EV.forEach((e,i)=>{
   const p=PLAN[i]||{};
@@ -680,7 +735,7 @@ EV.forEach((e,i)=>{
   STEPS.push({ph:'pick',   ev:e.id});
   STEPS.push({ph:'evres',  ev:e.id});
 });
-['price','rank','store','board','result'].forEach(ph=>STEPS.push({ph}));
+['price','rank','store','repack','board','result'].forEach(ph=>STEPS.push({ph}));
 const VARS=window.VARS||[];
 const QP=window.QUIZ_PRIZE, QB=window.QUIZ;
 const dayOf=st=>Math.max(0,EV.findIndex(e=>e.id===st.ev));
@@ -696,7 +751,7 @@ function stepGo(i){
   const nx=STEPS[i+1]; if(!nx) return null;
   const ic={var:'🎲',ev:'🎬',quiz:'📝',quizres:'✅',auc:'🔨',aucres:'🔔',trade:'🤝',raid:'⚔️',
     pick:'🎒',evres:'📢',price:'📈',rank:'🏆',store:'🏪',board:'✍️',result:'🎬',
-    lotto:'🎰',pack:'🧳',first:'🥂',turb:'✈️',land:'🛬',money:'💱'}[nx.ph]||'▶';
+    lotto:'🎰',pack:'🧳',first:'🥂',turb:'✈️',land:'🛬',money:'💱',repack:'🧳'}[nx.ph]||'▶';
   if(nx.ph==='quiz') return `📝 오늘의 문제 (${QP[dayOf(nx)]||0}억)`;
   if(nx.ph==='auc')  return `🔨 ${G(EV[dayOf(nx)].lot).name} 경매`;
   return `${ic} ${stepName(nx)}`;
@@ -733,20 +788,19 @@ async function saveTeam(t,o){ try{ await api.setDoc(api.doc(DB,'live',TEAM+t),o,
 const QPz=window.QUIZ_PRIZE;
 function quizOf(){ const q=ST.quiz; return q?QB[q.qi]:null; }
 const dayIdx=()=>Math.max(0,EV.findIndex(e=>e.id===ST.evId));
-async function openQuiz(){
-  const d=dayIdx();
+function makeQuiz(d,evId){
   const set=(ST.quizSet&&ST.quizSet.length)?ST.quizSet:QB.map((_,i)=>i);
   const qi=set[d%set.length];
-  await save({quiz:{id:'q'+Date.now(),qi,evId:ST.evId,prize:QPz[d]||QPz[QPz.length-1],
-    open:true,revealed:false,at:Date.now()}});
-  snd('quiz');
+  return {id:'q'+Date.now(),qi,evId:evId||null,prize:QPz[d]||QPz[QPz.length-1],
+    open:true,revealed:false,at:Date.now()};
 }
-async function revealQuiz(){
-  const q=ST.quiz; if(!q||q.revealed) return;
-  const Q=QB[q.qi];
-  for(const t of TN()){ const d=TEAMS[t]; if(!d) continue;
-    if(((d.quizAns||{})[q.id])===Q.a) await saveTeam(t,{money:moneyOf(d)+q.prize}); }
-  await save({quiz:{...q,open:false,revealed:true}}); snd('cash');
+/* 상금만 지급하고, 공개된 퀴즈 객체를 돌려준다 (저장은 next() 가 한 번에) */
+async function payQuiz(){
+  const q=ST.quiz; if(!q) return null;
+  if(!q.revealed){ const Q=QB[q.qi];
+    for(const t of TN()){ const d=TEAMS[t]; if(!d) continue;
+      if(((d.quizAns||{})[q.id])===Q.a) await saveTeam(t,{money:moneyOf(d)+q.prize}); } }
+  return {...q,open:false,revealed:true};
 }
 async function next(){
   if(busy) return;
@@ -770,11 +824,18 @@ async function next(){
     if(nx.ph==='pack'&&C.packSec) o.packEnd=Date.now()+C.packSec*1000;
     if(nx.ph==='trade') o.tradeEnd=Date.now()+180000;
     if(nx.ph==='ev'||nx.ph==='var'){ o.auc=null; o.quiz=null; }
+    const dd=dayOf(nx);
+    /* 퀴즈·경매를 화면 전환과 같은 저장에 실어서 보낸다.
+       따로 보내면 아이들 화면에 전날 문제(정답 표시된 채)가 잠깐 스쳤다. */
+    if(nx.ph==='quiz')    o.quiz=makeQuiz(dd,nx.ev);
+    if(nx.ph==='quizres') o.quiz=await payQuiz();
+    if(nx.ph==='auc')     o.auc=makeAuc(EV[dd].lot,nx.ev);
+    if(nx.ph==='aucres'){ const r=await settleAuc(); o.auc=r.auc; if(r.log) o.aucLog=r.log; }
     await save(o);
-    if(nx.ph==='quiz')    await openQuiz();
-    if(nx.ph==='quizres') await revealQuiz();
-    if(nx.ph==='auc')     await openAuc(EV[dayOf(nx)].lot);
-    if(nx.ph==='aucres')  await closeAuc();
+    if(nx.ph==='quiz') snd('quiz');
+    if(nx.ph==='quizres') snd('cash');
+    if(nx.ph==='auc') snd('open');
+    if(nx.ph==='aucres') snd('gavel');
     if(nx.ph==='lotto') snd('lotto');
     else if(nx.ph==='land'||nx.ph==='turb') snd('crash');
     else if(nx.ph==='var') snd('var');
@@ -817,33 +878,28 @@ async function judgeAll(e){
 }
 
 /* ══ 경매 ══ */
-async function openAuc(item){
-  const id='a'+Date.now();
-  await save({auc:{id,item,evId:ST.evId||null,open:true,at:Date.now()}}); snd('open');
+function makeAuc(item,evId){
+  return {id:'a'+Date.now(),item,evId:evId||null,open:true,
+    winner:null,price:0,doneAt:0,at:Date.now()};
 }
-async function closeAuc(){
-  const a=ST.auc; if(!a||!a.open||busy) return; busy=true;
-  try{
-    let best=null;
-    TN().forEach(t=>{ const d=TEAMS[t]||{}; const b=(d.bids||{})[a.id];
-      if(b==null||b<=0) return;
-      if(b>moneyOf(d)) return;              // 가진 돈보다 크게 부른 건 무효
-      const bt=((d.bidT||{})[a.id])||0;
-      if(!best||b>best.b||(b===best.b&&bt<best.bt)) best={t,b,bt};});
-    if(best){
-      const d=TEAMS[best.t]||{};
-      const pay=Math.min(best.b,moneyOf(d));
-      const ni=inv(d).includes(a.item)?inv(d):[...inv(d),a.item];
-      await saveTeam(best.t,{money:Math.max(0,moneyOf(d)-pay), inv:ni});
-      const log=[...(ST.aucLog||[]),{item:a.item,team:best.t,price:pay,at:Date.now()}].slice(-30);
-      await save({auc:{...a,open:false,winner:best.t,price:pay,doneAt:Date.now()},aucLog:log});
-    } else {
-      await save({auc:{...a,open:false,winner:null,price:0,doneAt:Date.now()}});
-    }
-    snd('gavel');
-  }finally{ busy=false; }
+/* 낙찰 계산 — 돈·물건은 바로 넘기고, 저장은 next() 가 한 번에 (busy 잠금 없음) */
+async function settleAuc(){
+  const a=ST.auc; if(!a) return {auc:null};
+  if(!a.open) return {auc:a};
+  let best=null;
+  TN().forEach(t=>{ const d=TEAMS[t]||{}; const b=(d.bids||{})[a.id];
+    if(b==null||b<=0) return;
+    if(b>moneyOf(d)) return;              // 가진 돈보다 크게 부른 건 무효
+    const bt=((d.bidT||{})[a.id])||0;
+    if(!best||b>best.b||(b===best.b&&bt<best.bt)) best={t,b,bt};});
+  if(!best) return {auc:{...a,open:false,winner:null,price:0,doneAt:Date.now()}};
+  const d=TEAMS[best.t]||{};
+  const pay=Math.min(best.b,moneyOf(d));
+  const ni=inv(d).includes(a.item)?inv(d):[...inv(d),a.item];
+  await saveTeam(best.t,{money:Math.max(0,moneyOf(d)-pay), inv:ni});
+  const log=[...(ST.aucLog||[]),{item:a.item,team:best.t,price:pay,at:Date.now()}].slice(-30);
+  return {auc:{...a,open:false,winner:best.t,price:pay,doneAt:Date.now()}, log};
 }
-async function clearAuc(){ await save({auc:null}); }
 
 /* ══ 돌발 변수 (대본에 정해진 카드) ══ */
 async function applyVar(id){
@@ -886,9 +942,13 @@ let raiding=false;
 async function processRaids(){
   if(raiding||!online) return; raiding=true;
   try{
-    for(const t of TN()){
-      const d=TEAMS[t]; if(!d) continue;
-      const r=d.raid; if(!r||r.done||r.ok==null) continue;
+    /* 같은 물건을 여러 조가 노렸으면 «답을 먼저 낸 조»가 가져간다 */
+    const q=TN().map(t=>({t,d:TEAMS[t]}))
+      .filter(x=>x.d&&x.d.raid&&!x.d.raid.done&&x.d.raid.ok!=null)
+      .sort((a,b)=>((a.d.raid.pickAt||a.d.raid.at||0)-(b.d.raid.pickAt||b.d.raid.at||0)));
+    for(const it of q){
+      const t=it.t, d=TEAMS[t];
+      const r=d.raid;
       const B=TEAMS[r.target];
       if(!B){ await saveTeam(t,{raid:{...r,done:true}}); continue; }
       let line='';
@@ -993,6 +1053,8 @@ function hintOf(){
   if(s.ph==='evres') return `쓴 소모품은 <b>없어졌습니다</b>. 읽어주고 넘기세요`;
   if(s.ph==='rank') return `<b>순위가 뒤집힌 걸</b> 짚어주세요`;
   if(s.ph==='store') return `설명하지 말고 <b>애들한테 물어보세요</b>`;
+  if(s.ph==='repack'){const n=TN().filter(t=>((TEAMS[t]||{}).repack||[]).length>0).length;
+    return `🧳 다시 고르는 중 <b>${n}/${C.teams}</b>조 · 화면에 실시간으로 쌓입니다`;}
   return '';
 }
 function pilot(){
@@ -1003,6 +1065,7 @@ function pilot(){
   if(s.ph==='pick') ready=TN().every(t=>(((TEAMS[t]||{}).sel||{})[s.ev]||[]).length>0);
   if(s.ph==='pack') ready=TN().every(t=>((TEAMS[t]||{}).pack||[]).length>=C.slots);
   if(s.ph==='first') ready=TN().every(t=>(TEAMS[t]||{}).first!=null);
+  if(s.ph==='repack') ready=TN().every(t=>((TEAMS[t]||{}).repack||[]).length>=C.slots);
   return `<div class="pilot ${hide?'hide':''}">
    <div class="row1">
      <div class="nowbox"><div class="st">${i+1} / ${STEPS.length} 단계</div>
@@ -1056,6 +1119,7 @@ function stage(){
     case 'price':   return sPrice();
     case 'rank':    return sRank();
     case 'store':   return sStore();
+    case 'repack':  return sRepack();
     case 'board':   return sBoard();
     case 'result':  return sResult();
     default:        return sLobby();
@@ -1144,7 +1208,8 @@ function sEv(){
 }
 function sVar(){
   const vc=ST.varCard||{}; const v=VARS.find(x=>x.id===vc.id)||VARS[0], hits=vc.hits||{};
-  return `<div class="varw">
+  const vv=(window.VARVID||{})[v.id]||'';
+  return `<div class="varw">${vv?`<video class="vv" src="${vv}" autoplay muted loop playsinline preload="auto"></video>`:''}
     <div class="vem">${v.em}</div>
     <div class="vt">${v.title}</div>
     <div class="vl">${v.line.replace(/\n/g,'<br>')}</div>
@@ -1186,7 +1251,7 @@ function sQuiz(){
 function sTurb(){
   const T=window.TURB;
   return `<div class="turb">
-    ${T.video?`<video class="tv" src="${T.video}" autoplay muted loop playsinline></video>`:''}
+    ${T.video?`<video class="tv" src="${T.video}" autoplay muted loop playsinline preload="auto"></video>`:''}
     <div class="tovl"><h1>${T.head}</h1><p>${T.lines.join('<br>')}</p></div></div>`;
 }
 function sSituation(){
@@ -1296,11 +1361,12 @@ function sPrice(){
 function sRank(){
   const A=TN().map(t=>({t,d:TEAMS[t]||{}})).sort((a,b)=>packPrice(b.d)-packPrice(a.d));
   const B=TN().map(t=>({t,d:TEAMS[t]||{}})).sort((a,b)=>scoreOf(b.d)-scoreOf(a.d));
-  const row=(x,i,v,x2)=>`<div class="rk ${i===0?'top':''}" style="animation-delay:${i*.07}s">
+  const tight=C.teams>8?' tight':'';
+  const row=(x,i,v,x2)=>`<div class="rk${tight} ${i===0?'top':''}" style="animation-delay:${Math.min(i,10)*.05}s">
     <span class="no">${i+1}</span><span class="t">${x.t}</span><span class="x">${x2||''}</span>
     <span class="v">${v}</span></div>`;
   return `<h1>🏆 두 개의 순위</h1>
-   <div class="sub">같은 여덟 개를 두 번 계산했습니다. 순위가 뒤집혔는지 보세요.</div>
+   <div class="sub">같은 <b>8칸</b>을 두 번 계산했습니다. 순위가 뒤집혔는지 보세요.</div>
    <div class="two" style="margin-top:8px">
      <div class="col"><h3>🏙️ 짐 합계 <small>한국에서의 값</small></h3>
        <div class="list">${A.map((x,i)=>row(x,i,won(packPrice(x.d)))).join('')}</div></div>
@@ -1309,6 +1375,28 @@ function sRank(){
    </div>
    <div class="sub" style="margin-top:6px">최종 점수 = <b>생존 점수</b> + (남은 돈 ÷ ${C.eokPerPoint}억) ·
      동점이면 조원이 많이 남은 조가 위</div>`;
+}
+function sRepack(){
+  const R=window.REPACK||{head:'다시 싼다면?',q:'8칸에 뭘 넣을래?'};
+  const cnt={}, was={};
+  GOODS.forEach(g=>{cnt[g.id]=0; was[g.id]=0;});
+  TN().forEach(t=>{const d=TEAMS[t]||{};
+    (d.repack||[]).forEach(id=>{if(cnt[id]!=null)cnt[id]++;});
+    (d.pack||[]).forEach(id=>{if(was[id]!=null)was[id]++;});});
+  const n=TN().filter(t=>((TEAMS[t]||{}).repack||[]).length>0).length;
+  const rows=[...GOODS].sort((a,b)=>(cnt[b.id]-cnt[a.id])||(was[b.id]-was[a.id]));
+  const mx=Math.max(1,C.teams);
+  return `<div class="rpk">
+    <div class="rphead"><span class="e">${R.em||'🧳'}</span>
+      <div><h2>${R.head}</h2><p>${R.q}</p></div>
+      <span class="cnt2">${n}/${C.teams}조</span></div>
+    <div class="rplegend"><span class="a"></span> 처음 &nbsp; <span class="b"></span> 다시</div>
+    <div class="rpgrid">${rows.map(g=>`<div class="rpr ${cnt[g.id]>was[g.id]?'up':(cnt[g.id]<was[g.id]?'dn':'')}">
+      <span class="nm">${g.em} ${g.name}</span>
+      <span class="bars"><i class="a" style="width:${was[g.id]/mx*100}%"></i>
+        <i class="b" style="width:${cnt[g.id]/mx*100}%"></i></span>
+      <span class="num"><b>${was[g.id]}</b> → <b class="g">${cnt[g.id]}</b></span>
+    </div>`).join('')}</div></div>`;
 }
 function sStore(){
   const E=window.ENDING, top=waterTop();
