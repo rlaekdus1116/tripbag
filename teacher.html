@@ -302,6 +302,8 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
 .hwmid h1{margin:4px 0 0;font-size:4.2em;color:#fff;text-shadow:0 3px 22px #000}
 .hwmid .s{margin-top:6px;font-size:2.1em;font-weight:700;color:var(--gold);
   text-shadow:0 2px 16px #000}
+.hwmid .jk{margin-top:18px;font-size:1.45em;color:var(--gold);font-style:italic;
+  text-shadow:0 2px 14px #000;animation:sl .6s .9s both}
 .hwmid p{margin:20px 0 0;font-size:1.35em;line-height:1.6;color:var(--ink);
   opacity:.9;text-shadow:0 2px 10px #000}
 
@@ -369,7 +371,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
    * 이 파일은 두 html 안에 이미 들어가 있습니다. (참고용)
    =================================================================== */
 
-window.VER = 'v12 · 2026-09-11';
+window.VER = 'v13 · 2026-09-13';
 
 /* 글씨체 — 게임 UI처럼 딱딱하고 평범한 고딕.
    'Noto Sans KR' / 'Black Han Sans'(더 두꺼움) / 'Do Hyeon' 중에 고르면 됩니다. */
@@ -411,6 +413,22 @@ window.GOODS = [
  { id:'noodle',em:'🍜', name:'라면 20개',    sub:'한 박스',          price:20000,       cash:0,   kind:'life', once:true , hw:0 },
  { id:'mirror',em:'🪞', name:'손거울',       sub:'접이식',           price:10000,       cash:0,   kind:'life' , hw:1 },
  { id:'water', em:'💧', name:'생수 6병',     sub:'2L × 6',          price:6000,        cash:0,   kind:'life', once:true , hw:0 },
+
+ /* ── 여기부터 v13 에 새로 들어온 물건들 ──
+    alias : 판정할 때 이 물건 «대신»으로도 쳐 준다 (파이어스틱 = 라이터) */
+ { id:'pet',   em:'🐕', name:'반려견',        sub:'같이 살던 개',     price:3000000,     cash:0,   kind:'trip', hw:7 },
+ { id:'ipad',  em:'📱', name:'태블릿',        sub:'완충 · 며칠 감',   price:1500000,     cash:0,   kind:'trip', hw:6 },
+ { id:'card',  em:'💳', name:'블랙 신용카드',  sub:'한도 무제한',      price:1000000,     cash:0,   kind:'lux',  hw:8 },
+ { id:'pods',  em:'🎧', name:'무선 헤드폰',    sub:'노이즈 캔슬링',    price:800000,      cash:0,   kind:'lux',  hw:5 },
+ { id:'sung',  em:'🕶️', name:'명품 선글라스',  sub:'편광 렌즈',        price:300000,      cash:0,   kind:'lux',  hw:6 },
+ { id:'batt',  em:'🔋', name:'보조배터리',     sub:'20,000mAh',       price:50000,       cash:0,   kind:'trip', hw:3 },
+ { id:'ext',   em:'🧯', name:'소화기',        sub:'차량용',           price:80000,       cash:0,   kind:'life', hw:0 },
+ { id:'rope',  em:'🪢', name:'등산 로프',      sub:'20m',             price:30000,       cash:0,   kind:'life', hw:1 },
+ { id:'can',   em:'🥫', name:'통조림 10캔',    sub:'참치·햄',          price:30000,       cash:0,   kind:'life', hw:0, once:true },
+ { id:'stick', em:'🪵', name:'파이어스틱',     sub:'젖어도 불이 붙음',  price:20000,       cash:0,   kind:'life', hw:0, alias:'fire' },
+ { id:'choco', em:'🍫', name:'초콜릿 한 박스', sub:'고열량',           price:20000,       cash:0,   kind:'life', hw:1, once:true },
+ { id:'torch', em:'🔦', name:'손전등',         sub:'방수 · 스트로브',   price:15000,       cash:0,   kind:'life', hw:1 },
+ { id:'sun',   em:'🧴', name:'선크림',         sub:'SPF50+',          price:20000,       cash:0,   kind:'trip', hw:5, once:true },
  { id:'fire',  em:'🔥', name:'라이터',       sub:'편의점 것',        price:1000,        cash:0,   kind:'life' , hw:0 }
 ];
 
@@ -573,9 +591,9 @@ window.QUIZ = [
  { cat:'희소성', q:'공기는 사람에게 꼭 필요한데 값이 붙지 않는다. 왜?',
    opts:['원하는 만큼 얼마든지 있어서','몸에 좋아서','나라에서 금지해서','아무도 안 원해서'], a:0,
    why:'희소성은 「얼마나 필요한가」가 아니라 「원하는 양에 비해 얼마나 모자라는가」로 정해진다.' },
- { cat:'희소성', q:'남극에 에어컨을 산더미로 가져다 놔도 값이 안 나간다. 왜?',
-   opts:['거기서는 원하는 사람이 없어서','고장이 잘 나서','전기가 없어서','너무 무거워서'], a:0,
-   why:'모자라기만 해서는 희소하지 않다. 원하는 사람이 있어야 값이 붙는다.' },
+ { cat:'희소성', q:'똑같은 에어컨 한 대가 서울에서는 100만원에 팔리는데,\n남극 기지에서는 공짜로 준대도 아무도 안 가져간다.\n왜 그럴까?',
+   opts:['남극에서는 에어컨을 원하는 사람이 없어서','남극은 전기가 없어서','운송비가 너무 비싸서','남극에서는 에어컨이 고장 나서'], a:0,
+   why:'물건은 똑같다. 값은 «원하는 사람이 있느냐»로 정해진다. 아무도 안 원하면 희소하지도, 비싸지도 않다.' },
  { cat:'희소성', q:'똑같은 우산인데 맑은 날엔 안 팔리고,\n소나기가 쏟아지면 순식간에 동난다. 왜?',
    opts:['비 오면 우산이 튼튼해져서','원하는 사람이 갑자기 확 늘어서','우산값이 정해져 있어서','가게가 문을 닫아서'], a:1,
    why:'물건은 그대로다. 바뀐 건 「지금 얼마나 부족한가」다.' },
@@ -664,7 +682,13 @@ window.VARS = [
    line:'밤새 비바람. 불씨를 지킨 조만 아침에 몸이 말라 있었다.',
    rule:{kind:'need', ids:['fire'], hit:2, miss:-6} },
  { id:'v2', em:'🏝️', title:'오아시스 발견',
-   line:'섬 안쪽에서 샘이 터졌다. 이제 물은 누구나 마실 수 있다.\n어제 물을 비싸게 산 조는… 안됐다.',
+   line:'경매가 끝난 바로 그때, 섬 안쪽에서 샘이 터졌다.\n<b>내일부터 물은 누구나 공짜로 마실 수 있다.</b>\n방금 물을 수십억에 사 온 조는… 안됐다.',
+   rule:{kind:'all', pts:4} },
+ { id:'v13', em:'♨️', title:'온천 발견',
+   line:'눈 밑에서 김이 올라왔다. 파 보니 따뜻한 물이 솟는다.\n<b>내일부터 물 걱정은 없다.</b> 방금 불을 비싸게 산 조는… 안됐다.',
+   rule:{kind:'all', pts:4} },
+ { id:'v14', em:'🏞️', title:'맑은 샘 발견',
+   line:'덩굴 너머에 바위틈에서 솟는 샘이 있었다. 끓이지 않아도 된다.\n<b>내일부터 물 걱정은 없다.</b> 방금 통을 비싸게 산 조는… 안됐다.',
    rule:{kind:'all', pts:4} },
  { id:'v4', em:'📦', title:'밀수선 도착',
    line:'한밤중에 배 한 척이 들어와 물건을 팔고 갔다. 다들 주머니가 두둑해졌다.',
@@ -747,13 +771,17 @@ window.DESTS = [
     '그리고 <b>안 쓰고 남긴 돈은 그대로 들고 귀국.</b>'
   ]
 },
-  plan:[{extra:null},{extra:'trade'},{pre:'v2',extra:'raid'},{pre:'v1',extra:'trade'},{pre:'v6',extra:'raid'}],
+  plan:[{extra:null},{extra:'trade',post:'v2'},{pre:'v7',extra:'raid'},{pre:'v1',extra:'trade'},{pre:'v6',extra:'raid'}],
   events:[
  { id:'e1', lot:'fire', day:1, when:'첫째 날 · 밤', em:'🌑',
    title:'이가 딱딱 부딪힌다',
    desc:'낮엔 그렇게 덥더니 해가 지자 얼음장이다.\n마을은 멀고, 오늘 밤은 여기서 자야 한다.',
    ask:'이 밤을 뭘로 버틸까?', need:'따뜻하게 할 것',
    solves:[
+       {need:['pet','blank'], pts:7, line:'개를 끌어안고 담요를 덮었다. 개가 제일 따뜻했다.'},
+       {need:['ext'], pts:0, line:'소화기를 끌어안고 잤다. 차갑다.'},
+       {need:['choco'], pts:3, line:'초콜릿을 나눠 먹었다. 열량이 몸을 조금 덥혔다.'},
+       {need:['pods'], pts:0, line:'헤드폰을 썼다. 바람 소리는 안 들리는데 여전히 춥다.'},
      {need:['blank','fire'], pts:8, line:'담요를 덮고 앞에 불을 피웠다. 도착하고 처음으로 제대로 잤다.'},
      {need:['fire','coat'],  pts:8, line:'800만원짜리 코트를 뒤집어쓰고 앞에 불을 피웠다. 처음으로 따뜻했다.'},
      {need:['blank'],        pts:6, line:'담요 하나를 셋이 억지로 나눠 덮었다. 그래도 잤다.'},
@@ -768,6 +796,8 @@ window.DESTS = [
    desc:'어제부터 한 모금도 못 마셨다. 눈앞이 노랗다.\n수도는 없고, 바닷물은 마실수록 더 목이 마르다.',
    ask:'물을 어떻게 구할까?', need:'마실 물',
    solves:[
+       {need:['can'], pts:5, line:'통조림 국물까지 다 마셨다. 짜지만 수분은 수분이다.'},
+       {need:['card'], pts:0, line:'카드를 꺼냈다. 받아 줄 사람이 아무도 없다.'},
      {need:['water','umb'], pts:10, line:'생수는 아껴 마시고 우산으로 빗물까지 받았다. 이틀은 버틴다.'},
      {need:['water'],       pts:8, line:'뚜껑을 열자마자 셋이 돌려 마셨다. 6,000원이 이렇게 맛있을 줄 몰랐다.'},
      {need:['umb'],         pts:6, line:'우산을 뒤집어 밤새 빗물을 받았다. 반 컵쯤 고였다.'},
@@ -781,6 +811,9 @@ window.DESTS = [
    desc:'배에서 소리가 난다. 손이 떨려서 물건을 못 잡겠다.\n눈앞에 바다는 있는데 잡을 방법이 없다.',
    ask:'뭘 먹을까?', need:'먹을 것',
    solves:[
+       {need:['can'], pts:8, line:'통조림을 땄다. 사흘 만에 제대로 된 끼니였다.'},
+       {need:['pet','rod'], pts:10, line:'개가 얕은 물에서 물고기를 몰아 줬다. 낚싯대에 바로 걸렸다.'},
+       {need:['choco'], pts:4, line:'초콜릿으로 버텼다. 손 떨림이 멎었다.'},
      {need:['rod','fire'],    pts:10, line:'물고기를 낚아 불에 구웠다. 셋이 손가락까지 빨았다.'},
      {need:['rod'],           pts:7, line:'두 시간 만에 물고기를 낚았다. 날로 먹었다. 그래도 먹었다.'},
      {need:['noodle','fire'], pts:7, line:'불을 피워 라면을 끓였다. 국물이 넘어가는 동안 아무도 말을 안 했다.'},
@@ -794,6 +827,8 @@ window.DESTS = [
    desc:'물을 뜨러 가다 미끄러졌다. 발바닥이 길게 갈라졌다.\n모래가 들어갔고, 벌써 붓기 시작한다.',
    ask:'상처를 어떻게 할까?', need:'소독하거나 감쌀 것',
    solves:[
+       {need:['rope'], pts:3, line:'로프를 풀어 실처럼 만들어 상처를 묶었다.'},
+       {need:['sun'], pts:4, line:'선크림을 덧발라 상처에 모래가 안 붙게 했다.'},
      {need:['aid','shoe'], pts:10, line:'운동화 덕에 상처가 얕았고, 구급함으로 깔끔히 처치했다. 다음 날 걸어다녔다.'},
      {need:['aid'],        pts:8, line:'소독약을 붓고 붕대를 감았다. 저녁이 되자 부기가 빠졌다.'},
      {need:['shoe'],       pts:6, line:'운동화를 신고 있었다. 애초에 아무도 안 다쳤다. 15만원이 오늘의 MVP.'},
@@ -808,6 +843,11 @@ window.DESTS = [
    desc:'약속대로 왔다. 그런데 이쪽을 못 보고 지나간다.\n지금 알리면 오늘 탄다. 못 알리면 하루를 더 굶는다.',
    ask:'어떻게 알릴까?', need:'멀리서 보이게 할 것',
    solves:[
+       {need:['torch','fire'], pts:11, line:'손전등 스트로브를 켜고 연기까지 올렸다. 배가 방향을 틀었다.'},
+       {need:['torch'], pts:8, line:'손전등을 깜빡였다. 1만 5천원이 셋을 살렸다.'},
+       {need:['ipad'], pts:6, line:'화면 밝기를 최대로 올려 흔들었다. 배에서 누가 봤다.'},
+       {need:['pet'], pts:5, line:'개가 미친 듯이 짖었다. 파도 소리를 뚫었다.'},
+       {need:['sung'], pts:2, line:'선글라스 렌즈로 빛을 반사시켜 봤다. 거울보다는 약하다.'},
      {need:['mirror','fire'], pts:12, line:'거울로 빛을 쏘고 젖은 잎을 태워 연기까지 올렸다. 배가 뱃머리를 돌렸다.'},
      {need:['mirror'],        pts:10, line:'거울로 햇빛을 반사시켰다. 배가 방향을 틀었다. 1만원짜리가 셋을 살렸다.'},
      {need:['fire'],          pts:8, line:'젖은 잎을 태워 검은 연기를 올렸다. 배에서 기적이 울렸다.'},
@@ -841,7 +881,7 @@ window.DESTS = [
       '그리고 <b>안 쓰고 남긴 돈은 그대로 들고 귀국.</b>'
     ]
   },
-  plan:[{extra:null},{extra:'trade'},{pre:'v2',extra:'raid'},{pre:'v11',extra:'trade'},{pre:'v10',extra:'raid'}],
+  plan:[{extra:null},{extra:'trade',post:'v2'},{pre:'v10',extra:'raid'},{pre:'v11',extra:'trade'},{pre:'v4',extra:'raid'}],
   events:[
    { id:'e1', lot:'blank', day:1, when:'첫째 날 · 밤', em:'🌙',
      img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_014650_71d1fed2-0642-4868-8e04-0983ff6631ec_min.webp',
@@ -849,6 +889,9 @@ window.DESTS = [
      desc:'낮엔 50도였다. 해가 지자 두 시간 만에 영하로 떨어졌다.\n숨을 쉬면 김이 난다. 모래바닥이 얼음처럼 차다.',
      ask:'이 밤을 뭘로 버틸까?', need:'체온을 지킬 것',
      solves:[
+       {need:['pet','blank'], pts:7, line:'개를 끌어안고 담요를 덮었다. 사막의 밤을 그렇게 넘겼다.'},
+       {need:['choco'], pts:3, line:'초콜릿을 먹고 몸을 데웠다.'},
+       {need:['rope','blank'], pts:7, line:'로프로 담요를 묶어 바람막이를 세웠다.'},
        {need:['blank','fire'], pts:8, line:'담요를 깔고 앞에 불을 피웠다. 사막의 밤을 처음으로 견뎠다.'},
        {need:['coat','fire'],  pts:8, line:'코트를 뒤집어쓰고 불을 피웠다. 800만원이 오늘 밤 값을 했다.'},
        {need:['blank'],        pts:6, line:'담요 하나를 셋이 나눠 덮었다. 발이 나왔지만 잤다.'},
@@ -864,6 +907,11 @@ window.DESTS = [
      desc:'그늘이 한 뼘도 없다. 모래에 손을 대면 데인다.\n물은 어제부터 한 모금도 못 마셨고, 땀이 나오다 말았다.',
      ask:'이 낮을 어떻게 넘길까?', need:'물, 그리고 그늘',
      solves:[
+       {need:['sun','umb'], pts:11, line:'선크림을 바르고 우산 그늘에 들어갔다. 정오를 멀쩡히 넘겼다.'},
+       {need:['sun'], pts:5, line:'선크림을 온몸에 발랐다. 타는 건 막았다.'},
+       {need:['sung'], pts:5, line:'선글라스 덕에 눈을 뜨고 걸을 수 있었다. 30만원의 쓸모.'},
+       {need:['can'], pts:4, line:'통조림 국물을 마셨다. 짜서 더 목이 마르다.'},
+       {need:['card'], pts:0, line:'카드를 꺼냈다. 모래 위에서는 종이 조각이다.'},
        {need:['water','umb'], pts:10, line:'우산을 펴 그늘을 만들고 물을 나눠 마셨다. 그늘 한 뼘이 목숨이었다.'},
        {need:['water'],       pts:8,  line:'뚜껑을 열자마자 셋이 돌려 마셨다. 6,000원이 이렇게 맛있을 줄 몰랐다.'},
        {need:['umb'],         pts:6,  line:'우산을 모래에 꽂고 셋이 그 밑에 붙어 앉았다. 2만원짜리가 오늘의 에어컨.'},
@@ -879,6 +927,9 @@ window.DESTS = [
      desc:'손이 떨려서 물건을 못 잡겠다.\n눈에 보이는 건 선인장과, 가끔 지나가는 도마뱀뿐이다.',
      ask:'뭘 먹을까?', need:'먹을 것',
      solves:[
+       {need:['can'], pts:8, line:'통조림을 땄다. 사막 한가운데서 참치를 먹었다.'},
+       {need:['pet'], pts:6, line:'개가 모래를 파서 도마뱀 굴을 찾아냈다.'},
+       {need:['choco'], pts:4, line:'초콜릿이 녹아 흘렀다. 손에 묻은 것까지 빨아 먹었다.'},
        {need:['knife','fire'],  pts:10, line:'칼로 선인장을 손질하고 도마뱀을 구웠다. 셋이 손가락까지 빨았다.'},
        {need:['knife'],         pts:7,  line:'칼로 선인장 속살을 발라 먹었다. 쓰지만 배는 찼다.'},
        {need:['noodle','fire'], pts:7,  line:'불을 피워 라면을 끓였다. 국물이 넘어가는 동안 아무도 말을 안 했다.'},
@@ -893,6 +944,10 @@ window.DESTS = [
      desc:'밤새 모래가 살을 때렸다. 아침에 보니 팔뚝이 벌겋게 익었다.\n물집이 잡혔고, 모래가 그 안에 들어갔다.',
      ask:'상처를 어떻게 할까?', need:'가리거나 소독할 것',
      solves:[
+       {need:['sun','aid'], pts:11, line:'선크림으로 더 안 타게 막고 구급함으로 처치했다. 완벽했다.'},
+       {need:['sun'], pts:7, line:'선크림을 두껍게 발랐다. 더는 안 익었다.'},
+       {need:['sung'], pts:4, line:'선글라스로 눈만은 지켰다. 사막에서 눈이 타면 앞이 안 보인다.'},
+       {need:['ext'], pts:3, line:'소화기를 뿌려 화끈거리는 데를 식혔다. 차갑긴 하다.'},
        {need:['aid','coat'],  pts:10, line:'코트로 몸을 덮어 해를 막고 구급함으로 처치했다. 다음 날 멀쩡히 걸었다.'},
        {need:['aid'],         pts:8,  line:'소독약을 붓고 붕대를 감았다. 저녁이 되자 부기가 빠졌다.'},
        {need:['coat'],        pts:6,  line:'코트를 뒤집어쓰고 하루를 버텼다. 더 안 익었다.'},
@@ -908,6 +963,11 @@ window.DESTS = [
      desc:'약속대로 왔다. 그런데 모래언덕 저쪽으로 그냥 지나간다.\n사막에선 소리가 안 닿는다. 보여야 한다.',
      ask:'어떻게 알릴까?', need:'멀리서 «보이게» 할 것',
      solves:[
+       {need:['torch'], pts:7, line:'손전등 스트로브를 켰다. 대낮이라 약하지만 보였다.'},
+       {need:['ext'], pts:6, line:'소화기를 하늘로 뿌렸다. 흰 분말이 모래 위에 확 퍼졌다.'},
+       {need:['sung'], pts:4, line:'선글라스 렌즈로 햇빛을 반사시켰다. 거울 대신은 된다.'},
+       {need:['ipad'], pts:5, line:'화면을 하늘로 들고 흔들었다. 반짝임이 닿았다.'},
+       {need:['pet'], pts:4, line:'개가 짖으며 뛰어다녔다. 모래 위에 움직이는 게 보였다.'},
        {need:['mirror','fire'], pts:12, line:'거울로 조종석에 빛을 쐈고 연기까지 올렸다. 헬기가 기수를 돌렸다.'},
        {need:['mirror'],        pts:10, line:'거울로 햇빛을 반사시켰다. 1만원짜리가 셋을 살렸다.'},
        {need:['fire'],          pts:8,  line:'덤불을 태워 검은 연기를 올렸다. 조종사가 봤다.'},
@@ -941,7 +1001,7 @@ window.DESTS = [
       '그리고 <b>안 쓰고 남긴 돈은 그대로 들고 귀국.</b>'
     ]
   },
-  plan:[{extra:null},{extra:'trade'},{pre:'v12',extra:'raid'},{pre:'v9',extra:'trade'},{pre:'v8',extra:'raid'}],
+  plan:[{extra:null},{extra:'trade',post:'v13'},{pre:'v12',extra:'raid'},{pre:'v9',extra:'trade'},{pre:'v8',extra:'raid'}],
   events:[
    { id:'e1', lot:'coat', day:1, when:'첫째 날 · 밤', em:'❄️',
      img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_014511_decc1f74-e66b-4181-aff3-742e9c238c8a_min.webp',
@@ -949,6 +1009,11 @@ window.DESTS = [
      desc:'해가 지자 온도계가 그냥 내려가 버렸다.\n눈 위에 앉으면 3분 만에 엉덩이가 감각이 없다.',
      ask:'이 밤을 뭘로 버틸까?', need:'체온을 지킬 것',
      solves:[
+       {need:['pet','blank'], pts:10, line:'개를 품에 안고 담요를 덮었다. 개가 난로였다.'},
+       {need:['choco','fire'], pts:8, line:'초콜릿을 녹여 마셨다. 속에서부터 데워졌다.'},
+       {need:['choco'], pts:5, line:'초콜릿을 씹었다. 열량이 그대로 체온이 됐다.'},
+       {need:['rope','blank'], pts:7, line:'로프로 담요를 묶어 바람을 막았다.'},
+       {need:['card'], pts:0, line:'카드로 눈을 긁어 봤다. 그게 다다.'},
        {need:['coat','blank'], pts:12, line:'코트를 입고 담요를 덮었다. 셋 다 아침에 멀쩡히 눈을 떴다.'},
        {need:['coat','fire'],  pts:10, line:'캐시미어 코트에 불까지. 800만원이 오늘 밤 값을 다 했다.'},
        {need:['blank','fire'], pts:8,  line:'담요를 덮고 불을 피웠다. 발끝은 얼었지만 살았다.'},
@@ -964,6 +1029,9 @@ window.DESTS = [
      desc:'눈을 그냥 집어먹었더니 속이 더 얼어붙는다.\n체온만 뺏기고 목은 더 마르다. 녹여야 한다.',
      ask:'물을 어떻게 만들까?', need:'눈을 녹일 것',
      solves:[
+       {need:['stick'], pts:9, line:'파이어스틱은 젖어도 불이 붙는다. 눈을 녹였다.'},
+       {need:['ext'], pts:2, line:'소화기 통에 눈을 담아 품에 안았다. 반나절 걸렸다.'},
+       {need:['can'], pts:5, line:'통조림 국물을 마셨다. 얼지 않은 액체가 이것뿐이었다.'},
        {need:['fire','knife'], pts:10, line:'칼로 깡통을 잘라 냄비를 만들고 눈을 녹였다. 뜨거운 물을 마셨다.'},
        {need:['fire'],         pts:8,  line:'불에 눈을 올려 녹였다. 미지근한 물이 목을 타고 내려갔다.'},
        {need:['water'],        pts:6,  line:'가져온 생수를 아껴 마셨다. 얼지 않게 품에 넣고 다녔다.'},
@@ -978,6 +1046,10 @@ window.DESTS = [
      desc:'여기엔 열매도 풀도 없다. 하얀 것뿐이다.\n가져온 게 없으면 먹을 게 아예 없다.',
      ask:'뭘 먹을까?', need:'먹을 것',
      solves:[
+       {need:['can','fire'], pts:10, line:'통조림을 불에 데워 먹었다. 뜨거운 게 목을 넘어갔다.'},
+       {need:['can'], pts:7, line:'통조림을 그냥 땄다. 차갑지만 음식이다.'},
+       {need:['choco'], pts:6, line:'초콜릿을 나눠 먹었다. 설산에서는 이게 제일 값지다.'},
+       {need:['rope','rod'], pts:7, line:'로프로 얼음 구멍 옆에 몸을 묶고 낚시를 했다.'},
        {need:['noodle','fire'], pts:12, line:'눈을 녹여 라면을 끓였다. 2만원짜리 한 박스가 오늘의 왕이었다.'},
        {need:['rod','knife'],   pts:8,  line:'칼로 얼음에 구멍을 뚫고 낚싯대를 내렸다. 두 시간 만에 한 마리.'},
        {need:['noodle'],        pts:5,  line:'생라면을 부숴 먹었다. 씹는 동안은 살 것 같았다.'},
@@ -992,6 +1064,9 @@ window.DESTS = [
      desc:'운동화가 밤새 젖었다가 그대로 얼었다.\n양말을 벗으니 발가락이 하얗게 굳어 있다.',
      ask:'발을 어떻게 할까?', need:'녹이고 감쌀 것',
      solves:[
+       {need:['sung'], pts:3, line:'선글라스로 설맹은 막았다. 발은 여전히 얼었다.'},
+       {need:['choco'], pts:4, line:'초콜릿을 먹였다. 몸이 데워지자 감각이 조금 돌아왔다.'},
+       {need:['pet'], pts:6, line:'개를 발에 올려 놓고 녹였다. 개가 얌전히 있어 줬다.'},
        {need:['aid','blank'], pts:10, line:'담요로 감싸 천천히 녹이고 구급함으로 처치했다. 저녁엔 걸었다.'},
        {need:['coat'],        pts:8,  line:'코트로 발을 통째로 감쌌다. 캐시미어가 두 번째로 사람을 살렸다.'},
        {need:['blank'],       pts:6,  line:'담요에 발을 넣고 셋이 서로 비볐다. 감각이 돌아왔다.'},
@@ -1007,6 +1082,11 @@ window.DESTS = [
      desc:'소리는 나는데 보이지가 않는다. 눈이 사방을 막았다.\n거울은 소용없다 — 해가 아예 없다.',
      ask:'어떻게 알릴까?', need:'눈보라를 뚫을 것',
      solves:[
+       {need:['torch','fire'], pts:12, line:'손전등 스트로브에 연기까지. 눈보라를 뚫고 보였다.'},
+       {need:['torch'], pts:9, line:'방수 손전등을 깜빡였다. 1만 5천원이 셋을 살렸다.'},
+       {need:['ipad','batt'], pts:8, line:'태블릿 화면을 최대 밝기로 켜 두고 흔들었다. 배터리가 버텼다.'},
+       {need:['ext'], pts:7, line:'소화기를 하늘로 뿌렸다. 하얀 데 더 하얀 게 퍼졌다… 눈에 띄었다.'},
+       {need:['pet'], pts:7, line:'개가 로터 소리를 향해 쉬지 않고 짖었다.'},
        {need:['cam','fire'],  pts:12, line:'플래시를 계속 터뜨리고 연기를 올렸다. 헬기가 방향을 틀었다.'},
        {need:['fire'],        pts:10, line:'가진 걸 다 태워 검은 연기를 올렸다. 흰 눈 위라 잘 보였다.'},
        {need:['cam'],         pts:9,  line:'플래시를 미친 듯이 터뜨렸다. 150만원짜리가 오늘의 MVP.'},
@@ -1040,7 +1120,7 @@ window.DESTS = [
       '그리고 <b>안 쓰고 남긴 돈은 그대로 들고 귀국.</b>'
     ]
   },
-  plan:[{extra:null},{extra:'trade'},{pre:'v1',extra:'raid'},{pre:'v5',extra:'trade'},{pre:'v6',extra:'raid'}],
+  plan:[{extra:null},{extra:'trade',post:'v14'},{pre:'v1',extra:'raid'},{pre:'v5',extra:'trade'},{pre:'v6',extra:'raid'}],
   events:[
    { id:'e1', lot:'umb', day:1, when:'첫째 날 · 밤', em:'🌧️',
      img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_014711_f6ca7d4b-a0b8-4906-8a10-e230d31602a0_min.webp',
@@ -1048,6 +1128,10 @@ window.DESTS = [
      desc:'땅이 물이 됐다. 눕지도 앉지도 못한다.\n젖은 채로 밤을 새우면 아침엔 열이 난다.',
      ask:'이 밤을 뭘로 버틸까?', need:'비를 막을 것',
      solves:[
+       {need:['stick','umb'], pts:11, line:'파이어스틱은 젖어도 붙는다. 우산 밑에서 불을 지켰다.'},
+       {need:['stick'], pts:7, line:'라이터는 다 젖었는데 파이어스틱은 붙었다. 2만원이 밤을 살렸다.'},
+       {need:['rope','umb'], pts:8, line:'로프로 우산을 나무에 묶어 지붕을 만들었다.'},
+       {need:['pet'], pts:4, line:'개가 붙어 앉아 있어 줬다. 덜 무서웠다.'},
        {need:['umb','fire'],  pts:10, line:'우산으로 비를 막고 그 밑에 불을 지켰다. 젖지 않고 잤다.'},
        {need:['tube','umb'],  pts:9,  line:'튜브를 바닥에 깔고 우산을 씌웠다. 물 위에 뜬 침대가 됐다.'},
        {need:['blank','fire'],pts:8,  line:'담요를 머리 위에 치고 불을 피웠다. 연기가 벌레도 쫓았다.'},
@@ -1063,6 +1147,9 @@ window.DESTS = [
      desc:'웅덩이도 강도 많다. 그런데 한 모금 마신 애가 한 시간째 배를 잡고 있다.\n끓이지 않으면 못 마신다.',
      ask:'마실 물을 어떻게 만들까?', need:'받아서 끓일 것',
      solves:[
+       {need:['stick','umb'], pts:11, line:'파이어스틱으로 젖은 나무에 불을 붙여 빗물을 끓였다.'},
+       {need:['can'], pts:6, line:'통조림 국물로 버텼다. 물은 못 마셨다.'},
+       {need:['ext'], pts:3, line:'소화기 통을 씻어 빗물 통으로 썼다.'},
        {need:['umb','fire'],  pts:10, line:'우산으로 빗물을 받아 끓여 마셨다. 이틀은 버틴다.'},
        {need:['tube','fire'], pts:9,  line:'튜브에 빗물을 받아 끓였다. 고무 맛이 나지만 안전했다.'},
        {need:['fire'],        pts:7,  line:'강물을 떠서 팔팔 끓였다. 아무도 배탈이 안 났다.'},
@@ -1077,6 +1164,10 @@ window.DESTS = [
      desc:'열매가 잔뜩 달렸는데 뭐가 먹는 건지 모르겠다.\n강에는 물고기가 보인다. 잡을 방법이 없을 뿐이다.',
      ask:'뭘 먹을까?', need:'먹을 것',
      solves:[
+       {need:['pet','rod'], pts:13, line:'개가 물가에서 물고기를 몰았다. 낚싯대에 연달아 걸렸다.'},
+       {need:['can'], pts:8, line:'통조림을 땄다. 정글 한가운데서 햄을 먹었다.'},
+       {need:['rope','rod'], pts:9, line:'로프로 그물처럼 엮어 물길을 막고 낚았다.'},
+       {need:['choco'], pts:4, line:'초콜릿이 다 녹았다. 봉지째 빨아 먹었다.'},
        {need:['rod','fire'],    pts:12, line:'물고기를 낚아 불에 구웠다. 셋이 손가락까지 빨았다.'},
        {need:['rod'],           pts:8,  line:'두 시간 만에 한 마리. 날로 먹었다. 그래도 먹었다.'},
        {need:['knife','fire'],  pts:7,  line:'칼로 나무를 깎아 작살을 만들고 잡아 구웠다.'},
@@ -1092,6 +1183,10 @@ window.DESTS = [
      desc:'밤새 모기가 얼굴을 덮었다. 종아리엔 거머리가 붙어 있다.\n긁은 자리가 벌써 곪기 시작했다.',
      ask:'어떻게 막을까?', need:'쫓거나 소독할 것',
      solves:[
+       {need:['perf','fire'], pts:11, line:'향수를 뿌리고 연기를 피웠다. 벌레가 싹 사라졌다.'},
+       {need:['sun'], pts:5, line:'선크림을 두껍게 발랐다. 물리는 게 확 줄었다.'},
+       {need:['ext'], pts:4, line:'소화기를 뿌려 벌레 떼를 한 번 쫓았다. 다시 왔다.'},
+       {need:['pet'], pts:3, line:'개가 거머리를 물어 떼어 줬다. 개도 물렸다.'},
        {need:['aid','perf'], pts:10, line:'향수를 뿌려 벌레를 쫓고 구급함으로 처치했다. 30만원이 오늘의 약이었다.'},
        {need:['aid'],        pts:8,  line:'소독약을 붓고 붕대를 감았다. 곪던 자리가 가라앉았다.'},
        {need:['perf'],       pts:7,  line:'향수를 팔다리에 발랐다. 알코올 냄새에 벌레가 달아났다.'},
@@ -1107,6 +1202,12 @@ window.DESTS = [
      desc:'소리는 바로 위인데 하늘이 안 보인다. 잎이 다 가렸다.\n빛으로는 안 된다. 여긴 해가 안 든다.',
      ask:'어떻게 알릴까?', need:'잎을 뚫고 «닿게» 할 것',
      solves:[
+       {need:['pods','spk'], pts:10, line:'헤드폰까지 스피커에 붙여 소리를 키웠다.'},
+       {need:['ipad','spk'], pts:11, line:'태블릿으로 사이렌 소리를 틀어 스피커로 내보냈다.'},
+       {need:['pet'], pts:8, line:'개가 쉬지 않고 짖었다. 잎을 뚫고 닿은 건 소리뿐이었다.'},
+       {need:['rope','knife'], pts:7, line:'로프를 타고 올라가 잎을 쳐내 하늘 구멍을 냈다.'},
+       {need:['ext'], pts:5, line:'소화기를 위로 뿜었다. 흰 분말이 잎 사이로 올라갔다.'},
+       {need:['torch'], pts:4, line:'손전등을 위로 비췄다. 잎에 거의 다 막혔다.'},
        {need:['spk','fire'], pts:12, line:'스피커를 끝까지 틀고 젖은 잎을 태워 연기를 올렸다. 헬기가 멈췄다.'},
        {need:['spk'],        pts:9,  line:'볼륨을 최대로 올렸다. 20만원짜리가 잎을 뚫고 소리를 보냈다.'},
        {need:['fire'],       pts:8,  line:'젖은 잎을 태웠다. 흰 연기가 나무 사이로 올라갔다.'},
@@ -1140,6 +1241,7 @@ window.HAWAII = {
   video:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_142812_b85fb9f2-b01a-434e-ab6a-0eac086f9083.mp4',
   head:'무사 도착',
   sub:'100억으로 여행을 누리세요',
+  joke:'…그런데 그 이상한 물건들은 왜 챙겨오셨죠?',
   lines:[
     '항공사가 사과하며 표를 다시 끊어 줬다.',
     '원래 가려던 그 리조트다. 닷새 늦게 도착했을 뿐이다.',
@@ -1156,8 +1258,11 @@ window.ENDING = {
 
 /* 돌발 변수 영상 — 있으면 카드 뒤에 영상이 깔립니다. 없으면(주소가 비면) 그냥 카드만 뜹니다. */
 window.VARVID = {
+  v10:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_030840_3edc8e50-a902-4901-80a3-42acb1397697.mp4',
   v1: 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_072049_683aff74-67f4-4b4c-ae97-4a63157fb72c.mp4',
-  v2: 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_072050_e02e1386-048d-437e-80f4-67471158d5d3.mp4',
+  v2: 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_030830_c911ce01-83ef-43fd-be76-610453032718.mp4',
+  v13:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_030830_c911ce01-83ef-43fd-be76-610453032718.mp4',
+  v14:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_030830_c911ce01-83ef-43fd-be76-610453032718.mp4',
   v6: 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_072512_bbc7e65c-e091-40ac-9437-70ace67bebdf.mp4'
 };
 
@@ -1266,7 +1371,7 @@ const STEPS=[{ph:'lobby'},{ph:'lotto'},{ph:'pack'},{ph:'first'},{ph:'turb'},{ph:
 /* 네 행선지 모두 같은 뼈대입니다 — 3·4·5일차 앞에 돌발 변수, 뒤에 거래/강탈.
    어떤 «카드»가 나오는지만 행선지마다 다르고, 그건 진행할 때 찾습니다. */
 DESTS[0].events.forEach((e,i)=>{
-  const p={extra:[null,'trade','raid','trade','raid'][i], pre:i>=2};
+  const p={extra:[null,'trade','raid','trade','raid'][i], pre:i>=2, post:i===1};
   if(p.pre) STEPS.push({ph:'var', ev:e.id, day:i});
   STEPS.push({ph:'ev',     ev:e.id});
   STEPS.push({ph:'quiz',   ev:e.id});
@@ -1274,6 +1379,8 @@ DESTS[0].events.forEach((e,i)=>{
   STEPS.push({ph:'auc',    ev:e.id});
   STEPS.push({ph:'aucres', ev:e.id});
   if(p.extra) STEPS.push({ph:p.extra, ev:e.id});
+  /* 2일차 — «쓰기 전에» 물값이 무너진다. 경매·거래가 끝난 바로 뒤. */
+  if(p.post) STEPS.push({ph:'var', ev:e.id, day:i, post:true});
   STEPS.push({ph:'pick',   ev:e.id});
   STEPS.push({ph:'evres',  ev:e.id});
 });
@@ -1438,7 +1545,7 @@ async function next(){
       snd('cash');
     }
     if(nx.ph==='evres') await judgeAll(evOf(nx.ev));
-    const vid = nx.ph==='var' ? ((PLAN[nx.day]||{}).pre||null) : null;
+    const vid = nx.ph==='var' ? (nx.post?((PLAN[nx.day]||{}).post||null):((PLAN[nx.day]||{}).pre||null)) : null;
     if(nx.ph==='var')   await applyVar(vid);
     const o={step:i+1, phase:nx.ph, at:Date.now(), evId:nx.ev||null, varId:vid};
     if(nx.ph==='pack'&&C.packSec) o.packEnd=Date.now()+C.packSec*1000;
@@ -1467,17 +1574,23 @@ async function next(){
 async function back(){ const i=stepIdx(); if(i<=0) return;
   const nx=STEPS[i-1];
   await save({step:i-1,phase:nx.ph,at:Date.now(),evId:nx.ev||null,
-    varId:nx.ph==='var'?((PLAN[nx.day]||{}).pre||null):null}); }
+    varId:nx.ph==='var'?(nx.post?((PLAN[nx.day]||{}).post||null):((PLAN[nx.day]||{}).pre||null)):null}); }
 async function jump(i){ const nx=STEPS[i];
   await save({step:i,phase:nx.ph,at:Date.now(),evId:nx.ev||null,
-    varId:nx.ph==='var'?((PLAN[nx.day]||{}).pre||null):null}); }
+    varId:nx.ph==='var'?(nx.post?((PLAN[nx.day]||{}).post||null):((PLAN[nx.day]||{}).pre||null)):null}); }
 const evOf=id=>EV.find(e=>e.id===id)||EV[0];
 const curEv=()=>evOf(ST.evId);
 
 /* ══ 판정 ══ */
+/* 파이어스틱처럼 «대신 쓸 수 있는» 물건은 원래 물건으로도 쳐 준다 */
+function expand(list){
+  const out=[...list];
+  list.forEach(id=>{ const a=G(id).alias; if(a&&out.indexOf(a)<0) out.push(a); });
+  return out;
+}
 function judge(team,e){
   const picked=((team.sel||{})[e.id])||[], own=inv(team);
-  const valid=picked.filter(id=>own.includes(id));
+  const valid=expand(picked.filter(id=>own.includes(id)));
   let best=null;
   (e.solves||[]).forEach(s=>{ if(s.need.every(n=>valid.includes(n))){ if(!best||s.pts>best.pts) best=s; }});
   if(best) return {p:best.pts,line:best.line,down:0,used:valid};
@@ -1490,7 +1603,7 @@ async function judgeAll(e){
     if((d.res||{})[e.id]) continue;
     const hp0=hpOf(d), r=judge(d,e);
     if(hp0<=1&&r.p>0){ r.p=Math.max(1,Math.round(r.p/2)); r.line+=' (한 명만 성한 채로 겨우 해냈다)'; }
-    const gone=(r.used||[]).filter(id=>G(id).once);
+    const gone=(r.used||[]).filter(id=>G(id).once&&inv(d).includes(id));
     r.gone=gone;
     const res={...(d.res||{})}; res[e.id]=r;
     const o={res};
@@ -2074,6 +2187,7 @@ function sHawaii(){
       <h1>${HW.head}</h1>
       <div class="s">${HW.sub}</div>
       <p>${(HW.lines||[]).join('<br>')}</p>
+      ${HW.joke?`<div class="jk">${HW.joke}</div>`:''}
     </div></div>`;
 }
 function sCalc(){
