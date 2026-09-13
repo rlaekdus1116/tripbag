@@ -371,7 +371,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
    * 이 파일은 두 html 안에 이미 들어가 있습니다. (참고용)
    =================================================================== */
 
-window.VER = 'v13 · 2026-09-13';
+window.VER = 'v14 · 2026-09-13';
 
 /* 글씨체 — 게임 UI처럼 딱딱하고 평범한 고딕.
    'Noto Sans KR' / 'Black Han Sans'(더 두꺼움) / 'Do Hyeon' 중에 고르면 됩니다. */
@@ -407,7 +407,7 @@ window.GOODS = [
  { id:'swim',  em:'🩳', name:'수영복',       sub:'리조트 필수템',     price:50000,       cash:0,   kind:'trip' , hw:8 },
  { id:'knife', em:'🔪', name:'맥가이버칼',    sub:'12가지 기능',      price:50000,       cash:0,   kind:'life' , hw:0 },
  { id:'aid',   em:'🧰', name:'구급함',       sub:'소독약·붕대',      price:40000,       cash:0,   kind:'life', once:true , hw:0 },
- { id:'blank', em:'🧣', name:'담요',         sub:'두꺼운 것',        price:30000,       cash:0,   kind:'life' , hw:0 },
+ { id:'blank', em:'🛌', name:'담요',         sub:'두꺼운 것',        price:30000,       cash:0,   kind:'life' , hw:0 },
  { id:'tube',  em:'🛟', name:'튜브',         sub:'대형',            price:30000,       cash:0,   kind:'trip' , hw:7 },
  { id:'umb',   em:'☂️', name:'우산',         sub:'장우산',          price:20000,       cash:0,   kind:'life' , hw:1 },
  { id:'noodle',em:'🍜', name:'라면 20개',    sub:'한 박스',          price:20000,       cash:0,   kind:'life', once:true , hw:0 },
@@ -684,6 +684,9 @@ window.VARS = [
  { id:'v2', em:'🏝️', title:'오아시스 발견',
    line:'경매가 끝난 바로 그때, 섬 안쪽에서 샘이 터졌다.\n<b>내일부터 물은 누구나 공짜로 마실 수 있다.</b>\n방금 물을 수십억에 사 온 조는… 안됐다.',
    rule:{kind:'all', pts:4} },
+ { id:'v15', em:'🪨', title:'바위 그늘 발견',
+   line:'경매가 끝난 바로 그때, 절벽 아래에 커다란 그늘이 있는 걸 찾았다.\n<b>내일부터 그늘은 누구나 공짜로 쓸 수 있다.</b>\n방금 우산을 수십억에 사 온 조는… 안됐다.',
+   rule:{kind:'all', pts:4} },
  { id:'v13', em:'♨️', title:'온천 발견',
    line:'눈 밑에서 김이 올라왔다. 파 보니 따뜻한 물이 솟는다.\n<b>내일부터 물 걱정은 없다.</b> 방금 불을 비싸게 산 조는… 안됐다.',
    rule:{kind:'all', pts:4} },
@@ -881,7 +884,7 @@ window.DESTS = [
       '그리고 <b>안 쓰고 남긴 돈은 그대로 들고 귀국.</b>'
     ]
   },
-  plan:[{extra:null},{extra:'trade',post:'v2'},{pre:'v10',extra:'raid'},{pre:'v11',extra:'trade'},{pre:'v4',extra:'raid'}],
+  plan:[{extra:null},{extra:'trade',post:'v15'},{pre:'v10',extra:'raid'},{pre:'v11',extra:'trade'},{pre:'v4',extra:'raid'}],
   events:[
    { id:'e1', lot:'blank', day:1, when:'첫째 날 · 밤', em:'🌙',
      img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_014650_71d1fed2-0642-4868-8e04-0983ff6631ec_min.webp',

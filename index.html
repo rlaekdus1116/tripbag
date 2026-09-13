@@ -12,15 +12,22 @@
  --gold:#e8ab45;--green:#55b981;--red:#e8593c;--blue:#5d9fd6;--fs:1;
  --font:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);overflow:hidden;
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+ overflow:hidden;overscroll-behavior:none;
  font-family:var(--font);word-break:keep-all}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 input{font-family:inherit}
-#app{height:100%;display:flex;flex-direction:column;font-size:calc(16px * var(--fs))}
+/* 갤럭시탭·아이패드는 가로로 눕히면 둥근 모서리와 카메라 홈이 화면 «양옆»을 먹습니다.
+   그만큼 안쪽으로 밀어서 아무것도 안 잘리게 합니다. */
+#app{height:100%;display:flex;flex-direction:column;font-size:calc(16px * var(--fs));
+ max-width:100%;overflow-x:hidden;
+ padding-left:env(safe-area-inset-left,0px);
+ padding-right:env(safe-area-inset-right,0px);
+ padding-bottom:env(safe-area-inset-bottom,0px)}
 
 /* 상단바 */
-.top{display:flex;align-items:center;gap:13px;padding:6px 14px;background:#0e0c07;
- border-bottom:1px solid var(--line);flex:none}
+.top{display:flex;align-items:center;gap:10px;padding:6px 12px;background:#0e0c07;
+ border-bottom:1px solid var(--line);flex:none;flex-wrap:wrap;max-width:100%}
 .top .tm{font-weight:700;font-size:1.05em}
 .top .ph{color:var(--gold);font-size:.95em}
 .top .me{font-size:.72em;color:var(--dim2)}
@@ -54,11 +61,17 @@ input{font-family:inherit}
 .chips span{background:#221f18;border:1px solid var(--line);border-radius:10px;padding:3px 9px;font-size:1em}
 
 /* 입장 */
-.gate{flex:1;display:flex;align-items:center;justify-content:center;padding:16px;
-  background-size:cover;background-position:center}
-.gbox{width:min(640px,92vw);display:flex;flex-direction:column;align-items:stretch;gap:10px;
-  background:#1c1912e8;border:2px solid var(--line);border-radius:24px;padding:26px 30px 22px;
+.gate{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;
+  padding:16px;overflow:auto;background-size:cover;background-position:center}
+.gbox{width:100%;max-width:600px;display:flex;flex-direction:column;align-items:stretch;gap:9px;
+  background:#1c1912e8;border:2px solid var(--line);border-radius:24px;padding:22px 24px 18px;
   box-shadow:0 18px 60px #000a;animation:sl .4s both}
+@media (max-height:620px){
+  .gate{padding:8px}
+  .gbox{padding:14px 18px 12px;gap:6px}
+  .gem{display:none}
+  .gate h1{font-size:2.1em}
+}
 .gem{font-size:3em;line-height:1;text-align:center}
 .gate h1{font-size:3em;margin:0;font-weight:900;text-align:center;letter-spacing:-.02em}
 .gate p{color:var(--dim);margin:0;font-size:1.05em;text-align:center}
@@ -67,7 +80,7 @@ input{font-family:inherit}
 .gate input:focus{outline:none;border-color:var(--gold)}
 .top .rf.off{opacity:.45}
 .teams{display:grid;gap:8px;width:100%;margin-top:2px}
-.teams button{padding:13px 0;border:2px solid var(--line);border-radius:13px;background:#221f18;
+.teams button{padding:11px 0;border:2px solid var(--line);border-radius:13px;background:#221f18;
  font-weight:700;font-size:1.2em}
 .teams button.on{background:var(--gold);color:#17150f;border-color:var(--gold)}
 .err{color:var(--red);font-size:1em;min-height:20px;text-align:center}
@@ -137,9 +150,6 @@ input{font-family:inherit}
 .evbar .btx{display:flex;flex-direction:column;gap:1px;min-width:0}
 .evbar .btx b{font-size:1.95em;font-weight:900;letter-spacing:-.02em;color:#fff;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.evbar .bspk{flex:none;width:38px;height:38px;border-radius:11px;background:#2d2820;
-  color:var(--gold);font-size:1.1em;border:1px solid var(--line)}
-.evbar .bspk.on{background:var(--gold);color:#17150f}
 .evbar .nd{color:var(--dim);font-size:1.02em}
 .evbar .nd b{color:var(--gold);font-size:1.05em}
 .evbar .sel{margin-left:auto;flex:none;max-width:42%;padding:5px 14px;border-radius:10px;
@@ -554,7 +564,7 @@ input{font-family:inherit}
    * 이 파일은 두 html 안에 이미 들어가 있습니다. (참고용)
    =================================================================== */
 
-window.VER = 'v13 · 2026-09-13';
+window.VER = 'v14 · 2026-09-13';
 
 /* 글씨체 — 게임 UI처럼 딱딱하고 평범한 고딕.
    'Noto Sans KR' / 'Black Han Sans'(더 두꺼움) / 'Do Hyeon' 중에 고르면 됩니다. */
@@ -590,7 +600,7 @@ window.GOODS = [
  { id:'swim',  em:'🩳', name:'수영복',       sub:'리조트 필수템',     price:50000,       cash:0,   kind:'trip' , hw:8 },
  { id:'knife', em:'🔪', name:'맥가이버칼',    sub:'12가지 기능',      price:50000,       cash:0,   kind:'life' , hw:0 },
  { id:'aid',   em:'🧰', name:'구급함',       sub:'소독약·붕대',      price:40000,       cash:0,   kind:'life', once:true , hw:0 },
- { id:'blank', em:'🧣', name:'담요',         sub:'두꺼운 것',        price:30000,       cash:0,   kind:'life' , hw:0 },
+ { id:'blank', em:'🛌', name:'담요',         sub:'두꺼운 것',        price:30000,       cash:0,   kind:'life' , hw:0 },
  { id:'tube',  em:'🛟', name:'튜브',         sub:'대형',            price:30000,       cash:0,   kind:'trip' , hw:7 },
  { id:'umb',   em:'☂️', name:'우산',         sub:'장우산',          price:20000,       cash:0,   kind:'life' , hw:1 },
  { id:'noodle',em:'🍜', name:'라면 20개',    sub:'한 박스',          price:20000,       cash:0,   kind:'life', once:true , hw:0 },
@@ -867,6 +877,9 @@ window.VARS = [
  { id:'v2', em:'🏝️', title:'오아시스 발견',
    line:'경매가 끝난 바로 그때, 섬 안쪽에서 샘이 터졌다.\n<b>내일부터 물은 누구나 공짜로 마실 수 있다.</b>\n방금 물을 수십억에 사 온 조는… 안됐다.',
    rule:{kind:'all', pts:4} },
+ { id:'v15', em:'🪨', title:'바위 그늘 발견',
+   line:'경매가 끝난 바로 그때, 절벽 아래에 커다란 그늘이 있는 걸 찾았다.\n<b>내일부터 그늘은 누구나 공짜로 쓸 수 있다.</b>\n방금 우산을 수십억에 사 온 조는… 안됐다.',
+   rule:{kind:'all', pts:4} },
  { id:'v13', em:'♨️', title:'온천 발견',
    line:'눈 밑에서 김이 올라왔다. 파 보니 따뜻한 물이 솟는다.\n<b>내일부터 물 걱정은 없다.</b> 방금 불을 비싸게 산 조는… 안됐다.',
    rule:{kind:'all', pts:4} },
@@ -1064,7 +1077,7 @@ window.DESTS = [
       '그리고 <b>안 쓰고 남긴 돈은 그대로 들고 귀국.</b>'
     ]
   },
-  plan:[{extra:null},{extra:'trade',post:'v2'},{pre:'v10',extra:'raid'},{pre:'v11',extra:'trade'},{pre:'v4',extra:'raid'}],
+  plan:[{extra:null},{extra:'trade',post:'v15'},{pre:'v10',extra:'raid'},{pre:'v11',extra:'trade'},{pre:'v4',extra:'raid'}],
   events:[
    { id:'e1', lot:'blank', day:1, when:'첫째 날 · 밤', em:'🌙',
      img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_014650_71d1fed2-0642-4868-8e04-0983ff6631ec_min.webp',
@@ -1706,8 +1719,6 @@ function shell(h){
   app.className=ST.phase||'';
   app.innerHTML=topbar()+h;
   const rf=$('#rf'); if(rf) rf.onclick=()=>{snd('tap');render(true);};
-  const bs=$('#bsp'); if(bs) bs.onclick=()=>{ const e=curEv();
-    TTS.again(e.title+'. '+e.desc+' 필요한 건, '+e.need+'.'); };
   const tg=$('#tts'); if(tg) tg.onclick=()=>{ const v=TTS.toggle();
     tg.textContent=v?'🔊 소리':'🔇 소리'; tg.className='rf'+(v?'':' off'); };
   const sw=$('#sw'); if(sw) sw.onclick=()=>{ if(!confirm('학번·조를 다시 입력할까요?')) return;
@@ -1943,7 +1954,6 @@ function evbar(e){
     <span class="bem">${e.em}</span>
     <div class="btx"><b>${e.title}</b>
       <span class="nd">${day}일차 · 필요한 건 <b>${e.need}</b></span></div>
-    <button class="bspk" id="bsp" title="다시 듣기">🔊</button>
     <span class="sel ${s.length?'on':''}">우리 선택<i>${
       s.map(id=>G(id).em+' '+G(id).name).join(' + ')||'아직 없음'}</i></span></div>`;
 }
@@ -2158,58 +2168,33 @@ setInterval(()=>{
 
 
 /* ══════════════════════════════════════════════════════════════
-   소리로 읽어 주기 (브라우저 내장 TTS · 인터넷 안 써도 됩니다)
-   상황이 바뀔 때마다 한 번만 읽습니다. 🔊 를 누르면 다시 읽습니다.
+   소리 안내 — 딱 두 가지만 말합니다.
+     퀴즈가 열릴 때 : "오늘의 문제입니다."
+     경매가 열릴 때 : "경매를 시작합니다. 값을 부르세요."
+   브라우저에 들어 있는 기능이라 인터넷도 추가 파일도 안 씁니다.
    ══════════════════════════════════════════════════════════════ */
 const TTS = (function(){
-  let voice=null, ready=false, on=(localStorage.getItem('bil_tts')!=='0');
-  function pick(){
-    try{ const vs=speechSynthesis.getVoices()||[];
-      voice = vs.find(v=>/ko[-_]KR/i.test(v.lang)&&/female|여|yuna|heami|sora/i.test(v.name))
-           || vs.find(v=>/ko[-_]KR/i.test(v.lang)) || null;
-      ready = vs.length>0;
-    }catch(e){}
-  }
+  let voice=null, on=(localStorage.getItem('bil_tts')!=='0'), last='';
+  function pick(){ try{ const vs=speechSynthesis.getVoices()||[];
+    voice = vs.find(v=>/ko[-_]KR/i.test(v.lang)) || null; }catch(e){} }
   try{ pick(); speechSynthesis.onvoiceschanged=pick; }catch(e){}
-  let last='';
-  function speak(txt,key,opt){
+  function say(txt,key){
     if(!on||!txt) return;
     if(key&&key===last) return;
     if(key) last=key;
-    try{
-      speechSynthesis.cancel();
-      const u=new SpeechSynthesisUtterance(String(txt).replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim());
-      u.lang='ko-KR'; if(voice) u.voice=voice;
-      u.rate=(opt&&opt.rate)||0.98; u.pitch=(opt&&opt.pitch)||0.9; u.volume=1;
+    try{ speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(txt);
+      u.lang='ko-KR'; if(voice) u.voice=voice; u.rate=.98; u.pitch=.95;
       speechSynthesis.speak(u);
     }catch(e){}
   }
-  return {
-    speak,
-    again(txt){ last=''; speak(txt); },
-    stop(){ try{speechSynthesis.cancel();}catch(e){} },
-    get on(){ return on; },
-    toggle(){ on=!on; localStorage.setItem('bil_tts',on?'1':'0'); if(!on) this.stop(); return on; }
-  };
+  return { say, stop(){try{speechSynthesis.cancel();}catch(e){}},
+    get on(){return on;},
+    toggle(){ on=!on; localStorage.setItem('bil_tts',on?'1':'0'); if(!on) this.stop(); return on; } };
 })();
-
-/* 롤 아나운서 느낌 — 활동이 열릴 때 한 줄 */
-const CALL = {
-  raid  : '강탈. 상대의 물건을 빼앗으세요.',
-  trade : '거래. 상대와 물건을 교환하세요.',
-  auc   : '보급소 경매가 열렸습니다. 값을 부르세요.',
-  quiz  : '오늘의 문제입니다.',
-  pick  : '쓸 것을 고르세요.',
-  pack  : '짐을 싸세요. 여덟 칸뿐입니다.',
-  land  : '비상 착륙.',
-  money : '환전소입니다.'
-};
 function narrate(){
-  const ph=ST.phase, e=ST.evId?curEv():null;
-  if(ph==='ev'&&e)      return TTS.speak(e.title+'. '+e.desc+' 필요한 건, '+e.need+'.', 'ev'+e.id);
-  if(ph==='var'){ const v=VARS.find(x=>x.id===(ST.varCard||{}).id)||VARS.find(x=>x.id===ST.varId);
-                  if(v) return TTS.speak(v.title+'. '+v.line, 'var'+(ST.varCard||{}).at); }
-  if(CALL[ph]) return TTS.speak(CALL[ph], ph+(ST.evId||''));
+  if(ST.phase==='quiz') return TTS.say('오늘의 문제입니다.', 'q'+(ST.quiz||{}).id);
+  if(ST.phase==='auc')  return TTS.say('경매를 시작합니다. 값을 부르세요.', 'a'+(ST.auc||{}).id);
 }
 
 let lastRes='';
