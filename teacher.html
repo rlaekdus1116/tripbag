@@ -371,7 +371,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
    * 이 파일은 두 html 안에 이미 들어가 있습니다. (참고용)
    =================================================================== */
 
-window.VER = 'v15 · 2026-09-13';
+window.VER = 'v16 · 2026-09-14';
 
 /* 글씨체 — 게임 UI처럼 딱딱하고 평범한 고딕.
    'Noto Sans KR' / 'Black Han Sans'(더 두꺼움) / 'Do Hyeon' 중에 고르면 됩니다. */
@@ -692,50 +692,44 @@ window.MARKET = {
 window.QUIZ_PLAN = ['생분소','희소성','기회비용','합리적선택','희소성'];
 
 window.VARS = [
- { id:'v1', em:'⛈️', title:'폭풍우',
-   line:'밤새 비바람. 불씨를 지킨 조만 아침에 몸이 말라 있었다.',
+ /* ── 돌발 변수 ──
+    «날씨 · 지형 · 동물» 처럼 그 자리에서 실제로 일어날 만한 것만 남겼습니다.
+    없던 물이 갑자기 솟거나, 아무도 없는 곳에 도둑이 드는 카드는 전부 뺐습니다. */
+ { id:'v1', where:['isle','jungle'], em:'⛈️', title:'폭풍우',
+   line:'밤새 비바람이 몰아쳤다.\n불씨를 지킨 조만 아침에 몸이 말라 있었다.',
    rule:{kind:'need', ids:['fire'], hit:2, miss:-6} },
- { id:'v2', em:'🏝️', title:'오아시스 발견',
-   line:'경매가 끝난 바로 그때, 섬 안쪽에서 샘이 터졌다.\n<b>내일부터 물은 누구나 공짜로 마실 수 있다.</b>\n방금 물을 수십억에 사 온 조는… 안됐다.',
-   rule:{kind:'all', pts:4} },
- { id:'v15', em:'🪨', title:'바위 그늘 발견',
-   line:'경매가 끝난 바로 그때, 절벽 아래에 커다란 그늘이 있는 걸 찾았다.\n<b>내일부터 그늘은 누구나 공짜로 쓸 수 있다.</b>\n방금 우산을 수십억에 사 온 조는… 안됐다.',
-   rule:{kind:'all', pts:4} },
- { id:'v13', em:'♨️', title:'온천 발견',
-   line:'눈 밑에서 김이 올라왔다. 파 보니 따뜻한 물이 솟는다.\n<b>내일부터 물 걱정은 없다.</b> 방금 불을 비싸게 산 조는… 안됐다.',
-   rule:{kind:'all', pts:4} },
- { id:'v14', em:'🏞️', title:'맑은 샘 발견',
-   line:'덩굴 너머에 바위틈에서 솟는 샘이 있었다. 끓이지 않아도 된다.\n<b>내일부터 물 걱정은 없다.</b> 방금 통을 비싸게 산 조는… 안됐다.',
-   rule:{kind:'all', pts:4} },
- { id:'v4', em:'📦', title:'밀수선 도착',
-   line:'한밤중에 배 한 척이 들어와 물건을 팔고 갔다. 다들 주머니가 두둑해졌다.',
-   rule:{kind:'money', add:15} },
- { id:'v5', em:'🦟', title:'열병',
-   line:'모기가 들끓었다. 약을 가진 조만 무사했다.',
+
+ { id:'v5', where:['isle','jungle'], em:'🦟', title:'열병',
+   line:'밤새 모기가 들끓었다.\n약을 가진 조만 무사했다.',
    rule:{kind:'needDown', ids:['aid'], miss:1} },
- { id:'v6', em:'🐒', title:'원숭이 습격',
-   line:'원숭이 떼가 캐리어를 뒤졌다. 세 조가 물건을 하나씩 털렸다.',
+
+ { id:'v6', where:['isle','jungle'], em:'🐒', title:'원숭이 습격',
+   line:'원숭이 떼가 캠프를 뒤졌다. 세 조가 물건을 하나씩 털렸다.',
    rule:{kind:'steal', n:3} },
- { id:'v7', em:'🌊', title:'만조',
-   line:'밤사이 물이 올라왔다. 띄우거나 덮을 게 없던 조는 홀딱 젖었다.',
+
+ { id:'v7', where:['isle','jungle'], em:'🌊', title:'만조',
+   line:'밤사이 물이 캠프까지 올라왔다.\n띄우거나 덮을 게 없던 조는 홀딱 젖었다.',
    rule:{kind:'need', ids:['tube','blank'], any:true, hit:0, miss:-4} },
- { id:'v8', em:'📻', title:'구조대 무전',
-   line:'"이틀 뒤 도착합니다." 목소리가 들렸다. 다들 힘이 났다.',
-   rule:{kind:'all', pts:5} },
- { id:'v9', em:'🧊', title:'한파',
-   line:'새벽 기온이 뚝 떨어졌다. 덮을 게 없는 조는 밤을 꼬박 새웠다.',
+
+ { id:'v9', where:['desert','snow'], em:'🧊', title:'한파',
+   line:'새벽 기온이 뚝 떨어졌다.\n덮을 게 없는 조는 밤을 꼬박 새웠다.',
    rule:{kind:'need', ids:['blank'], hit:2, miss:-6} },
- { id:'v11', em:'🌪️', title:'모래폭풍',
-   img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_014725_7ff0368e-4d2f-4001-ac23-609d42f76ae2_min.webp',
-   line:'모래벽이 캠프를 덮쳤다. 가릴 게 없던 조는 짐이 묻혔다.',
+
+ { id:'v11', where:['desert'], em:'🌪️', title:'모래폭풍',
+   line:'모래벽이 캠프를 덮쳤다.\n가릴 게 없던 조는 짐이 모래에 묻혔다.',
    rule:{kind:'need', ids:['umb','blank'], any:true, hit:2, miss:-6} },
- { id:'v12', em:'🏔️', title:'눈사태',
-   img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_014725_0ab667e5-d2e7-42bc-9ed3-a7752f9c9619_min.webp',
+
+ { id:'v12', where:['snow'], em:'🏔️', title:'눈사태',
    line:'능선이 무너져 내렸다. 세 조가 짐을 하나씩 잃었다.',
    rule:{kind:'steal', n:3} },
- { id:'v10', em:'🥷', title:'도둑',
-   line:'제일 부자라고 소문난 조가 밤사이 털렸다.',
-   rule:{kind:'moneyTop', sub:20} }
+
+ { id:'v16', where:['desert'], em:'🦂', title:'전갈',
+   line:'모래 속에 전갈이 있었다.\n구급함을 가진 조만 무사히 넘겼다.',
+   rule:{kind:'needDown', ids:['aid'], miss:1} },
+
+ { id:'v17', where:['snow'], em:'🌬️', title:'눈보라',
+   line:'하루 종일 눈보라가 몰아쳤다.\n불을 지킨 조만 손발이 얼지 않았다.',
+   rule:{kind:'need', ids:['fire'], hit:2, miss:-6} }
 ];
 
 /* ─────────────────────────────────────────────
@@ -788,7 +782,7 @@ window.DESTS = [
     '그리고 <b>안 쓰고 남긴 돈은 그대로 들고 귀국.</b>'
   ]
 },
-  plan:[{extra:null},{extra:'trade',post:'v2'},{pre:'v7',extra:'raid'},{pre:'v1',extra:'trade'},{pre:'v6',extra:'raid'}],
+  plan:[{extra:null},{extra:'trade'},{pre:'v7',extra:'raid'},{pre:'v1',extra:'trade'},{pre:'v6',extra:'raid'}],
   events:[
  { id:'e1', lot:'fire', day:1, when:'첫째 날 · 밤', em:'🌑',
    title:'이가 딱딱 부딪힌다',
@@ -905,7 +899,7 @@ window.DESTS = [
       '그리고 <b>안 쓰고 남긴 돈은 그대로 들고 귀국.</b>'
     ]
   },
-  plan:[{extra:null},{extra:'trade',post:'v15'},{pre:'v10',extra:'raid'},{pre:'v11',extra:'trade'},{pre:'v4',extra:'raid'}],
+  plan:[{extra:null},{extra:'trade'},{pre:'v16',extra:'raid'},{pre:'v11',extra:'trade'},{pre:'v9',extra:'raid'}],
   events:[
    { id:'e1', lot:'blank', day:1, when:'첫째 날 · 밤', em:'🌙',
      img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_014650_71d1fed2-0642-4868-8e04-0983ff6631ec_min.webp',
@@ -1033,7 +1027,7 @@ window.DESTS = [
       '그리고 <b>안 쓰고 남긴 돈은 그대로 들고 귀국.</b>'
     ]
   },
-  plan:[{extra:null},{extra:'trade',post:'v13'},{pre:'v12',extra:'raid'},{pre:'v9',extra:'trade'},{pre:'v8',extra:'raid'}],
+  plan:[{extra:null},{extra:'trade'},{pre:'v12',extra:'raid'},{pre:'v17',extra:'trade'},{pre:'v9',extra:'raid'}],
   events:[
    { id:'e1', lot:'coat', day:1, when:'첫째 날 · 밤', em:'❄️',
      img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_014511_decc1f74-e66b-4181-aff3-742e9c238c8a_min.webp',
@@ -1160,7 +1154,7 @@ window.DESTS = [
       '그리고 <b>안 쓰고 남긴 돈은 그대로 들고 귀국.</b>'
     ]
   },
-  plan:[{extra:null},{extra:'trade',post:'v14'},{pre:'v1',extra:'raid'},{pre:'v5',extra:'trade'},{pre:'v6',extra:'raid'}],
+  plan:[{extra:null},{extra:'trade'},{pre:'v1',extra:'raid'},{pre:'v5',extra:'trade'},{pre:'v6',extra:'raid'}],
   events:[
    { id:'e1', lot:'umb', day:1, when:'첫째 날 · 밤', em:'🌧️',
      img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_014711_f6ca7d4b-a0b8-4906-8a10-e230d31602a0_min.webp',
@@ -1307,11 +1301,7 @@ window.ENDING = {
 
 /* 돌발 변수 영상 — 있으면 카드 뒤에 영상이 깔립니다. 없으면(주소가 비면) 그냥 카드만 뜹니다. */
 window.VARVID = {
-  v10:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_030840_3edc8e50-a902-4901-80a3-42acb1397697.mp4',
   v1: 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_072049_683aff74-67f4-4b4c-ae97-4a63157fb72c.mp4',
-  v2: 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_030830_c911ce01-83ef-43fd-be76-610453032718.mp4',
-  v13:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_030830_c911ce01-83ef-43fd-be76-610453032718.mp4',
-  v14:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260911_030830_c911ce01-83ef-43fd-be76-610453032718.mp4',
   v6: 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260910_072512_bbc7e65c-e091-40ac-9437-70ace67bebdf.mp4'
 };
 
@@ -1362,22 +1352,26 @@ R.setProperty('--fs',String(window.FONT_SCALE||1));
 R.setProperty('--tcols', String((window.CFG.teams||8)<=8?(window.CFG.teams||8):Math.ceil((window.CFG.teams||8)/2)));
 /* 영상·이미지 미리 받아두기 — 수업 중에 로딩으로 끊기지 않게 */
 (function preload(){ try{
-  /* 지금 행선지의 그림도 같이 받아둔다 */
+  /* 그림만 미리 받아 둡니다. 가볍습니다. */
   const imgs=Object.values(window.IMG||{});
   (window.DESTS||[]).forEach(d=>{ if(d.img) imgs.push(d.img);
     (d.events||[]).forEach(e=>{ if(e.img) imgs.push(e.img); }); });
-  (window.VARS||[]).forEach(v=>{ if(v.img) imgs.push(v.img); });
   (window.FIRST&&window.FIRST.menu||[]).forEach(m=>{ if(m.img) imgs.push(m.img); });
   imgs.forEach(u=>{ try{ const i=new Image(); i.src=u; }catch(e){} });
-  const vids=[]; if(window.TURB&&window.TURB.video) vids.push(window.TURB.video);
-  Object.values(window.VARVID||{}).forEach(u=>{if(u) vids.push(u);});
-  const box=document.createElement('div');
-  box.style.cssText='position:fixed;left:-9999px;top:0;width:1px;height:1px;overflow:hidden;pointer-events:none';
-  vids.forEach(u=>{const v=document.createElement('video');
-    v.src=u; v.preload='auto'; v.muted=true; v.playsInline=true; v.setAttribute('playsinline','');
-    box.appendChild(v); try{v.load();}catch(e){}});
-  document.body.appendChild(box);
 }catch(e){} })();
+
+/* 영상은 «쓰기 직전에 하나씩» 받습니다.
+   예전엔 앱을 켜자마자 영상 여섯 개를 한꺼번에 받아서
+   느린 학교 PC·와이파이에서 화면이 먹통이 됐습니다. */
+const VPRE={};
+function warm(u){
+  if(!u||VPRE[u]) return; VPRE[u]=1;
+  try{ const v=document.createElement('video');
+    v.src=u; v.preload='auto'; v.muted=true; v.playsInline=true;
+    v.style.cssText='position:fixed;left:-9999px;top:0;width:1px;height:1px';
+    document.body.appendChild(v); v.load();
+  }catch(e){}
+}
 const trim=x=>(Math.round(x*10)/10).toLocaleString('ko-KR');
 function won(n){ n=Math.round(n||0);
   if(n>=100000000) return trim(n/100000000)+'억';
@@ -1420,7 +1414,7 @@ const STEPS=[{ph:'lobby'},{ph:'lotto'},{ph:'pack'},{ph:'first'},{ph:'turb'},{ph:
 /* 네 행선지 모두 같은 뼈대입니다 — 3·4·5일차 앞에 돌발 변수, 뒤에 거래/강탈.
    어떤 «카드»가 나오는지만 행선지마다 다르고, 그건 진행할 때 찾습니다. */
 DESTS[0].events.forEach((e,i)=>{
-  const p={extra:[null,'trade','raid','trade','raid'][i], pre:i>=2, post:i===1};
+  const p={extra:[null,'trade','raid','trade','raid'][i], pre:i>=2};
   if(p.pre) STEPS.push({ph:'var', ev:e.id, day:i});
   STEPS.push({ph:'ev',     ev:e.id});
   STEPS.push({ph:'quiz',   ev:e.id});
@@ -1428,8 +1422,6 @@ DESTS[0].events.forEach((e,i)=>{
   STEPS.push({ph:'auc',    ev:e.id});
   STEPS.push({ph:'aucres', ev:e.id});
   if(p.extra) STEPS.push({ph:p.extra, ev:e.id});
-  /* 2일차 — «쓰기 전에» 물값이 무너진다. 경매·거래가 끝난 바로 뒤. */
-  if(p.post) STEPS.push({ph:'var', ev:e.id, day:i, post:true});
   STEPS.push({ph:'pick',   ev:e.id});
   STEPS.push({ph:'evres',  ev:e.id});
 });
@@ -1594,7 +1586,7 @@ async function next(){
       snd('cash');
     }
     if(nx.ph==='evres') await judgeAll(evOf(nx.ev));
-    const vid = nx.ph==='var' ? (nx.post?((PLAN[nx.day]||{}).post||null):((PLAN[nx.day]||{}).pre||null)) : null;
+    const vid = nx.ph==='var' ? ((PLAN[nx.day]||{}).pre||null) : null;
     if(nx.ph==='var')   await applyVar(vid);
     const o={step:i+1, phase:nx.ph, at:Date.now(), evId:nx.ev||null, varId:vid};
     if(nx.ph==='pack'&&C.packSec) o.packEnd=Date.now()+C.packSec*1000;
@@ -1623,10 +1615,10 @@ async function next(){
 async function back(){ const i=stepIdx(); if(i<=0) return;
   const nx=STEPS[i-1];
   await save({step:i-1,phase:nx.ph,at:Date.now(),evId:nx.ev||null,
-    varId:nx.ph==='var'?(nx.post?((PLAN[nx.day]||{}).post||null):((PLAN[nx.day]||{}).pre||null)):null}); }
+    varId:nx.ph==='var'?((PLAN[nx.day]||{}).pre||null):null}); }
 async function jump(i){ const nx=STEPS[i];
   await save({step:i,phase:nx.ph,at:Date.now(),evId:nx.ev||null,
-    varId:nx.ph==='var'?(nx.post?((PLAN[nx.day]||{}).post||null):((PLAN[nx.day]||{}).pre||null)):null}); }
+    varId:nx.ph==='var'?((PLAN[nx.day]||{}).pre||null):null}); }
 const evOf=id=>EV.find(e=>e.id===id)||EV[0];
 const curEv=()=>evOf(ST.evId);
 
@@ -1838,7 +1830,15 @@ function askDest(){
 /* 아이들이 화면을 누를 때마다 스냅샷이 옵니다. 12조 × 3명이면 초당 수십 번인데,
    그때마다 교사 화면을 통째로 다시 그리면 노트북이 버벅이고 「다음」이 늦게 먹습니다.
    0.12초에 한 번으로 몰아서 그립니다 (마지막 상태는 반드시 그려집니다). */
-function paint(){ syncDest(); app.innerHTML=pilot()+`<div class="stage">${stage()}</div>`; bind(); }
+function warmSoon(){
+  const ph=ST.phase;
+  if(ph==='pack'||ph==='first'||ph==='turb') warm((window.TURB||{}).video);
+  if(ph==='land'||ST.evId){
+    const V=window.VARVID||{};
+    (PLAN||[]).forEach(p=>{ if(p.pre&&V[p.pre]) warm(V[p.pre]); });
+  }
+}
+function paint(){ syncDest(); try{warmSoon();}catch(e){} app.innerHTML=pilot()+`<div class="stage">${stage()}</div>`; bind(); }
 let drawT=null, drawAt=0;
 function draw(now){
   if(now){ if(drawT){clearTimeout(drawT); drawT=null;} drawAt=Date.now(); paint(); return; }
