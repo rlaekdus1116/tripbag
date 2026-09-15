@@ -96,12 +96,23 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
    화면 비율이 그림과 달라도 양옆·위아래가 잘리지 않습니다. */
 .pagebg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg);pointer-events:none}
 .pagebg i{position:absolute;display:block}
-.pagebg i.fill{inset:-12%;background-image:var(--u);background-size:cover;background-position:center;
- filter:blur(40px) saturate(.5) brightness(.34)}
+.pagebg i.fill{inset:-20%;background-image:var(--u);background-size:cover;background-position:center;
+ filter:blur(70px) saturate(.9) brightness(.66)}
 .pagebg i.pic{inset:0;background-image:var(--u);background-size:contain;
  background-repeat:no-repeat;background-position:center}
-.pagebg i.sc{inset:0;background:linear-gradient(to bottom,
+.pagebg i.sc{inset:0;background:
+ radial-gradient(ellipse 60% 54% at 50% 46%,rgba(10,8,5,var(--r)) 0%,rgba(10,8,5,calc(var(--r) * .92)) 38%,rgba(10,8,5,0) 100%),
+ linear-gradient(to bottom,
  rgba(23,21,15,var(--a)) 0%,rgba(23,21,15,var(--b)) 46%,rgba(23,21,15,var(--c)) 100%)}
+/* 사진 위에 글씨가 올라가는 화면 — 그림자를 깔아 무조건 읽히게 */
+.center h2,.center p,.center .big,.center .s,
+.sit h1,.sit p,.sit .when,
+.lotto .t,.lotto .n,.lotto .s,
+.fc h2,.fc p,.fcline,
+.vt,.vl,.vem,
+.mid h2,.mid p,.mid .big,
+.store h2,.store .q,.exw h2,.exw p
+ {text-shadow:0 2px 16px rgba(0,0,0,.95),0 0 46px rgba(0,0,0,.75)}
 
 
 .stage{position:relative}
@@ -151,7 +162,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
 
 /* 변수 카드 */
 .varw{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
- background:radial-gradient(circle at 50% 35%,#3a1c14,#17150f 70%);animation:pop .5s cubic-bezier(.2,1.3,.4,1)}
+ animation:pop .5s cubic-bezier(.2,1.3,.4,1)}
 .vem{font-size:5.4em;line-height:1;animation:shk .6s}
 @keyframes shk{0%,100%{transform:none}15%{transform:rotate(-12deg) scale(1.1)}
  35%{transform:rotate(10deg) scale(1.12)}55%{transform:rotate(-7deg)}75%{transform:rotate(5deg)}}
@@ -228,7 +239,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
 .board .li .v b{color:var(--gold)}
 
 .store{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
- background:radial-gradient(circle at 50% 40%,#1e2a2e,#17150f 70%)}
+ }
 .store .two2{display:flex;gap:70px;align-items:flex-end;margin:14px 0 18px}
 .store .cell{text-align:center}
 .store .cell .k{font-size:1.2em;color:var(--dim)}
@@ -250,7 +261,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
 .stage{position:relative}
 /* 상황 제시 */
 .sit{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
- text-align:center;gap:10px;padding:30px;background-size:cover;background-position:center;border-radius:16px}
+ text-align:center;gap:10px;padding:30px}
 .sit .when{font-size:1.2em;color:var(--gold);letter-spacing:.26em;font-weight:700}
 .sit h1{font-size:4.4em;margin:0;font-weight:900;letter-spacing:-.035em;line-height:1.08;
  text-shadow:0 5px 30px rgba(0,0,0,.85)}
@@ -275,7 +286,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
 .mealshot img{width:100%;height:100%;object-fit:cover;display:block}
 /* 변수 카드 */
 .varw{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
- background:radial-gradient(circle at 50% 35%,#3a1c14,#17150f 70%);animation:pop .5s cubic-bezier(.2,1.3,.4,1)}
+ animation:pop .5s cubic-bezier(.2,1.3,.4,1)}
 .vem{font-size:5em;line-height:1;animation:shk .6s}
 @keyframes shk{0%,100%{transform:none}15%{transform:rotate(-12deg) scale(1.1)}
  35%{transform:rotate(10deg) scale(1.12)}55%{transform:rotate(-7deg)}75%{transform:rotate(5deg)}}
@@ -399,7 +410,7 @@ h1{font-size:2.4em;margin:0;font-weight:900;line-height:1.1;letter-spacing:-.03e
    * 이 파일은 두 html 안에 이미 들어가 있습니다. (참고용)
    =================================================================== */
 
-window.VER = 'v17 · 2026-09-14';
+window.VER = 'v18 · 2026-09-15';
 
 /* 글씨체 — 게임 UI처럼 딱딱하고 평범한 고딕.
    'Noto Sans KR' / 'Black Han Sans'(더 두꺼움) / 'Do Hyeon' 중에 고르면 됩니다. */
@@ -1330,6 +1341,23 @@ window.HAWAII = {
 };
 
 /* 마지막 — 담백하게 */
+/* 구조 → 귀국 비행기 — 인천공항 편의점 앞에 들어가는 한 칸 */
+window.HOME = {
+  em:'🚁',
+  head:'구조',
+  sub:'닷새 만이다',
+  img: 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260915_045950_01bd3e75-1f03-4fbb-8fc0-df3ceb613961_min.webp',
+  img2:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260915_045950_60ecb425-02b1-4490-a2b2-b0daaf323ed1_min.webp',
+  lines:[
+    '헬기가 왔다. 약속대로 닷새째였다.',
+    '사흘 뒤, 인천행 비행기에 올랐다.'
+  ],
+  lines2:[
+    '가져간 여덟 개 중 <b>남은 것은 그대로</b> 들고 온다.',
+    '쓴 것은 거기 두고 왔다.'
+  ]
+};
+
 window.ENDING = {
   em:'🏪',
   head:'인천공항 편의점',
@@ -1432,7 +1460,8 @@ const bgA=(k,t,b)=>{const v=bgs(k,t,b); return v?` style="${v}"`:'';};
 function bgURL(k){ return (k&&k.indexOf('http')===0)?k:(IMG[k]||''); }
 function pagebg(k,mode){
   const u=bgURL(k); if(!u) return '';
-  const m = (mode==='ui') ? '--a:.74;--b:.82;--c:.94' : '--a:.06;--b:.16;--c:.90';
+  const m = (mode==='ui') ? '--a:.80;--b:.86;--c:.95;--r:0'
+                         : '--a:.18;--b:.26;--c:.88;--r:.90';
   return `<div class="pagebg" style="--u:url('${u}');${m}"><i class="fill"></i><i class="pic"></i><i class="sc"></i></div>`;
 }
 
@@ -1454,7 +1483,7 @@ const cashOf=t=>((t&&t.pack)||[]).reduce((a,id)=>a+G(id).cash,0);
 
 const NM={lobby:'대기실',lotto:'로또 1등 당첨',pack:'짐 싸기',first:'일등석',turb:'난기류',
  land:'비상 착륙',money:'환전소',price:'오늘 팔린 값',rank:'두 개의 순위',
- store:'인천공항 편의점',repack:'다시 싼다면?',hawaii:'무사 도착',
+ home:'구조 · 귀국',store:'인천공항 편의점',repack:'다시 싼다면?',hawaii:'무사 도착',
   board:'정리',calc:'점수는 이렇게 나왔습니다',result:'최종 결과'};
 const STEPS=[{ph:'lobby'},{ph:'lotto'},{ph:'pack'},{ph:'first'},{ph:'turb'},{ph:'land'},{ph:'money'}];
 /* 네 행선지 모두 같은 뼈대입니다 — 3·4·5일차 앞에 돌발 변수, 뒤에 거래/강탈.
@@ -1471,7 +1500,7 @@ DESTS[0].events.forEach((e,i)=>{
   STEPS.push({ph:'pick',   ev:e.id});
   STEPS.push({ph:'evres',  ev:e.id});
 });
-['price','rank','store','repack','hawaii','board','calc','result'].forEach(ph=>STEPS.push({ph}));
+['price','rank','home','store','repack','hawaii','board','calc','result'].forEach(ph=>STEPS.push({ph}));
 const VARS=window.VARS||[];
 const QP=window.QUIZ_PRIZE, QB=window.QUIZ;
 const dayOf=st=>Math.max(0,EV.findIndex(e=>e.id===st.ev));
@@ -1486,7 +1515,7 @@ function goLabel(){ return stepGo(stepIdx()); }
 function stepGo(i){
   const nx=STEPS[i+1]; if(!nx) return null;
   const ic={var:'🎲',ev:'🎬',quiz:'📝',quizres:'✅',auc:'🔨',aucres:'🔔',trade:'🤝',raid:'⚔️',
-    pick:'🎒',evres:'📢',price:'📈',rank:'🏆',store:'🏪',board:'✍️',result:'🎬',
+    pick:'🎒',evres:'📢',price:'📈',rank:'🏆',home:'🚁',store:'🏪',board:'✍️',result:'🎬',
     lotto:'🎰',pack:'🧳',first:'🥂',turb:'✈️',land:'🛬',money:'💱',repack:'🧳',
     hawaii:'🏝️',calc:'🧮'}[nx.ph]||'▶';
   if(nx.ph==='quiz') return `📝 오늘의 문제 (${QP[dayOf(nx)]||0}억)`;
@@ -1892,10 +1921,11 @@ function tbg(){
   if(ph==='first') return pagebg('first','ui');
   if(ph==='land')  return pagebg('land','cine');
   if(ph==='money') return pagebg('money','ui');
+  if(ph==='home')  return pagebg((window.HOME||{}).img,'cine');
   if(ph==='store') return pagebg('store','cine');
   if(ph==='repack')return pagebg('lotto','ui');
   if(ph==='var'){ const vc=ST.varCard||{};
-    const v=VARS.find(x=>x.id===vc.id)||null;
+    const v=VARS.find(x=>x.id===vc.id)||VARS.find(x=>x.id===ST.varId)||null;
     return (v&&v.img)?pagebg(v.img,'cine'):''; }
   if(ph==='auc'||ph==='aucres') return pagebg('shop','ui');
   if(ph==='ev'){ const e=E(); return e?pagebg(e.img||e.id,'cine'):''; }
@@ -1945,6 +1975,7 @@ function hintOf(){
   if(s.ph==='rank') return `짐 합계 순위 / 생존 점수 순위`;
   if(s.ph==='hawaii') return `해피엔딩`;
   if(s.ph==='calc') return `표가 왼쪽부터 채워집니다 (약 5초)`;
+  if(s.ph==='home')  return `구조 → 귀국 비행기`;
   if(s.ph==='store') return `인천공항 편의점 · 생수 1,000원`;
   if(s.ph==='repack'){const n=TN().filter(t=>((TEAMS[t]||{}).repack||[]).length>0).length;
     return `🧳 다시 고른 조 <b>${n}/${C.teams}</b>`;}
@@ -2019,6 +2050,7 @@ function stage(){
     case 'evres':   return sEvRes();
     case 'price':   return sPrice();
     case 'rank':    return sRank();
+    case 'home':    return sHome();
     case 'store':   return sStore();
     case 'repack':  return sRepack();
     case 'hawaii':  return sHawaii();
@@ -2345,6 +2377,13 @@ function sCalc(){
     </div>
     <div class="cnote">🎲 는 돌발 변수로 얻거나 잃은 점수입니다 ·
       남긴 돈은 <b>${C.eokPerPoint}억마다 1점</b>으로 바뀝니다</div></div>`;
+}
+function sHome(){
+  const H=window.HOME||{};
+  return `<div class="mid"><div class="big">${H.em||'🚁'}</div>
+   <h2>${H.head||'구조'}</h2>
+   <p style="max-width:900px">${(H.lines||[]).join('\n')}</p>
+   <div class="rescuebox">${(H.lines2||[]).join('<br>')}</div></div>`;
 }
 function sStore(){
   const E=window.ENDING, top=waterTop();

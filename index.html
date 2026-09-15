@@ -34,12 +34,23 @@ input{font-family:inherit}
    화면 비율이 그림과 달라도 양옆·위아래가 잘리지 않습니다. */
 .pagebg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg);pointer-events:none}
 .pagebg i{position:absolute;display:block}
-.pagebg i.fill{inset:-12%;background-image:var(--u);background-size:cover;background-position:center;
- filter:blur(40px) saturate(.5) brightness(.34)}
+.pagebg i.fill{inset:-20%;background-image:var(--u);background-size:cover;background-position:center;
+ filter:blur(70px) saturate(.9) brightness(.66)}
 .pagebg i.pic{inset:0;background-image:var(--u);background-size:contain;
  background-repeat:no-repeat;background-position:center}
-.pagebg i.sc{inset:0;background:linear-gradient(to bottom,
+.pagebg i.sc{inset:0;background:
+ radial-gradient(ellipse 60% 54% at 50% 46%,rgba(10,8,5,var(--r)) 0%,rgba(10,8,5,calc(var(--r) * .92)) 38%,rgba(10,8,5,0) 100%),
+ linear-gradient(to bottom,
  rgba(23,21,15,var(--a)) 0%,rgba(23,21,15,var(--b)) 46%,rgba(23,21,15,var(--c)) 100%)}
+/* 사진 위에 글씨가 올라가는 화면 — 그림자를 깔아 무조건 읽히게 */
+.center h2,.center p,.center .big,.center .s,
+.sit h1,.sit p,.sit .when,
+.lotto .t,.lotto .n,.lotto .s,
+.fc h2,.fc p,.fcline,
+.vt,.vl,.vem,
+.mid h2,.mid p,.mid .big,
+.store h2,.store .q,.exw h2,.exw p
+ {text-shadow:0 2px 16px rgba(0,0,0,.95),0 0 46px rgba(0,0,0,.75)}
 
 
 /* 상단바 */
@@ -105,7 +116,7 @@ input{font-family:inherit}
 
 /* 로또 */
 .lotto{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
- background:radial-gradient(circle at 50% 35%,#3a2c10,#17150f 65%)}
+ }
 .lotto .t{font-size:1.35em;color:var(--gold);letter-spacing:.18em}
 .lotto .n{font-size:5.4em;font-weight:700;line-height:1;color:var(--gold);
  text-shadow:0 0 40px rgba(232,171,69,.45);animation:pop .6s cubic-bezier(.2,1.4,.4,1)}
@@ -116,7 +127,7 @@ input{font-family:inherit}
 
 /* 일등석 */
 .fc{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;padding:16px;
- background:linear-gradient(160deg,#1c2430,#17150f 60%)}
+ }
 .fc h2{font-size:2.1em;margin:0;font-weight:700}
 .fc p{color:var(--dim);font-size:1.1em;margin:0;text-align:center;white-space:pre-line;line-height:1.5}
 .menu{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:min(880px,95vw);margin-top:6px}
@@ -173,8 +184,7 @@ input{font-family:inherit}
 .evbar .sel i{font-style:normal;font-size:1.12em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .evbar .sel.on{background:#2b2416;color:var(--gold)}
 .evbar .sel.on i{font-weight:800}
-.one{flex:1;display:flex;flex-direction:column;min-height:0;padding:12px 22px;gap:9px;
- background-size:cover;background-position:center}
+.one{flex:1;display:flex;flex-direction:column;min-height:0;padding:12px 22px;gap:9px}
 .one.center{align-items:center;justify-content:center;text-align:center}
 .one .big{font-size:3.4em;line-height:1}
 .one h2{font-size:2em;margin:0;font-weight:900}
@@ -199,7 +209,7 @@ input{font-family:inherit}
 
 /* 상황 제시 */
 .sit{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
- text-align:center;gap:8px;padding:26px;background-size:cover;background-position:center}
+ text-align:center;gap:8px;padding:26px}
 .sit .when{font-size:1.05em;color:var(--gold);letter-spacing:.24em;font-weight:700}
 .sit h1{font-size:3.6em;margin:0;font-weight:900;letter-spacing:-.03em;line-height:1.1;
  text-shadow:0 4px 24px rgba(0,0,0,.8)}
@@ -287,7 +297,7 @@ input{font-family:inherit}
 
 /* 돌발 변수 */
 .varw{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
- background:radial-gradient(circle at 50% 35%,#3a1c14,#17150f 70%);animation:pop .45s cubic-bezier(.2,1.3,.4,1)}
+ animation:pop .45s cubic-bezier(.2,1.3,.4,1)}
 .vem{font-size:4.6em;line-height:1;animation:shk .6s}
 @keyframes shk{0%,100%{transform:none}15%{transform:rotate(-12deg) scale(1.1)}
  35%{transform:rotate(10deg) scale(1.12)}55%{transform:rotate(-7deg)}75%{transform:rotate(5deg)}}
@@ -580,7 +590,7 @@ input{font-family:inherit}
    * 이 파일은 두 html 안에 이미 들어가 있습니다. (참고용)
    =================================================================== */
 
-window.VER = 'v17 · 2026-09-14';
+window.VER = 'v18 · 2026-09-15';
 
 /* 글씨체 — 게임 UI처럼 딱딱하고 평범한 고딕.
    'Noto Sans KR' / 'Black Han Sans'(더 두꺼움) / 'Do Hyeon' 중에 고르면 됩니다. */
@@ -1511,6 +1521,23 @@ window.HAWAII = {
 };
 
 /* 마지막 — 담백하게 */
+/* 구조 → 귀국 비행기 — 인천공항 편의점 앞에 들어가는 한 칸 */
+window.HOME = {
+  em:'🚁',
+  head:'구조',
+  sub:'닷새 만이다',
+  img: 'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260915_045950_01bd3e75-1f03-4fbb-8fc0-df3ceb613961_min.webp',
+  img2:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260915_045950_60ecb425-02b1-4490-a2b2-b0daaf323ed1_min.webp',
+  lines:[
+    '헬기가 왔다. 약속대로 닷새째였다.',
+    '사흘 뒤, 인천행 비행기에 올랐다.'
+  ],
+  lines2:[
+    '가져간 여덟 개 중 <b>남은 것은 그대로</b> 들고 온다.',
+    '쓴 것은 거기 두고 왔다.'
+  ]
+};
+
 window.ENDING = {
   em:'🏪',
   head:'인천공항 편의점',
@@ -1629,7 +1656,8 @@ const bgA=(k,t,b)=>{const v=bgs(k,t,b); return v?` style="${v}"`:'';};
 function bgURL(k){ return (k&&k.indexOf('http')===0)?k:(IMG[k]||''); }
 function pagebg(k,mode){
   const u=bgURL(k); if(!u) return '';
-  const m = (mode==='ui') ? '--a:.74;--b:.82;--c:.94' : '--a:.06;--b:.16;--c:.90';
+  const m = (mode==='ui') ? '--a:.80;--b:.86;--c:.95;--r:0'
+                         : '--a:.18;--b:.26;--c:.88;--r:.90';
   return `<div class="pagebg" style="--u:url('${u}');${m}"><i class="fill"></i><i class="pic"></i><i class="sc"></i></div>`;
 }
 
@@ -1789,6 +1817,7 @@ function render(f){
   if(me.raid&&!me.raid.done&&me.raid.pick==null) return raidQuizView();
   if(ph==='turb')   return turbView();
   if(ph==='var')    return varView();
+  if(ph==='home')   return homeView();
   if(ph==='store')  return storeView();
   if(ph==='repack') return repackView();
   if(ph==='hawaii') return hawaiiView();
@@ -1817,6 +1846,7 @@ function pbg(){
   if(ph==='first') return pagebg('first','cine');
   if(ph==='land')  return pagebg('land','cine');
   if(ph==='money') return pagebg('money','ui');
+  if(ph==='home')  return pagebg((window.HOME||{}).img,'cine');
   if(ph==='store') return pagebg('store','cine');
   if(ph==='repack')return pagebg('lotto','ui');
   if(ph==='var'){ const vc=ST.varCard||{};
@@ -1842,7 +1872,7 @@ function shell(h){
 }
 const PHN={lobby:'대기 중',lotto:'로또 발표',first:'일등석',pack:'짐 싸는 중',land:'비상 착륙',
  money:'환전소',turb:'난기류',var:'돌발 변수',ev:'상황',quiz:'퀴즈',quizres:'정답',
- auc:'보급소',aucres:'낙찰',trade:'거래',raid:'강탈',pick:'선택',evres:'결과',rank:'결과 발표',board:'정리',store:'귀국',result:'끝'};
+ auc:'보급소',aucres:'낙찰',trade:'거래',raid:'강탈',pick:'선택',evres:'결과',rank:'결과 발표',board:'정리',home:'구조',store:'인천공항',result:'끝'};
 function topbar(){
   const hp=hpOf(me);
   return `<div class="top"><span class="tm">${S.team}</span>
@@ -2364,6 +2394,13 @@ function calcView(){
 }
 
 /* 귀국 */
+function homeView(){
+  const H=window.HOME||{};
+  shell(`<div class="center"><div class="big">${H.em||'🚁'}</div>
+    <h2>${H.head||'구조'}</h2>
+    <p>${(H.lines||[]).join('\n')}</p>
+    <div class="rescuebox">${(H.lines2||[]).join('<br>')}</div></div>`);
+}
 function storeView(){
   const E=window.ENDING;
   shell(`<div class="center">
