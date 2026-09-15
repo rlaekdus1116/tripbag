@@ -12,9 +12,10 @@
  --gold:#e8ab45;--green:#55b981;--red:#e8593c;--blue:#5d9fd6;--fs:1;
  --font:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none}
-html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+html,body{margin:0;height:100%;background:transparent;color:var(--ink);
  overflow:hidden;overscroll-behavior:none;
  font-family:var(--font);word-break:keep-all}
+html{background:var(--bg)}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 input{font-family:inherit}
 /* 갤럭시탭·아이패드는 가로로 눕히면 둥근 모서리와 카메라 홈이 화면 «양옆»을 먹습니다.
@@ -24,6 +25,22 @@ input{font-family:inherit}
  padding-left:env(safe-area-inset-left,0px);
  padding-right:env(safe-area-inset-right,0px);
  padding-bottom:env(safe-area-inset-bottom,0px)}
+
+
+/* ══ 화면을 꽉 채우는 배경 — 그림이 «절대 잘리지 않습니다» ══
+   ① fill : 같은 그림을 꽉 채워 흐리게 깔아 빈 틈을 없애고
+   ② pic  : 그림 «전체» 를 잘림 없이 통째로 올리고
+   ③ sc   : 글씨가 읽히게 아래쪽만 어둡게 덮습니다.
+   화면 비율이 그림과 달라도 양옆·위아래가 잘리지 않습니다. */
+.pagebg{position:fixed;inset:0;z-index:-1;overflow:hidden;background:var(--bg);pointer-events:none}
+.pagebg i{position:absolute;display:block}
+.pagebg i.fill{inset:-12%;background-image:var(--u);background-size:cover;background-position:center;
+ filter:blur(40px) saturate(.5) brightness(.34)}
+.pagebg i.pic{inset:0;background-image:var(--u);background-size:contain;
+ background-repeat:no-repeat;background-position:center}
+.pagebg i.sc{inset:0;background:linear-gradient(to bottom,
+ rgba(23,21,15,var(--a)) 0%,rgba(23,21,15,var(--b)) 46%,rgba(23,21,15,var(--c)) 100%)}
+
 
 /* 상단바 */
 .top{display:flex;align-items:center;gap:10px;padding:6px 12px;background:#0e0c07;
@@ -78,7 +95,6 @@ input{font-family:inherit}
 .gate input{width:100%;padding:13px;border:2px solid var(--line);border-radius:14px;background:#221f18;
  color:var(--ink);text-align:center;font-weight:700;font-size:1.4em}
 .gate input:focus{outline:none;border-color:var(--gold)}
-.top .rf.off{opacity:.45}
 .teams{display:grid;gap:8px;width:100%;margin-top:2px}
 .teams button{padding:11px 0;border:2px solid var(--line);border-radius:13px;background:#221f18;
  font-weight:700;font-size:1.2em}
@@ -564,7 +580,7 @@ input{font-family:inherit}
    * 이 파일은 두 html 안에 이미 들어가 있습니다. (참고용)
    =================================================================== */
 
-window.VER = 'v16 · 2026-09-14';
+window.VER = 'v17 · 2026-09-14';
 
 /* 글씨체 — 게임 UI처럼 딱딱하고 평범한 고딕.
    'Noto Sans KR' / 'Black Han Sans'(더 두꺼움) / 'Do Hyeon' 중에 고르면 됩니다. */
@@ -889,38 +905,47 @@ window.VARS = [
     «날씨 · 지형 · 동물» 처럼 그 자리에서 실제로 일어날 만한 것만 남겼습니다.
     없던 물이 갑자기 솟거나, 아무도 없는 곳에 도둑이 드는 카드는 전부 뺐습니다. */
  { id:'v1', where:['isle','jungle'], em:'⛈️', title:'폭풍우',
+   img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260914_070615_55a39512-a1b0-4bac-890b-ad986e543305_min.webp',
    line:'밤새 비바람이 몰아쳤다.\n불씨를 지킨 조만 아침에 몸이 말라 있었다.',
    rule:{kind:'need', ids:['fire'], hit:2, miss:-6} },
 
  { id:'v5', where:['isle','jungle'], em:'🦟', title:'열병',
+   img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260914_070615_601ec0a2-8409-43d8-a893-10cf7adfb4dd_min.webp',
    line:'밤새 모기가 들끓었다.\n약을 가진 조만 무사했다.',
    rule:{kind:'needDown', ids:['aid'], miss:1} },
 
  { id:'v6', where:['isle','jungle'], em:'🐒', title:'원숭이 습격',
+   img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260914_070724_abdbccac-030b-49fa-b826-9623634d6c72_min.webp',
    line:'원숭이 떼가 캠프를 뒤졌다. 세 조가 물건을 하나씩 털렸다.',
    rule:{kind:'steal', n:3} },
 
  { id:'v7', where:['isle','jungle'], em:'🌊', title:'만조',
+   img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260914_070615_574614f6-d56b-49cb-bec6-db2f8e202148_min.webp',
    line:'밤사이 물이 캠프까지 올라왔다.\n띄우거나 덮을 게 없던 조는 홀딱 젖었다.',
    rule:{kind:'need', ids:['tube','blank'], any:true, hit:0, miss:-4} },
 
  { id:'v9', where:['desert','snow'], em:'🧊', title:'한파',
+   img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260914_070615_34a8909f-8d70-495c-a995-9129de1994d2_min.webp',
    line:'새벽 기온이 뚝 떨어졌다.\n덮을 게 없는 조는 밤을 꼬박 새웠다.',
    rule:{kind:'need', ids:['blank'], hit:2, miss:-6} },
 
  { id:'v11', where:['desert'], em:'🌪️', title:'모래폭풍',
+   img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260914_070615_13a17747-a023-4d74-89a5-93c3e6442019_min.webp',
    line:'모래벽이 캠프를 덮쳤다.\n가릴 게 없던 조는 짐이 모래에 묻혔다.',
    rule:{kind:'need', ids:['umb','blank'], any:true, hit:2, miss:-6} },
 
  { id:'v12', where:['snow'], em:'🏔️', title:'눈사태',
+   img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260914_070615_b2a20aa4-2681-4655-940f-2cfccec926f0_min.webp',
    line:'능선이 무너져 내렸다. 세 조가 짐을 하나씩 잃었다.',
    rule:{kind:'steal', n:3} },
 
  { id:'v16', where:['desert'], em:'🦂', title:'전갈',
+   img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260914_070615_876bdb8d-22db-4f05-85fc-6ce1efde22df_min.webp',
    line:'모래 속에 전갈이 있었다.\n구급함을 가진 조만 무사히 넘겼다.',
    rule:{kind:'needDown', ids:['aid'], miss:1} },
 
  { id:'v17', where:['snow'], em:'🌬️', title:'눈보라',
+   img:'https://d8j0ntlcm91z4.cloudfront.net/user_3ExzQu1zO31VsYTrfsU5XXdmNUj/hf_20260914_070724_769d8964-240b-49e9-88c0-7bb8718cfb01_min.webp',
    line:'하루 종일 눈보라가 몰아쳤다.\n불을 지킨 조만 손발이 얼지 않았다.',
    rule:{kind:'need', ids:['fire'], hit:2, miss:-6} }
 ];
@@ -1600,6 +1625,15 @@ function bgs(k,top,bot){
 }
 const bgA=(k,t,b)=>{const v=bgs(k,t,b); return v?` style="${v}"`:'';};
 
+/* 화면 가득 배경 — 잘리지 않게 두 겹으로 깝니다 */
+function bgURL(k){ return (k&&k.indexOf('http')===0)?k:(IMG[k]||''); }
+function pagebg(k,mode){
+  const u=bgURL(k); if(!u) return '';
+  const m = (mode==='ui') ? '--a:.74;--b:.82;--c:.94' : '--a:.06;--b:.16;--c:.90';
+  return `<div class="pagebg" style="--u:url('${u}');${m}"><i class="fill"></i><i class="pic"></i><i class="sc"></i></div>`;
+}
+
+
 let DB=null,api=null,online=false,DIAG='';
 const S={ id:localStorage.getItem('bil_id')||'', team:localStorage.getItem('bil_team')||'',
           target:'', give:[], take:[], gcash:0, tcash:0, msg:'', bid:0, seenAuc:'', qPick:-1,
@@ -1774,16 +1808,33 @@ function warmSoon(){
     (DEST.plan||[]).forEach(p=>{ if(p.pre&&V[p.pre]) warm(V[p.pre]); });
   }
 }
+
+/* 지금 단계에 맞는 배경 그림 */
+function pbg(){
+  const ph=ST.phase;
+  const E=()=>{ try{ return curEv(); }catch(e){ return null; } };
+  if(ph==='lotto') return pagebg('lotto','cine');
+  if(ph==='first') return pagebg('first','cine');
+  if(ph==='land')  return pagebg('land','cine');
+  if(ph==='money') return pagebg('money','ui');
+  if(ph==='store') return pagebg('store','cine');
+  if(ph==='repack')return pagebg('lotto','ui');
+  if(ph==='var'){ const vc=ST.varCard||{};
+    const v=VARS.find(x=>x.id===vc.id)||VARS.find(x=>x.id===ST.varId);
+    return (v&&v.img)?pagebg(v.img,'cine'):''; }
+  if(ph==='auc'||ph==='aucres') return pagebg('shop','ui');
+  if(ph==='ev'||ph==='evres'){ const e=E(); return e?pagebg(e.img||e.id,'cine'):''; }
+  if(ph==='quiz'||ph==='quizres'||ph==='pick'||ph==='trade'||ph==='raid'){
+    const e=E(); return e?pagebg(e.img||e.id,'ui'):''; }
+  return '';
+}
 function shell(h){
   syncDest();
   try{ warmSoon(); }catch(e){}
-  try{ narrate(); }catch(e){}
   if(ST.phase!=='lotto') document.querySelectorAll('.conf').forEach(x=>x.remove());
   app.className=ST.phase||'';
-  app.innerHTML=topbar()+h;
+  app.innerHTML=pbg()+topbar()+h;
   const rf=$('#rf'); if(rf) rf.onclick=()=>{snd('tap');render(true);};
-  const tg=$('#tts'); if(tg) tg.onclick=()=>{ const v=TTS.toggle();
-    tg.textContent=v?'🔊 소리':'🔇 소리'; tg.className='rf'+(v?'':' off'); };
   const sw=$('#sw'); if(sw) sw.onclick=()=>{ if(!confirm('학번·조를 다시 입력할까요?')) return;
     S.id='';S.team=''; localStorage.removeItem('bil_id'); localStorage.removeItem('bil_team'); render(true);};
   if(focusId){ const el=document.getElementById(focusId); if(el){el.focus();
@@ -1799,7 +1850,6 @@ function topbar(){
     <span class="me">${S.id}</span>
     <button class="rf" id="rf">🔄 새로고침</button>
     <button class="rf" id="sw">조 바꾸기</button>
-    <button class="rf${TTS.on?'':' off'}" id="tts">${TTS.on?'🔊 소리':'🔇 소리'}</button>
     <span class="ver">${window.VER||''}</span>
     <span class="sp">
       <span class="hp"><span class="lb">조원</span><br>${
@@ -1814,7 +1864,7 @@ function topbar(){
 function gate(){
   const cols=C.teams<=6?C.teams:(C.teams<=8?4:6);
   app.className='gate';
-  app.innerHTML=`<div class="gate"${bgA(IMG.gate?'gate':'lotto',.66,.92)}>
+  app.innerHTML=pagebg(IMG.gate?'gate':'lotto','cine')+`<div class="gate">
     <div class="gbox">
       <div class="gem">🎰</div>
       <h1>100억</h1><p>오늘 너는 로또 1등에 당첨된다.</p>
@@ -1844,7 +1894,7 @@ function waitView(){ shell(`<div class="center"><div class="big">📺</div>
 /* 로또 */
 let lastLotto=0;
 function lottoView(){
-  shell(`<div class="lotto"${bgA('lotto',.55,.88)}><div class="t">로 또 １ 등</div>
+  shell(`<div class="lotto"><div class="t">로 또 １ 등</div>
     <div class="n">100억</div>
     <div class="s">${S.team}, 통장에 100억이 들어왔다.</div>
     <div class="s" style="color:var(--gold);margin-top:12px">✈️ 인천 → 하와이 · <b>일등석</b> 예약 완료</div>
@@ -1855,7 +1905,7 @@ function lottoView(){
 /* 일등석 */
 function firstView(){
   const F=window.FIRST, pick=me.first;
-  shell(`<div class="fc"${bgA('first',.5,.86)}><div style="font-size:3.2em">${F.em}</div>
+  shell(`<div class="fc"><div style="font-size:3.2em">${F.em}</div>
     <h2>${F.head}</h2><p>${F.desc}</p>
     ${pick!=null&&F.menu[pick].img?`<div class="mealshot"><img src="${F.menu[pick].img}" alt=""></div>`:''}
     <div class="menu">${F.menu.map((m,i)=>`<button data-m="${i}" class="${pick===i?'on':''}">
@@ -1879,7 +1929,7 @@ function varView(){
   if(h.lost){ txt=G(h.lost).em+' '+G(h.lost).name+' 을(를) 잃었다'; cls='b'; }
   if(vc.at&&lastVar!==vc.at){ lastVar=vc.at; snd('var'); }
   const vv=(window.VARVID||{})[v.id]||'';
-  const vbg=v.img?` style="${bgs(v.img,.5,.86)}"`:'';
+  const vbg='';
   shell(`<div class="varw"${vbg}>${vv?`<video class="vv" src="${vv}" autoplay muted loop playsinline preload="auto"></video>`:''}
     <div class="vem">${v.em}</div><div class="vt">${v.title}</div>
     <div class="vl">${v.line.replace(/\n/g,'<br>')}</div>
@@ -1965,7 +2015,7 @@ function packView(){
 let lastLand=0;
 function landView(){
   const L=PLACE;
-  shell(`<div class="center shake"${bgA('land',.5,.9)}><div class="big">${L.em}</div>
+  shell(`<div class="center shake"><div class="big">${L.em}</div>
     <h2>${L.name}</h2>
     <p>${L.lines.join('\n')}</p>
     <div class="rescuebox">${L.rescue.join('<br>')}</div>
@@ -1979,7 +2029,7 @@ function moneyView(){
   const X=window.EXCHANGE, pack=me.pack||[];
   const yes=pack.filter(id=>G(id).cash>0).sort((a,b)=>G(b).cash-G(a).cash);
   const no=pack.filter(id=>G(id).cash===0);
-  shell(`<div class="exw"${bgA('money',.68,.93)}><div style="font-size:2.2em">${X.em}</div>
+  shell(`<div class="exw"><div style="font-size:2.2em">${X.em}</div>
     <h2>${X.head}</h2>
     <p style="color:var(--dim);font-size:1em;text-align:center;margin:0 0 4px">${X.lines.join('<br>')}</p>
     ${yes.map((id,i)=>{const g=G(id);
@@ -2023,7 +2073,7 @@ function evbar(e){
 
 /* ① 상황 제시 */
 function situationView(e){
-  shell(`<div class="sit"${bgA(e.img||e.id,.42,.86)}>
+  shell(`<div class="sit">
     <div class="when">${e.when}</div>
     <h1>${e.title}</h1>
     <p>${e.desc}</p>
@@ -2052,7 +2102,7 @@ function pickView(e){
 /* ③-1 보급소 (퀴즈 → 경매) */
 function shopView(e){
   const M=window.MARKET, g=G(e.lot);
-  shell(evbar(e)+`<div class="one center"${bgA('shop',.6,.9)}>
+  shell(evbar(e)+`<div class="one center">
     <div class="big">${M.em}</div><h2>${M.head}</h2>
     <div class="lotbig"><span class="e">${g.em}</span><span class="n">${g.name}</span>
       <span class="q">오늘 들어온 건 이거 <b>1개</b>${g.once?' · 한 번 쓰면 끝':''}</span></div>
@@ -2230,36 +2280,6 @@ setInterval(()=>{
 },1000);
 
 
-/* ══════════════════════════════════════════════════════════════
-   소리 안내 — 딱 두 가지만 말합니다.
-     퀴즈가 열릴 때 : "오늘의 문제입니다."
-     경매가 열릴 때 : "경매를 시작합니다. 값을 부르세요."
-   브라우저에 들어 있는 기능이라 인터넷도 추가 파일도 안 씁니다.
-   ══════════════════════════════════════════════════════════════ */
-const TTS = (function(){
-  let voice=null, on=(localStorage.getItem('bil_tts')!=='0'), last='';
-  function pick(){ try{ const vs=speechSynthesis.getVoices()||[];
-    voice = vs.find(v=>/ko[-_]KR/i.test(v.lang)) || null; }catch(e){} }
-  try{ pick(); speechSynthesis.onvoiceschanged=pick; }catch(e){}
-  function say(txt,key){
-    if(!on||!txt) return;
-    if(key&&key===last) return;
-    if(key) last=key;
-    try{ speechSynthesis.cancel();
-      const u=new SpeechSynthesisUtterance(txt);
-      u.lang='ko-KR'; if(voice) u.voice=voice; u.rate=.98; u.pitch=.95;
-      speechSynthesis.speak(u);
-    }catch(e){}
-  }
-  return { say, stop(){try{speechSynthesis.cancel();}catch(e){}},
-    get on(){return on;},
-    toggle(){ on=!on; localStorage.setItem('bil_tts',on?'1':'0'); if(!on) this.stop(); return on; } };
-})();
-function narrate(){
-  if(ST.phase==='quiz') return TTS.say('오늘의 문제입니다.', 'q'+(ST.quiz||{}).id);
-  if(ST.phase==='auc')  return TTS.say('경매를 시작합니다. 값을 부르세요.', 'a'+(ST.auc||{}).id);
-}
-
 let lastRes='';
 function evResult(e,r){
   const plus=r.p>0, used=r.used||[];
@@ -2346,7 +2366,7 @@ function calcView(){
 /* 귀국 */
 function storeView(){
   const E=window.ENDING;
-  shell(`<div class="center"${bgA('store',.5,.85)}>
+  shell(`<div class="center">
     <div class="big">${E.em}</div><h2>${E.head}</h2>
     <div style="font-size:3em">💧</div>
     <div style="font-size:3.2em;font-weight:700;color:var(--gold);line-height:1">1,000원</div>
